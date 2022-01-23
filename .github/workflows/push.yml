@@ -16,4 +16,4 @@ jobs:
           tag_with_sha: true
           tags: ${{ github.sha }}
           load: true
-          dockerfile: latex.dockerfile
+          file: latex.dockerfile

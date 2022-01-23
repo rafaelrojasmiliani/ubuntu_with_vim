@@ -15,5 +15,6 @@ jobs:
       - name: build and push to doker
         uses: docker/build-push-action@v2
         with:
+          tags: latex
           file: latex.dockerfile
           push: true

@@ -1,4 +1,4 @@
-FROM pandoc/latex:latest-ubuntu
+FROM ubuntu:latest
 
 # Install packages
 RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \
@@ -13,6 +13,7 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-ins
                     vim vim-gtk texlive-pictures gnuplot chktex exuberant-ctags \
                     && apt-get clean
 
+RUN pip3 install cmakelang autopep8 pylint flake8 yamllint yamlfix yamlfmt
 
 RUN chmod 777 /etc/vim
 RUN mkdir -p /etc/vim/bundle

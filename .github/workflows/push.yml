@@ -18,9 +18,3 @@ jobs:
           tags: rafa606/vim-with-latex
           file: latex.dockerfile
           push: true
-      - name: build and push to docker latex compiler
-        uses: docker/build-push-action@v2
-        with:
-          tags: rafa606/vim-with-latex
-          file: latex.dockerfile
-          push: true

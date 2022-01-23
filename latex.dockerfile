@@ -6,6 +6,9 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-ins
                     python3-sympy \
                     exuberant-ctags \
                     cmake \
+                    build-essential \
+                    texlive-latex-extra \
+                    texlive-pictures \
                     wget jsonlint libxml2-utils patchelf \
                     vim vim-gtk texlive-pictures gnuplot chktex exuberant-ctags \
                     && apt-get clean

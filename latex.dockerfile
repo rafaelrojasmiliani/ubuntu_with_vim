@@ -13,7 +13,6 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-ins
                     vim vim-gtk texlive-pictures gnuplot chktex exuberant-ctags \
                     && apt-get clean
 
-RUN pip3 install cmakelang yamllint yamlfix yamlfmt
 
 RUN chmod 777 /etc/vim
 RUN mkdir -p /etc/vim/bundle

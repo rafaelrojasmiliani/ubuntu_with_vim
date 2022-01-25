@@ -18,3 +18,9 @@ jobs:
           tags: rafa606/vim-with-latex
           file: latex.dockerfile
           push: true
+      - name: build and push ros noetic with vim image
+        uses: docker/build-push-action@v2
+        with:
+          tags: rafa606/ros_noetic_vim
+          file: ros_noetic_vim.dockerfile
+          push: true

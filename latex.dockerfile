@@ -11,7 +11,7 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-ins
                     texlive-pictures \
                     wget jsonlint libxml2-utils patchelf \
                     vim vim-gtk texlive-pictures gnuplot chktex exuberant-ctags \
-                    && apt-get clean
+                    && rm -rf /var/lib/apt/lists/*
 
 
 RUN chmod 777 /etc/vim

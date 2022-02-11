@@ -32,7 +32,7 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-ins
         git clone https://github.com/Xuyuanp/nerdtree-git-plugin.git /etc/vim/bundle/nerdtree-git-plugin && \
         git clone https://github.com/lfv89/vim-interestingwords.git /etc/vim/bundle/vim-interestingwords && \
         git clone --depth 5 https://github.com/languagetool-org/languagetool.git /languagetool-build && \
-        cd /languagetool-build && mvn clean && \
+        cd /languagetool-build && mvn clean test && \
         ./build.sh languagetool-standalone package -DskipTests && \
         mkdir /languagetool && \
         mv $(dirname $(find languagetool-standalone/ -name "languagetool-commandline.jar"))/* /languagetool && \

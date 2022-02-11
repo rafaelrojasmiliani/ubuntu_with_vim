@@ -32,7 +32,7 @@ call vundle#begin('/etc/vim/bundle/')
     Plugin 'ale'
         let g:ale_completion_enabled = 0
         let g:ale_fixers = {'python': ['autopep8'], 'cmake': ['cmakeformat'], 'xml':['xmllint'], '*':['remove_trailing_lines', 'trim_whitespace'], 'json':['jq'], 'yaml':['prettier'], 'tex':['latexindent']}
-        let g:ale_linters = {'python': ['pylint', 'flake8', 'prospector'],'xml':['xmllint'], 'tex':['chktex']}
+        let g:ale_linters = {'python': ['pylint', 'flake8', 'prospector'],'xml':['xmllint'], 'tex':['chktex','lty'], 'plaintex':['lty']}
         let g:ale_sign_error = 'E'
         let g:ale_sign_warning = 'W'
         let g:ale_lint_on_text_changed = 'never'
@@ -40,6 +40,9 @@ call vundle#begin('/etc/vim/bundle/')
         let g:ale_lint_on_insert_leave = 1
         let g:ale_fix_on_save = 1
         let g:ale_python_pylint_options = "--init-hook='import sys; sys.path.append(\".\")' --extension-pkg-allow-list=.so"
+        let g:ale_tex_lty_ltdirectory = '/languagetool'
+        let g:ale_tex_lty_language = 'en-GB'
+        let g:ale_tex_lty_disable = 'WHITESPACE_RULE'
     " ------- vim-substitute -------
     Plugin 'vim-substitute'
         let g:substitute_SingleWordSize=100

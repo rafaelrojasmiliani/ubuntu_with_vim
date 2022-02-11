@@ -13,7 +13,7 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-ins
                     texlive-pictures \
                     wget jsonlint libxml2-utils patchelf \
                     vim vim-gtk texlive-pictures gnuplot chktex exuberant-ctags \
-                    pandoc maven \
+                    pandoc maven curl \
                     && rm -rf /var/lib/apt/lists/* && \
         chmod 777 /etc/vim && \
         mkdir -p /etc/vim/bundle && \
@@ -31,15 +31,8 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-ins
         git clone https://github.com/preservim/nerdtree.git /etc/vim/bundle/nerdtree && \
         git clone https://github.com/Xuyuanp/nerdtree-git-plugin.git /etc/vim/bundle/nerdtree-git-plugin && \
         git clone https://github.com/lfv89/vim-interestingwords.git /etc/vim/bundle/vim-interestingwords && \
-        git clone --depth 5 https://github.com/languagetool-org/languagetool.git /languagetool-build
-
-RUN cd /languagetool-build && mvn clean test 
-
-RUN cd /languagetool-build && \
-        ./build.sh languagetool-standalone package -DskipTests && \
-        mkdir /languagetool && \
-        mv $(dirname $(find languagetool-standalone/ -name "languagetool-commandline.jar"))/* /languagetool && \
-        cd / && rm -rf /languagetool-build && \
+        curl -L https://raw.githubusercontent.com/languagetool-org/languagetool/master/install.sh | sudo bash && \
+        mv /LanguageTool* languagetool && \
         pip3 install  git+https://github.com/matze-dd/YaLafi.git@master && \
         wget https://raw.githubusercontent.com/matze-dd/YaLafi/master/editors/lty.vim \
                 -O /etc/vim/bundle/ale/ale_linters/tex/lty.vim

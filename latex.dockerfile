@@ -31,7 +31,7 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-ins
         git clone https://github.com/preservim/nerdtree.git /etc/vim/bundle/nerdtree && \
         git clone https://github.com/Xuyuanp/nerdtree-git-plugin.git /etc/vim/bundle/nerdtree-git-plugin && \
         git clone https://github.com/lfv89/vim-interestingwords.git /etc/vim/bundle/vim-interestingwords && \
-        curl -L https://raw.githubusercontent.com/languagetool-org/languagetool/master/install.sh | sudo bash && \
+        curl -L https://raw.githubusercontent.com/languagetool-org/languagetool/master/install.sh | bash && \
         mv /LanguageTool* languagetool && \
         pip3 install  git+https://github.com/matze-dd/YaLafi.git@master && \
         wget https://raw.githubusercontent.com/matze-dd/YaLafi/master/editors/lty.vim \

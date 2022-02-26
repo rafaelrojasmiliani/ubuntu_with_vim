@@ -3,10 +3,6 @@
 ARG ROS_DISTRO=noetic
 FROM ros:${ROS_DISTRO}-ros-base
 
-RUN apt clean
-ENV TZ=Europe/Rome
-RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
-
 # Install packages
 RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \
                     python3-pip git iputils-ping net-tools netcat screen   less \

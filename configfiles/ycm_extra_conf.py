@@ -43,7 +43,7 @@ class FlagGenerator:
             '-Wno-variadic-macros',
             '-fexceptions',
             '-DNDEBUG',
-            '-std=c++14',  # important
+            '-std=c++17',
             '-x',
             'c++',
             '-I',

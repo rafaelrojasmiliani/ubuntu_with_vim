@@ -17,7 +17,7 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-ins
                     texlive-latex-extra texlive-pictures \
                     vim vim-gtk \
                     && rm -rf /var/lib/apt/lists/* && \
-    pip3 install cmakelang autopep8 pylint flake8 yamllint yamlfix yamlfmt && \
+    pip3 install cmakelang autopep8 pylint flake8 yamllint yamlfix yamlfmt pylatex && \
     npm install -g npm@latest-6 && \
     npm install -g --save-dev --save-exact prettier && \
     npm install -g fixjson && \

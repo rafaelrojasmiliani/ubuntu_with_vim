@@ -24,6 +24,12 @@ jobs:
           tags: rafa606/ros_noetic_vim
           file: ros_noetic_vim.dockerfile
           push: true
+      - name: build and push ros galactic with vim image
+        uses: docker/build-push-action@v2
+        with:
+          tags: rafa606/ros-base-galactic-vim
+          file: ros_galactic_vim.dockerfile
+          push: true
       - name: build and push ros noetic with vim and latex image
         uses: docker/build-push-action@v2
         with:

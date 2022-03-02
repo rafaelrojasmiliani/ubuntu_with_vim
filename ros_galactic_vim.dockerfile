@@ -1,6 +1,7 @@
 # This file tells docker what image must be created
 # in order to be ahble to test this library
-FROM ros:galactic-ros-base
+ARG ROS_DISTRO=noetic
+FROM ros:${ROS_DISTRO}-ros-base
 
 # Install packages
 RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \
@@ -45,3 +46,4 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-ins
 COPY configfiles/vimrc /etc/vim/
 COPY configfiles/ycm_extra_conf.py /etc/vim/
 COPY configfiles/ctags /etc/vim/
+

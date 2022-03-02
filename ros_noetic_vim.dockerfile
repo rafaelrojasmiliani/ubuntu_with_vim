@@ -1,6 +1,6 @@
 # This file tells docker what image must be created
 # in order to be ahble to test this library
-FROM ros:galactic-ros-base
+FROM ros:noetic-ros-base
 
 # Install packages
 RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \

@@ -13,7 +13,7 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-ins
                     texlive-pictures \
                     wget jsonlint libxml2-utils patchelf \
                     vim vim-gtk texlive-pictures gnuplot chktex exuberant-ctags \
-                    pandoc maven curl \
+                    pandoc maven curl python-is-python3 \
                     && rm -rf /var/lib/apt/lists/* && \
         chmod 777 /etc/vim && \
         mkdir -p /etc/vim/bundle && \

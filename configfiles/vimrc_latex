@@ -43,6 +43,7 @@ call vundle#begin('/etc/vim/bundle/')
         let g:ale_tex_lty_ltdirectory = '/languagetool'
         let g:ale_tex_lty_language = 'en-GB'
         let g:ale_tex_lty_disable = 'WHITESPACE_RULE'
+        let g:ale_tex_lty_server = ''
     " ------- vim-substitute -------
     Plugin 'vim-substitute'
         let g:substitute_SingleWordSize=100
@@ -104,4 +105,3 @@ function! MyFormatExpr(start, end)
 endfunction
 
 set formatexpr=MyFormatExpr(v:lnum,v:lnum+v:count-1)
-

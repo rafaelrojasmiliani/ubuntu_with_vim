@@ -14,7 +14,7 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-ins
                     wget jsonlint libxml2-utils patchelf \
                     vim vim-gtk texlive-pictures gnuplot chktex exuberant-ctags \
                     vera dictd dict-freedict-eng-deu dict-freedict-eng-ita dict-freedict-eng-spa \
-                    dict-gcide dict-moby-thesaurus \
+                    dict-gcide  \
                     pandoc maven curl python-is-python3 \
                     && rm -rf /var/lib/apt/lists/* && \
         chmod 777 /etc/vim && \

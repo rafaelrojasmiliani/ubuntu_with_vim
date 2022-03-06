@@ -7,7 +7,7 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-ins
                     python3-pip git iputils-ping net-tools netcat screen less \
                     python3-sympy \
                     exuberant-ctags \
-                    cmake \
+                    cmake sudo \
                     build-essential \
                     texlive-latex-extra \
                     texlive-pictures \

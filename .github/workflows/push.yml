@@ -44,6 +44,14 @@ jobs:
           push: true
         if: contains(steps.changed-files.outputs.modified_files, 'ros_galactic_vim.dockerfile')
 
+      - name: build and push ros foxy with vim image
+        uses: docker/build-push-action@v2
+        with:
+          tags: rafa606/ros-base-foxy-vim
+          file: ros_galactic_vim.dockerfile
+          push: true
+        if: contains(steps.changed-files.outputs.modified_files, 'ros_foxy_vim.dockerfile')
+
       - name: build and push ros noetic with vim and latex image
         uses: docker/build-push-action@v2
         with:

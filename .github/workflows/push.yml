@@ -26,7 +26,7 @@ jobs:
           tags: rafa606/vim-with-latex
           file: latex.dockerfile
           push: true
-        if: contains(steps.changed-files.outputs.modified_files, 'latex.dockerdile')
+        if: contains(steps.changed-files.outputs.modified_files, 'latex.dockerfile')
 
       - name: build and push ros noetic with vim image
         uses: docker/build-push-action@v2

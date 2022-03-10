@@ -17,6 +17,8 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-ins
                     dict-gcide  \
                     texlive-science \
                     texlive-publishers \
+                    texlive-fonts-extra \
+                    texlive-bibtex-extra \
                     pandoc maven curl python-is-python3 \
                     && rm -rf /var/lib/apt/lists/* && \
         chmod 777 /etc/vim && \

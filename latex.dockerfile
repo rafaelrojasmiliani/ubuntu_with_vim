@@ -20,6 +20,7 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-ins
                     texlive-fonts-extra \
                     texlive-bibtex-extra \
                     lmodern \
+                    texlive-xetex \
                     pandoc maven curl python-is-python3 \
                     && rm -rf /var/lib/apt/lists/* && \
         chmod 777 /etc/vim && \

@@ -48,5 +48,7 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-ins
 COPY configfiles/vimrc /etc/vim/
 COPY configfiles/ycm_extra_conf.py /etc/vim/
 
+
+
 # The next line was taken from https://github.com/ycm-core/YouCompleteMe/issues/3584
 #RUN patchelf --set-rpath "/etc/vim/bundle/YouCompleteMe/third_party/ycmd/third_party/clang/lib" "$(find /etc/vim/bundle/YouCompleteMe/third_party/ycmd/ -name 'ycm_core*.so')"

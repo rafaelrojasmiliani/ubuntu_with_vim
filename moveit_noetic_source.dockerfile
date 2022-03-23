@@ -46,6 +46,8 @@ RUN git clone https://github.com/kkoomen/vim-doge.git /etc/vim/bundle/vim-doge
 RUN git clone https://github.com/rafaelrojasmiliani/vim_snippets_ros.git /etc/vim/bundle/vim-snippets-ros
 
 
+
+
 RUN cd /etc/vim/bundle/YouCompleteMe && git submodule update --init --recursive && python3 install.py --clang-completer
 # The next line was taken from https://github.com/ycm-core/YouCompleteMe/issues/3584
 RUN patchelf --set-rpath "/etc/vim/bundle/YouCompleteMe/third_party/ycmd/third_party/clang/lib" "$(find /etc/vim/bundle/YouCompleteMe/third_party/ycmd/ -name 'ycm_core*.so')"

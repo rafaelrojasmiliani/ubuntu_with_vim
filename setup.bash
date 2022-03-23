@@ -18,10 +18,11 @@ vim_with_moveit(){
 
     DOCKER_VIDEO_OPTIONS="${DOCKER_NVIDIA_OPTIONS} --env=DISPLAY --env=QT_X11_NO_MITSHM=1 --env=XAUTHORITY=$XAUTH --volume=$XAUTH:$XAUTH --volume=/tmp/.X11-unix:/tmp/.X11-unix:rw"
 
+    docker pull rafa606/moveit_noetic_source_vim
     docker run -it \
         ${DOCKER_VIDEO_OPTIONS} \
         --volume $(pwd):/workspace/src/ \
-        moveit_noetic_source_vim bash
+        rafa606/moveit_noetic_source_vim bash
 }
 vim_with_latex(){
 

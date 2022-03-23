@@ -36,6 +36,15 @@ jobs:
           push: true
         if: contains(steps.changed-files.outputs.modified_files, 'ros_noetic_vim.dockerfile')
 
+
+      - name: build and push ros moveit noetic with vim image
+        uses: docker/build-push-action@v2
+        with:
+          tags: rafa606/ros_moveit_noetic_source_vim
+          file: ros_noetic_vim.dockerfile
+          push: true
+        if: contains(steps.changed-files.outputs.modified_files, 'moveit_noetic_source.dockerfile')
+
       - name: build and push ros galactic with vim image
         uses: docker/build-push-action@v2
         with:

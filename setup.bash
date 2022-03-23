@@ -18,11 +18,18 @@ vim_with_moveit(){
 
     DOCKER_VIDEO_OPTIONS="${DOCKER_NVIDIA_OPTIONS} --env=DISPLAY --env=QT_X11_NO_MITSHM=1 --env=XAUTHORITY=$XAUTH --volume=$XAUTH:$XAUTH --volume=/tmp/.X11-unix:/tmp/.X11-unix:rw"
 
-    docker pull rafa606/moveit_noetic_source_vim
+    myuid=$(id -u $USER)
+    mygid=$(id -g $USER)
+    mygroup=$(id -g -n $USER)
+    myuser="$USER"
+    docker pull rafa606/ros_moveit_noetic_source_vim
     docker run -it \
         ${DOCKER_VIDEO_OPTIONS} \
         --volume $(pwd):/workspace/src/ \
-        rafa606/moveit_noetic_source_vim bash
+        --entrypoint="/bin/bash" \
+        --workdir=/workspace \
+        --privileged \
+        rafa606/ros_moveit_noetic_source_vim  -c "addgroup --gid ${mygid} ${mygroup} --force-badname;  adduser --gecos \"\" --disabled-password  --uid ${myuid} --gid ${mygid} ${myuser} --force-badname ; usermod -a -G video ${myuser}; echo ${myuser} ALL=\(ALL\) NOPASSWD:ALL >> /etc/sudoers; sudo -EHu ${myuser}  bash"
 }
 vim_with_latex(){
 

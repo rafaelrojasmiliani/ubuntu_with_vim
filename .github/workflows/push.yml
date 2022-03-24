@@ -98,7 +98,7 @@ jobs:
           file: cpp_vim.dockerfile
           push: true
         if: |
-          contains(steps.changed-files.outputs.modified_files, 'ros_noetic_vim_latex.dockerfile') ||
+          contains(steps.changed-files.outputs.modified_files, 'cpp_vim.dockerfile') ||
           contains(steps.changed-files.outputs.modified_files, 'configfiles/vimrc') ||
           contains(steps.changed-files.outputs.modified_files, 'configfiles/ycm_extra_conf.py') ||
           contains(steps.changed-files.outputs.modified_files, 'configfiles/ctags')

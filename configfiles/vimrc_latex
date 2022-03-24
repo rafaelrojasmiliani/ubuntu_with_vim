@@ -57,6 +57,7 @@ call vundle#begin('/etc/vim/bundle/')
     Plugin 'vim-fugitive'
     Plugin 'xmledit'
     Plugin 'nerdtree'
+        let NERDTreeShowHidden=1
     Plugin 'nerdtree-git-plugin'
     Plugin 'vim-interestingwords'
 call vundle#end()

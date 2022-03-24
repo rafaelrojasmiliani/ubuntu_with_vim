@@ -1,9 +1,5 @@
 FROM moveit/moveit:noetic-source
 
-RUN apt clean
-ENV TZ=Europe/Rome
-RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
-
 # Install packages
 RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \
                     python3-pip git iputils-ping net-tools netcat screen   less \
@@ -28,7 +24,7 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-ins
                     ros-noetic-moveit-resources-prbt-support \
                     ros-noetic-moveit-resources-prbt-pg70-support \
    &&  apt-get clean \
-   &&  rm -rf /var/lib/apt/lists/* && \
+   &&  rm -rf /var/lib/apt/lists/* \
    &&  pip3 install cmakelang autopep8 pylint flake8 yamllint yamlfix yamlfmt \
    &&  npm install -g npm@latest-6 \
    &&  npm install --save-dev --save-exact prettier \
@@ -53,12 +49,15 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-ins
    &&  git clone https://github.com/lfv89/vim-interestingwords.git /etc/vim/bundle/vim-interestingwords \
    &&  git clone https://github.com/kkoomen/vim-doge.git /etc/vim/bundle/vim-doge \
    &&  git clone https://github.com/rafaelrojasmiliani/vim_snippets_ros.git /etc/vim/bundle/vim-snippets-ros \
-   &&  cd /etc/vim/bundle/YouCompleteMe && git submodule update --init --recursive && python3 install.py --clang-completer \
+   &&  cd /etc/vim/bundle/YouCompleteMe \
+   &&  git submodule update --init --recursive \
+   &&  python3 install.py --clang-completer \
    &&  patchelf --set-rpath "/etc/vim/bundle/YouCompleteMe/third_party/ycmd/third_party/clang/lib" "$(find /etc/vim/bundle/YouCompleteMe/third_party/ycmd/ -name 'ycm_core*.so')" \
-   &&  cd /etc/vim/bundle/vimspector && python3 install_gadget.py --enable-c --enable-cpp --enable-python \
-   && echo 'source /opt/ros/noetic/setup.bash' > /etc/bash.bashrc \
-   && mkdir /workspace \
-   && chmod 777 /workspace
+   &&  cd /etc/vim/bundle/vimspector \
+   &&  python3 install_gadget.py --enable-c --enable-cpp --enable-python \
+   &&  echo 'source /opt/ros/noetic/setup.bash' > /etc/bash.bashrc \
+   &&  mkdir /workspace \
+   &&  chmod 777 /workspace
 
 COPY configfiles/vimrc /etc/vim/
 COPY configfiles/ycm_extra_conf.py /etc/vim/

@@ -27,7 +27,8 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-ins
                     ros-noetic-moveit-resources-prbt-moveit-config \
                     ros-noetic-moveit-resources-prbt-support \
                     ros-noetic-moveit-resources-prbt-pg70-support \
-                    && apt-get clean \
+   &&  apt-get clean \
+   &&  rm -rf /var/lib/apt/lists/* && \
    &&  pip3 install cmakelang autopep8 pylint flake8 yamllint yamlfix yamlfmt \
    &&  npm install -g npm@latest-6 \
    &&  npm install --save-dev --save-exact prettier \
@@ -54,7 +55,10 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-ins
    &&  git clone https://github.com/rafaelrojasmiliani/vim_snippets_ros.git /etc/vim/bundle/vim-snippets-ros \
    &&  cd /etc/vim/bundle/YouCompleteMe && git submodule update --init --recursive && python3 install.py --clang-completer \
    &&  patchelf --set-rpath "/etc/vim/bundle/YouCompleteMe/third_party/ycmd/third_party/clang/lib" "$(find /etc/vim/bundle/YouCompleteMe/third_party/ycmd/ -name 'ycm_core*.so')" \
-   &&  cd /etc/vim/bundle/vimspector && python3 install_gadget.py --enable-c --enable-cpp --enable-python
+   &&  cd /etc/vim/bundle/vimspector && python3 install_gadget.py --enable-c --enable-cpp --enable-python \
+   && echo 'source /opt/ros/noetic/setup.bash' > /etc/bash.bashrc \
+   && mkdir /workspace \
+   && chmod 777 /workspace
 
 COPY configfiles/vimrc /etc/vim/
 COPY configfiles/ycm_extra_conf.py /etc/vim/

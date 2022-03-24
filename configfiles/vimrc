@@ -50,7 +50,6 @@ call vundle#begin('/etc/vim/bundle/')
         let g:ale_fixers = {'python': ['autopep8'], 'cpp': ['clang-format'], 'cmake': ['cmakeformat'], 'xml':['xmllint'], 'javascript':['prettier'], '*':['remove_trailing_lines', 'trim_whitespace'], 'json':['jq'], 'yaml':['prettier']}
         let g:ale_linters = {'python': ['pylint', 'flake8', 'prospector'],'xml':['xmllint'], 'cpp':['clangtidy', 'cc']}
         let g:ale_c_clangformat_executable='clang-format-10'
-        let g:ale_cpp_clangtidy_extra_options=''
 python3 << EOF
 import vim, sys, os
 sys.path.append('/etc/vim/bundle/YouCompleteMe/python')
@@ -65,6 +64,7 @@ for i, flag in enumerate(flag_list, start=1):
 
 result = ' '.join(flag_list)
 vim.command("let g:ale_cpp_cc_options='%s'"% result)
+vim.command("let g:ale_cpp_clangtidy_extra_options='%s'"% result)
 #start = vim.eval("startline")
 #end = vim.eval("endline")
 EOF

@@ -8,10 +8,9 @@ plugin.
 import logging
 import os
 import subprocess
+import ament_index_python
 
-#import rospkg
 import ycm_core
-from catkin.workspace import get_workspaces
 import copy
 from typing import List, Set, Dict, Tuple, Optional
 from pathlib import Path
@@ -57,27 +56,6 @@ class FlagGenerator:
                 ' the --clang-completer flag'
             )
 
-    def get_ros_include_paths(self):
-        """Return a list of potential include directories
-
-        The directories are looked for in $ROS_WORKSPACE.
-        """
-        includes = []
-        list_of_workspaces = [
-            ws_path for ws_path in get_workspaces()
-            if ws_path != self.current_ws_path_]
-
-        for ws_path in list_of_workspaces:
-            includes.append(ws_path + '/include/')
-
-        exclude_set = set(['build', 'devel'])
-        for root, dirs, _ in os.walk(self.current_ws_path_):
-            dirs[:] = [d for d in dirs if d not in exclude_set]
-            for name in dirs:
-                if name == 'include':
-                    includes.append(root + '/include/')
-        return includes
-
 #    def search_compile_commands_json_folder(self) -> str:
 #        """ Search for a comile_commands.json"""
 #        pkg_name = rospkg.get_package_name(self.current_ws_path_)
@@ -87,10 +65,12 @@ class FlagGenerator:
 #        result = ''
 #        while path != Path('/'):
 #            build_folder = list(path.glob('build'))
+#            print('build folcer ', build_folder)
 #            if build_folder:
 #                result = str(build_folder[0].absolute())
 #                break
 #            path = path.parent
+#            print('path ', path)
 #        else:
 #            return ''
 #
@@ -108,7 +88,7 @@ class FlagGenerator:
 #            """ Determines wheter the current file is a header"""
 #            return os.path.splitext(self.current_file_)[1] \
 #                in ['.h', '.hxx', '.hpp', '.hh']
-
+#
 #        compile_commands_folder = self.search_compile_commands_json_folder()
 #
 #        if not is_currentf_file_header() and compile_commands_folder:
@@ -120,7 +100,10 @@ class FlagGenerator:
 #                pass
 
         result = []
-        for include in self.get_ros_include_paths():
+        ros_include_paths = [path+'/include' for path in
+                             ament_index_python.get_search_paths()
+                             if os.path.isdir(path+'/include/')]
+        for include in ros_include_paths:
             result.append('-I')
             result.append(include)
         return result + self.default_flags_

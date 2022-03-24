@@ -64,7 +64,7 @@ jobs:
         if: |
           contains(steps.changed-files.outputs.modified_files, 'ros_galactic_vim.dockerfile') ||
           contains(steps.changed-files.outputs.modified_files, 'configfiles/vimrc') ||
-          contains(steps.changed-files.outputs.modified_files, 'configfiles/ycm_extra_conf.py') ||
+          contains(steps.changed-files.outputs.modified_files, 'configfiles/ycm_extra_conf_ros2.py') ||
           contains(steps.changed-files.outputs.modified_files, 'configfiles/ctags')
 
       - name: build and push ros foxy with vim image
@@ -76,7 +76,7 @@ jobs:
         if: |
           contains(steps.changed-files.outputs.modified_files, 'ros_foxy_vim.dockerfile') ||
           contains(steps.changed-files.outputs.modified_files, 'configfiles/vimrc') ||
-          contains(steps.changed-files.outputs.modified_files, 'configfiles/ycm_extra_conf.py') ||
+          contains(steps.changed-files.outputs.modified_files, 'configfiles/ycm_extra_conf_ros2.py') ||
           contains(steps.changed-files.outputs.modified_files, 'configfiles/ctags')
 
       - name: build and push ros noetic with vim and latex image

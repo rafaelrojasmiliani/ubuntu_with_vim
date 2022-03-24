@@ -50,7 +50,6 @@ RUN echo "deb [arch=amd64] http://robotpkg.openrobots.org/packages/debian/pub $(
    && mkdir /workspace \
    && chmod 777 /workspace
 
-
 COPY configfiles/vimrc /etc/vim/
 COPY configfiles/ycm_extra_conf.py /etc/vim/
 COPY configfiles/ctags /etc/vim/

@@ -38,14 +38,13 @@ call vundle#begin('/etc/vim/bundle/')
     Plugin 'vim-latex'
     " ------- tagbar -------
     Plugin 'tagbar'
-        "let g:tagbar_ctags_options = ['C:\Users\Administrator\.ctags']
-        "let g:tagbar_type_xml = {
-        "            \ 'kinds' : ['j:joints', 'l:links', 'p:properties', 'm:macros', 'i:includes', 'n:nodes']
-        "            \}
-        " ------- bufer exampler -------
+        let g:tagbar_ctags_options = ['/etc/vim/ctags']
+        let g:tagbar_type_xml = {
+                    \ 'kinds' : ['j:joints', 'l:links', 'p:properties', 'm:macros', 'i:includes', 'n:nodes']
+                    \}
     Plugin 'bufexplorer'
         " ------- ale -------
-        Plugin 'ale'
+    Plugin 'ale'
         let g:ale_completion_enabled = 0
         let g:ale_fixers = {'python': ['autopep8'], 'cpp': ['clang-format'], 'cmake': ['cmakeformat'], 'xml':['xmllint'], 'javascript':['prettier'], '*':['remove_trailing_lines', 'trim_whitespace'], 'json':['jq'], 'yaml':['prettier']}
         let g:ale_linters = {'python': ['pylint', 'flake8', 'prospector'],'xml':['xmllint'], 'cpp':['clangtidy', 'cc']}

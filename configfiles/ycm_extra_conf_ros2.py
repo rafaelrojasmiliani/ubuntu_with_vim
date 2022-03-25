@@ -49,6 +49,8 @@ class FlagGenerator:
             '.',
             '-I',
             '/usr/include/eigen3',
+            '-I',
+            '/usr/local/include',
         ]
         if not hasattr(ycm_core, 'CompilationDatabase'):
             raise RuntimeError(

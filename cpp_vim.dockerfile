@@ -16,7 +16,7 @@ RUN echo "deb [arch=amd64] http://robotpkg.openrobots.org/packages/debian/pub $(
                     golang nodejs default-jdk npm clang-tidy-9 clang-format-10 \
                     apt-transport-https ca-certificates gnupg software-properties-common \
                     wget g++-8 golang clang jsonlint jq libxml2-utils patchelf \
-                    vim vim-gtk robotpkg-py38-pinocchio \
+                    vim vim-gtk robotpkg-py38-pinocchio curl lsb-core \
     && rm -rf /var/lib/apt/lists/* && \
     pip3 install cmakelang autopep8 pylint flake8 \
                  yamllint yamlfix yamlfmt setuptools matplotlib \

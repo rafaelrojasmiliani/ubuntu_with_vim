@@ -46,5 +46,5 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-ins
    && chmod 777 /workspace
 
 COPY configfiles/vimrc /etc/vim/
-COPY configfiles/ycm_extra_conf.py /etc/vim/
+COPY configfiles/ycm_extra_conf_ros.py /etc/vim/ycm_extra_conf.py
 COPY configfiles/ctags /etc/vim/

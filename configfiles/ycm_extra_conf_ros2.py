@@ -9,7 +9,7 @@ import logging
 import os
 import subprocess
 import ament_index_python
-
+import glob
 import ycm_core
 import copy
 from typing import List, Set, Dict, Tuple, Optional
@@ -56,31 +56,6 @@ class FlagGenerator:
                 ' the --clang-completer flag'
             )
 
-#    def search_compile_commands_json_folder(self) -> str:
-#        """ Search for a comile_commands.json"""
-#        pkg_name = rospkg.get_package_name(self.current_ws_path_)
-#        if not pkg_name:
-#            return ''
-#        path = Path(self.current_file_)
-#        result = ''
-#        while path != Path('/'):
-#            build_folder = list(path.glob('build'))
-#            print('build folcer ', build_folder)
-#            if build_folder:
-#                result = str(build_folder[0].absolute())
-#                break
-#            path = path.parent
-#            print('path ', path)
-#        else:
-#            return ''
-#
-#        result = os.path.join(result, pkg_name)
-#
-#        if list(Path(result).glob('compile_commands.json')):
-#            return result
-#
-#        return ''
-
     def get_flags(self) -> List[str]:
         """ Return the compilation flags
         """
@@ -98,12 +73,16 @@ class FlagGenerator:
 #            if compilation_flags:
 #                print('compiler flags: ', compilation_flags.compiler_flags_)
 #                pass
+        other_include_paths = []
+        if os.path.isdir(self.current_ws_path_+'/src'):
+            other_include_paths = glob.glob(
+                self.current_ws_path_+'/src/**/include', recursive=True)
 
         result = []
         ros_include_paths = [path+'/include' for path in
                              ament_index_python.get_search_paths()
                              if os.path.isdir(path+'/include/')]
-        for include in ros_include_paths:
+        for include in ros_include_paths + other_include_paths:
             result.append('-I')
             result.append(include)
         return result + self.default_flags_

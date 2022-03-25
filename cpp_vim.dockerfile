@@ -13,7 +13,7 @@ RUN apt-get update \
                     -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \
                     python3-pip git iputils-ping net-tools netcat screen   less \
                     python3-sympy coinor-libipopt-dev  valgrind \
-                     pkg-config exuberant-ctags python3-catkin-tools \
+                     pkg-config exuberant-ctags  \
                     liblapack-dev liblapack3 libopenblas-base libopenblas-dev \
                     libgfortran-7-dev cmake libgsl-dev gdb python3-tk libeigen3-dev \
                     libboost-math-dev build-essential cmake python3-dev mono-complete \

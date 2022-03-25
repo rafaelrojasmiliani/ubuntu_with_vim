@@ -2,7 +2,11 @@
 # in order to be ahble to test this library
 FROM ubuntu:20.04
 
-RUN echo "deb [arch=amd64] http://robotpkg.openrobots.org/packages/debian/pub $(lsb_release -cs) robotpkg" > /etc/apt/sources.list.d/robotpkg.list \
+RUN apt-get update \
+    && DEBIAN_FRONTEND=noninteractive apt-get install \
+                    -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \
+                    curl lsb-core \
+    && echo "deb [arch=amd64] http://robotpkg.openrobots.org/packages/debian/pub $(lsb_release -cs) robotpkg" > /etc/apt/sources.list.d/robotpkg.list \
     && curl http://robotpkg.openrobots.org/packages/debian/robotpkg.key | apt-key add - \
     && apt-get update \
     && DEBIAN_FRONTEND=noninteractive apt-get install \
@@ -16,7 +20,7 @@ RUN echo "deb [arch=amd64] http://robotpkg.openrobots.org/packages/debian/pub $(
                     golang nodejs default-jdk npm clang-tidy-9 clang-format-10 \
                     apt-transport-https ca-certificates gnupg software-properties-common \
                     wget g++-8 golang clang jsonlint jq libxml2-utils patchelf \
-                    vim vim-gtk robotpkg-py38-pinocchio curl lsb-core \
+                    vim vim-gtk robotpkg-py38-pinocchio \
     && rm -rf /var/lib/apt/lists/* && \
     pip3 install cmakelang autopep8 pylint flake8 \
                  yamllint yamlfix yamlfmt setuptools matplotlib \

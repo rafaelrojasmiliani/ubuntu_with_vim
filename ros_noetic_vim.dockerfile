@@ -13,7 +13,30 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-ins
                     golang nodejs default-jdk npm clang-tidy-9 clang-format-10 \
                     apt-transport-https ca-certificates gnupg software-properties-common \
                     wget g++-8 golang clang jsonlint jq libxml2-utils patchelf \
+                    ros-noetic-control-msgs \
+                    ros-noetic-velocity-controllers \
+                    ros-noetic-joint-trajectory-action \
                     ros-noetic-ifopt \
+                    ros-noetic-plotjuggler \
+                    ros-noetic-joint-trajectory-controller \
+                    ros-noetic-joint-trajectory-action \
+                    ros-noetic-xacro \
+                    ros-noetic-gazebo-ros \
+                    ros-noetic-gazebo-ros-control \
+                    ros-noetic-joint-state-controller \
+                    ros-noetic-position-controllers \
+                    ros-noetic-robot-state-publisher \
+                    ros-noetic-joint-state-publisher \
+                    ros-noetic-rqt \
+                    ros-noetic-rqt-graph \
+                    ros-noetic-roslint \
+                    ros-noetic-plotjuggler-ros \
+                    ros-noetic-rqt-gui \
+                    ros-noetic-rqt-gui-py \
+                    ros-noetic-rqt-py-common \
+                    ros-noetic-moveit-msgs \
+                    ros-noetic-rqt-joint-trajectory-controller \
+                    ros-noetic-jsk-rviz-plugins  \
                     vim vim-gtk \
     && rm -rf /var/lib/apt/lists/* && \
     cd / && \

@@ -13,8 +13,13 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-ins
                     golang nodejs default-jdk npm clang-tidy-9 clang-format-10 \
                     apt-transport-https ca-certificates gnupg software-properties-common \
                     wget g++-8 golang clang jsonlint jq libxml2-utils patchelf \
+                    ros-noetic-ifopt \
                     vim vim-gtk \
-                    && rm -rf /var/lib/apt/lists/* && \
+    && rm -rf /var/lib/apt/lists/* && \
+    cd / && \
+    wget https://github.com/rafaelrojasmiliani/gsplines_cpp/releases/download/master/gsplines-0.0.1-amd64.deb && \
+    dpkg -i gsplines-0.0.1-amd64.deb && \
+    rm gsplines-0.0.1-amd64.deb && \
     pip3 install cmakelang autopep8 pylint flake8 yamllint yamlfix yamlfmt && \
     npm install -g npm@latest-6 && \
     npm install -g --save-dev --save-exact prettier && \

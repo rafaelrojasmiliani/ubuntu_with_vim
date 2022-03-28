@@ -24,7 +24,7 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/* && \
     pip3 install cmakelang autopep8 pylint flake8 \
                  yamllint yamlfix yamlfmt setuptools matplotlib \
-                 scipy quadpy six cython tk && \
+                 scipy quadpy six cython tk Mosek && \
     npm install -g npm@latest-6 && \
     npm install -g --save-dev --save-exact prettier && \
     npm install -g fixjson && \
@@ -53,7 +53,10 @@ RUN apt-get update \
    && git clone https://github.com/ethz-adrl/ifopt.git /ifopt && cd /ifopt && mkdir build && cd build && cmake .. -DCMAKE_INSTALL_PREFIX=/usr && make && make install \
    && rm -rf /ifopt \
    && mkdir /workspace \
-   && chmod 777 /workspace
+   && chmod 777 /workspace \
+   && cd / && wget https://download.mosek.com/stable/9.3.6/mosektoolslinux64x86.tar.bz2 \
+   && tar xf /mosektoolslinux64x86.tar.bz2 -C /home/${myuser}/ \
+   && cd /home/${myuser}/mosek/9.3/tools/platform/linux64x86/src/fusion_cxx && make install
 
 COPY configfiles/vimrc /etc/vim/
 COPY configfiles/ycm_extra_conf.py /etc/vim/

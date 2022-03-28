@@ -51,19 +51,16 @@ class FlagGenerator:
             '/usr/local/include',
         ]
         if not hasattr(ycm_core, 'CompilationDatabase'):
-            raise RuntimeError(
-                'YouCompleteMe must be compiled with' +
-                ' the --clang-completer flag'
-            )
+            raise RuntimeError('YouCompleteMe must be compiled with' +
+                               ' the --clang-completer flag')
 
     def get_flags(self) -> List[str]:
         """ Return the compilation flags
         """
 
         other_include_paths = []
-        if os.path.isdir(self.current_ws_path_+'/src'):
-            other_include_paths = glob.glob(
-                self.current_ws_path_+'/**/include', recursive=True)
+        other_include_paths = glob.glob(
+            '/workspace/**/include', recursive=True)
         result = []
         for include in other_include_paths:
             result.append('-I')

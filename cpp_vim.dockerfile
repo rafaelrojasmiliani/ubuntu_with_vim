@@ -31,7 +31,7 @@ RUN apt-get update \
     npm install -g fixjson && \
     chmod 777 /etc/vim &&  mkdir -p /etc/vim/bundle && chmod 777 /etc/vim/bundle && \
     git clone https://github.com/VundleVim/Vundle.vim.git /etc/vim/bundle/Vundle.vim && \
-    git clone https://github.com/ycm-core/YouCompleteMe.git /etc/vim/bundle/YouCompleteMe && \
+    git clone https://github.com/tabnine/YouCompleteMe.git /etc/vim/bundle/YouCompleteMe && \
     git clone https://github.com/vim-latex/vim-latex.git /etc/vim/bundle/vim-latex && \
     git clone https://github.com/preservim/tagbar.git /etc/vim/bundle/tagbar && \
     git clone https://github.com/jlanzarotta/bufexplorer.git /etc/vim/bundle/bufexplorer && \

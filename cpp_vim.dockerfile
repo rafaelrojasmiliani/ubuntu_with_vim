@@ -21,6 +21,7 @@ RUN apt-get update \
                     apt-transport-https ca-certificates gnupg software-properties-common \
                     wget g++-8 golang clang jsonlint jq libxml2-utils patchelf \
                     vim vim-gtk robotpkg-py38-pinocchio sudo unzip libgtest-dev \
+                    libgmp3-dev \
     && rm -rf /var/lib/apt/lists/* && \
     pip3 install cmakelang autopep8 pylint flake8 \
                  yamllint yamlfix yamlfmt setuptools matplotlib \

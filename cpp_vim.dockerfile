@@ -51,18 +51,18 @@ RUN apt-get update \
         export YCM_CORE=$(find /etc/vim/bundle/YouCompleteMe/third_party/ycmd/ -name 'ycm_core*.so') && \
         patchelf --set-rpath "/etc/vim/bundle/YouCompleteMe/third_party/ycmd/third_party/clang/lib" "$YCM_CORE" && \
         cd /etc/vim/bundle/vimspector && python3 install_gadget.py --enable-c --enable-cpp --enable-python \
-   && git clone https://github.com/ethz-adrl/ifopt.git /ifopt && cd /ifopt && mkdir build && cd build && cmake .. -DCMAKE_INSTALL_PREFIX=/usr && make && make install \
+   && git clone https://github.com/ethz-adrl/ifopt.git /ifopt && cd /ifopt && mkdir build && cd build && cmake .. -DCMAKE_INSTALL_PREFIX=/usr && make -j2 && make install \
    && rm -rf /ifopt \
    && mkdir /workspace \
    && chmod 777 /workspace \
    && cd / && wget https://download.mosek.com/stable/9.3.6/mosektoolslinux64x86.tar.bz2 \
    && tar xf /mosektoolslinux64x86.tar.bz2 -C /home/${myuser}/ \
-   && cd /home/${myuser}/mosek/9.3/tools/platform/linux64x86/src/fusion_cxx && make install \
+   && cd /home/${myuser}/mosek/9.3/tools/platform/linux64x86/src/fusion_cxx && make -j2 && make install \
    && cd / \
    && wget https://github.com/DrTimothyAldenDavis/SuiteSparse/archive/refs/tags/v5.12.0.zip \
    && unzip v5.12.0.zip \
    && cd SuiteSparse-5.12.0 \
-   && make library \
+   && make library -j2 \
    && make INSTALL=/usr \
    && cd / \
    && rm -rf SuiteSparse*

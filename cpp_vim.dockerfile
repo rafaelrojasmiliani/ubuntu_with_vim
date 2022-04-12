@@ -21,7 +21,7 @@ RUN apt-get update \
                     apt-transport-https ca-certificates gnupg software-properties-common \
                     wget g++-8 golang clang jsonlint jq libxml2-utils patchelf \
                     vim vim-gtk robotpkg-py38-pinocchio sudo unzip libgtest-dev \
-                    libgmp3-dev libmpc-dev  \
+                    libgmp3-dev libmpc-dev  libtrilinos-trilinosss-dev libsuitesparse-dev \
     && rm -rf /var/lib/apt/lists/* && \
     pip3 install cmakelang autopep8 pylint flake8 \
                  yamllint yamlfix yamlfmt setuptools matplotlib \
@@ -57,15 +57,7 @@ RUN apt-get update \
    && chmod 777 /workspace \
    && cd / && wget https://download.mosek.com/stable/9.3.6/mosektoolslinux64x86.tar.bz2 \
    && tar xf /mosektoolslinux64x86.tar.bz2 -C /home/${myuser}/ \
-   && cd /home/${myuser}/mosek/9.3/tools/platform/linux64x86/src/fusion_cxx && make -j2 && make install \
-   && cd / \
-   && wget https://github.com/DrTimothyAldenDavis/SuiteSparse/archive/refs/tags/v5.12.0.zip \
-   && unzip v5.12.0.zip \
-   && cd SuiteSparse-5.12.0 \
-   && make library -j2 \
-   && make INSTALL=/usr \
-   && cd / \
-   && rm -rf SuiteSparse*
+   && cd /home/${myuser}/mosek/9.3/tools/platform/linux64x86/src/fusion_cxx && make -j2 && make install
 
 COPY configfiles/vimrc /etc/vim/
 COPY configfiles/ycm_extra_conf.py /etc/vim/

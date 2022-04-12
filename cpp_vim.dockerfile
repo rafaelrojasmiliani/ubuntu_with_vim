@@ -13,7 +13,7 @@ RUN apt-get update \
                     -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \
                     python3-pip git iputils-ping net-tools netcat screen   less \
                     python3-sympy coinor-libipopt-dev  valgrind \
-                     pkg-config exuberant-ctags  \
+                     pkg-config exuberant-ctags vim-nox \
                     liblapack-dev liblapack3 libopenblas-base libopenblas-dev \
                     libgfortran-7-dev cmake libgsl-dev gdb python3-tk libeigen3-dev \
                     libboost-math-dev build-essential cmake python3-dev mono-complete \
@@ -47,9 +47,10 @@ RUN apt-get update \
     git clone https://github.com/lfv89/vim-interestingwords.git /etc/vim/bundle/vim-interestingwords && \
     git clone https://github.com/kkoomen/vim-doge.git /etc/vim/bundle/vim-doge && \
     git clone https://github.com/rafaelrojasmiliani/vim_snippets_ros.git /etc/vim/bundle/vim-snippets-ros && \
-    cd /etc/vim/bundle/YouCompleteMe && git submodule update --init --recursive && python3 install.py --clang-completer --force-sudo && \
+    cd /etc/vim/bundle/YouCompleteMe && git submodule update --init --recursive && python3 install.py --all --force-sudo && \
         export YCM_CORE=$(find /etc/vim/bundle/YouCompleteMe/third_party/ycmd/ -name 'ycm_core*.so') && \
         patchelf --set-rpath "/etc/vim/bundle/YouCompleteMe/third_party/ycmd/third_party/clang/lib" "$YCM_CORE" && \
+        chmod 777 $(find -name 'TabNine' -printf '%h\n')/* && \
         cd /etc/vim/bundle/vimspector && python3 install_gadget.py --enable-c --enable-cpp --enable-python \
    && git clone https://github.com/ethz-adrl/ifopt.git /ifopt && cd /ifopt && mkdir build && cd build && cmake .. -DCMAKE_INSTALL_PREFIX=/usr && make -j2 && make install \
    && rm -rf /ifopt \

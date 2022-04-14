@@ -40,7 +40,7 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-ins
                     vim vim-gtk \
     && rm -rf /var/lib/apt/lists/* && \
     cd / && \
-    wget https://github.com/rafaelrojasmiliani/gsplines_cpp/releases/download/master/gsplines-0.0.1-amd64.deb && \
+    wget https://github.com/rafaelrojasmiliani/gsplines_cpp/releases/download/package/gsplines-0.0.1-amd64.deb && \
     dpkg -i gsplines-0.0.1-amd64.deb && \
     rm gsplines-0.0.1-amd64.deb && \
     pip3 install cmakelang autopep8 pylint flake8 yamllint yamlfix yamlfmt && \

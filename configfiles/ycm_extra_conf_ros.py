@@ -72,7 +72,7 @@ class FlagGenerator:
         for ws_path in list_of_workspaces:
             includes.append(ws_path + '/include/')
 
-        exclude_set = set(['build', 'devel'])
+        exclude_set = set(['build'])
         for root, dirs, _ in os.walk(self.current_ws_path_):
             dirs[:] = [d for d in dirs if d not in exclude_set]
             for name in dirs:

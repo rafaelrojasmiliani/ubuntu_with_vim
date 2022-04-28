@@ -56,7 +56,7 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-ins
    &&  git clone https://github.com/rafaelrojasmiliani/vim_snippets_ros.git /etc/vim/bundle/vim-snippets-ros \
    &&  cd /etc/vim/bundle/YouCompleteMe \
    &&  git submodule update --init --recursive \
-   &&  python3 install.py --all --force-sudo  \
+   &&  python3 install.py --clang-completer --force-sudo  \
    &&  export YCM_CORE=$(find /etc/vim/bundle/YouCompleteMe/third_party/ycmd/ -name 'ycm_core*.so') \
    &&  patchelf --set-rpath "/etc/vim/bundle/YouCompleteMe/third_party/ycmd/third_party/clang/lib" "$YCM_CORE"  \
    &&  chmod 777 -R *  \

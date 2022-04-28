@@ -102,15 +102,3 @@ jobs:
           contains(steps.changed-files.outputs.modified_files, 'configfiles/ycm_extra_conf.py') ||
           contains(steps.changed-files.outputs.modified_files, 'configfiles/ctags')
 
-      - name: build and push c++ vim and gsplines
-        uses: docker/build-push-action@v2
-        with:
-          tags: rafa606/cpp-vim-gsplines
-          file: cpp_vim_gsplines.dockerfile
-          push: true
-        if: |
-          contains(steps.changed-files.outputs.modified_files, 'cpp_vim_gsplines.dockerfile') ||
-          contains(steps.changed-files.outputs.modified_files, 'cpp_vim.dockerfile') ||
-          contains(steps.changed-files.outputs.modified_files, 'configfiles/vimrc') ||
-          contains(steps.changed-files.outputs.modified_files, 'configfiles/ycm_extra_conf.py') ||
-          contains(steps.changed-files.outputs.modified_files, 'configfiles/ctags')

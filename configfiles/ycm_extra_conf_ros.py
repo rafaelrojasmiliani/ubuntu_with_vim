@@ -29,6 +29,10 @@ class FlagGenerator:
             self.current_ws_path_ = os.path.dirname(_current_file)
             self.current_file_ = _current_file
 
+        if self.current_ws_path_.find('src') > 0:
+            self.current_ws_path_ = self.current_ws_path_[
+                :self.current_ws_path_.find('src')]
+
         self.logger_ = logging.getLogger('vim-ros-ycm')
         self.source_extensions_ = ['.cpp', '.cxx', '.cc', '.c', '.m', '.mm']
         self.last_cwd_ = None

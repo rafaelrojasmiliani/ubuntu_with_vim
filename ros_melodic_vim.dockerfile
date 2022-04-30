@@ -6,7 +6,7 @@ FROM ros:melodic-ros-base
 RUN apt-get update \
     && DEBIAN_FRONTEND=noninteractive apt-get install \
         -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \
-        software-properties-common  \
+        software-properties-common ca-certificates gnupg \
 	&& add-apt-repository ppa:jonathonf/vim -y \
     && bash -c 'wget -O - https://apt.kitware.com/keys/kitware-archive-latest.asc 2>/dev/null | apt-key add -' \
     && apt-add-repository 'deb https://apt.kitware.com/ubuntu/ bionic main' \
@@ -19,7 +19,7 @@ RUN apt-get update \
                     libgfortran-7-dev cmake libgsl-dev gdb python3-tk libeigen3-dev \
                     libboost-math-dev build-essential cmake python3-dev mono-complete \
                     golang nodejs default-jdk npm clang-tidy-9 clang-format-10 \
-                    apt-transport-https ca-certificates gnupg software-properties-common \
+                    apt-transport-https   \
                     wget g++-8 golang clang clang-format clang-tidy jsonlint jq libxml2-utils patchelf \
                     ros-melodic-control-msgs \
                     ros-melodic-velocity-controllers \

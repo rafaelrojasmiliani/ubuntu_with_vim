@@ -27,7 +27,7 @@ RUN apk update \
     && rm -rf Ipopt \
     && git clone https://github.com/ethz-adrl/ifopt.git /ifopt && cd /ifopt && mkdir build && cd build && cmake .. -DCMAKE_INSTALL_PREFIX=/usr && make -j2 && make install && cd .. \
     && rm -rf /ifopt \
-    && pip3 install cmakelang autopep8 pylint flake8 \
+    && pip install cmakelang autopep8 pylint flake8 \
                  yamllint yamlfix yamlfmt setuptools matplotlib \
                  scipy quadpy six cython tk && \
     npm install -g npm@latest-6 && \

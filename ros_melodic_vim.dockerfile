@@ -6,7 +6,7 @@ FROM ros:melodic-ros-base
 RUN apt-get update \
     && DEBIAN_FRONTEND=noninteractive apt-get install \
         -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \
-        software-properties-common ca-certificates gnupg wget
+        software-properties-common ca-certificates gnupg wget curl
 RUN add-apt-repository ppa:jonathonf/vim -y 
 RUN bash -c 'wget -O - https://apt.kitware.com/keys/kitware-archive-latest.asc 2>/dev/null | apt-key add -' 
 RUN apt-add-repository 'deb https://apt.kitware.com/ubuntu/ bionic main' 
@@ -51,7 +51,7 @@ RUN update-alternatives --install /usr/bin/gcc gcc \
 			/usr/bin/gcc-7 700 --slave /usr/bin/g++ g++ /usr/bin/g++-7 \
     && update-alternatives --install /usr/bin/gcc gcc \
 			/usr/bin/gcc-8 800 --slave /usr/bin/g++ g++ /usr/bin/g++-8 \
-    && curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash - \
+    && curl -sL https://deb.nodesource.com/setup_12.x | bash - \
     && apt-get install nodejs \
     npm install -g npm@latest-6 && \
     npm install -g --save-dev --save-exact prettier && \

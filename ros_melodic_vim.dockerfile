@@ -89,4 +89,3 @@ RUN apt-get update \
 COPY configfiles/vimrc /etc/vim/
 COPY configfiles/ycm_extra_conf_ros.py /etc/vim/ycm_extra_conf.py
 COPY configfiles/ctags /etc/vim/
-

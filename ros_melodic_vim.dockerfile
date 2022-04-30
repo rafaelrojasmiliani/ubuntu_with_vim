@@ -3,7 +3,12 @@
 FROM ros:melodic-ros-base
 
 # Install packages
-RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \
+RUN apt-get update \
+	&& add-apt-repository ppa:jonathonf/vim -y \
+    && bash -c 'wget -O - https://apt.kitware.com/keys/kitware-archive-latest.asc 2>/dev/null | apt-key add -' \
+    && apt-add-repository 'deb https://apt.kitware.com/ubuntu/ bionic main' \
+	&& apt-get update \
+    && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \
                     python3-pip git iputils-ping net-tools netcat screen   less \
                     python3-sympy coinor-libipopt-dev  valgrind \
                      pkg-config exuberant-ctags python3-catkin-tools \
@@ -12,38 +17,45 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-ins
                     libboost-math-dev build-essential cmake python3-dev mono-complete \
                     golang nodejs default-jdk npm clang-tidy-9 clang-format-10 \
                     apt-transport-https ca-certificates gnupg software-properties-common \
-                    wget g++-8 golang clang jsonlint jq libxml2-utils patchelf \
-                    ros-noetic-control-msgs \
-                    ros-noetic-velocity-controllers \
-                    ros-noetic-joint-trajectory-action \
-                    ros-noetic-ifopt \
-                    ros-noetic-plotjuggler \
-                    ros-noetic-joint-trajectory-controller \
-                    ros-noetic-joint-trajectory-action \
-                    ros-noetic-xacro \
-                    ros-noetic-gazebo-ros \
-                    ros-noetic-gazebo-ros-control \
-                    ros-noetic-joint-state-controller \
-                    ros-noetic-position-controllers \
-                    ros-noetic-robot-state-publisher \
-                    ros-noetic-joint-state-publisher \
-                    ros-noetic-rqt \
-                    ros-noetic-rqt-graph \
-                    ros-noetic-roslint \
-                    ros-noetic-plotjuggler-ros \
-                    ros-noetic-rqt-gui \
-                    ros-noetic-rqt-gui-py \
-                    ros-noetic-rqt-py-common \
-                    ros-noetic-moveit-msgs \
-                    ros-noetic-rqt-joint-trajectory-controller \
-                    ros-noetic-jsk-rviz-plugins  \
+                    wget g++-8 golang clang clang-format clang-tidy jsonlint jq libxml2-utils patchelf \
+                    ros-melodic-control-msgs \
+                    ros-melodic-velocity-controllers \
+                    ros-melodic-joint-trajectory-action \
+                    ros-melodic-ifopt \
+                    ros-melodic-plotjuggler \
+                    ros-melodic-joint-trajectory-controller \
+                    ros-melodic-joint-trajectory-action \
+                    ros-melodic-xacro \
+                    ros-melodic-gazebo-ros \
+                    ros-melodic-gazebo-ros-control \
+                    ros-melodic-joint-state-controller \
+                    ros-melodic-position-controllers \
+                    ros-melodic-robot-state-publisher \
+                    ros-melodic-joint-state-publisher \
+                    ros-melodic-rqt \
+                    ros-melodic-rqt-graph \
+                    ros-melodic-roslint \
+                    ros-melodic-plotjuggler-ros \
+                    ros-melodic-rqt-gui \
+                    ros-melodic-rqt-gui-py \
+                    ros-melodic-rqt-py-common \
+                    ros-melodic-moveit-msgs \
+                    ros-melodic-rqt-joint-trajectory-controller \
+                    ros-melodic-jsk-rviz-plugins  \
                     vim vim-gtk \
+    && pip3 install cmakelang autopep8 pylint flake8 prospector yamllint yamlfix yamlfmt
+RUN update-alternatives --install /usr/bin/gcc gcc \
+			/usr/bin/gcc-7 700 --slave /usr/bin/g++ g++ /usr/bin/g++-7 \
+    && update-alternatives --install /usr/bin/gcc gcc \
+			/usr/bin/gcc-8 800 --slave /usr/bin/g++ g++ /usr/bin/g++-8 \
+    && curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash - \
+    && apt-get install nodejs \
+    npm install -g npm@latest-6 && \
+    npm install -g --save-dev --save-exact prettier && \
+    npm install -g fixjson \
     && rm -rf /var/lib/apt/lists/* && \
     cd / && \
     pip3 install cmakelang autopep8 pylint flake8 yamllint yamlfix yamlfmt && \
-    npm install -g npm@latest-6 && \
-    npm install -g --save-dev --save-exact prettier && \
-    npm install -g fixjson && \
     chmod 777 /etc/vim &&  mkdir -p /etc/vim/bundle && chmod 777 /etc/vim/bundle && \
     git clone https://github.com/VundleVim/Vundle.vim.git /etc/vim/bundle/Vundle.vim && \
     git clone https://github.com/tabnine/YouCompleteMe.git /etc/vim/bundle/YouCompleteMe && \
@@ -67,7 +79,7 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-ins
         patchelf --set-rpath "/etc/vim/bundle/YouCompleteMe/third_party/ycmd/third_party/clang/lib" "$YCM_CORE" && \
         chmod 777 -R *  && \
         cd /etc/vim/bundle/vimspector && python3 install_gadget.py --enable-c --enable-cpp --enable-python \
-   && echo 'source /opt/ros/noetic/setup.bash' > /etc/bash.bashrc \
+   && echo 'source /opt/ros/melodic/setup.bash' > /etc/bash.bashrc \
    && mkdir /workspace \
    && chmod 777 /workspace
 

@@ -2,7 +2,7 @@ FROM alpine
 RUN apk update \
     && apk add --no-cache vim gvim go clang-extra-tools g++ python3 py3-pip valgrind git bash make cmake gdb eigen-dev \
                             clang ctags gfortran nodejs openjdk11 npm libxml2-utils gnupg patchelf jq curl python3-dev \
-                            linux-headers lapack-dev screen openblas-dev \
+                            linux-headers lapack-dev screen openblas-dev gtest-dev \
     && rm -rf /var/cache/apk/* \
     && git clone https://github.com/KarypisLab/GKlib.git \
     && cd GKlib \

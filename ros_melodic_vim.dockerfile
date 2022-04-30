@@ -50,13 +50,14 @@ RUN apt-get update \
 RUN update-alternatives --install /usr/bin/gcc gcc \
 			/usr/bin/gcc-7 700 --slave /usr/bin/g++ g++ /usr/bin/g++-7 \
     && update-alternatives --install /usr/bin/gcc gcc \
-			/usr/bin/gcc-8 800 --slave /usr/bin/g++ g++ /usr/bin/g++-8 \
-    && curl -sL https://deb.nodesource.com/setup_12.x | bash - \
-    && apt-get install nodejs \
-    npm install -g npm@latest-6 && \
-    npm install -g --save-dev --save-exact prettier && \
-    npm install -g fixjson \
-    && rm -rf /var/lib/apt/lists/* && \
+			/usr/bin/gcc-8 800 --slave /usr/bin/g++ g++ /usr/bin/g++-8
+
+RUN curl -sL https://deb.nodesource.com/setup_12.x | bash - 
+RUN apt-get install nodejs 
+RUN npm install -g npm@latest-6
+RUN npm install -g --save-dev --save-exact prettier
+RUN npm install -g fixjson
+RUN rm -rf /var/lib/apt/lists/* && \
     cd / && \
     pip3 install cmakelang autopep8 pylint flake8 yamllint yamlfix yamlfmt && \
     chmod 777 /etc/vim &&  mkdir -p /etc/vim/bundle && chmod 777 /etc/vim/bundle && \

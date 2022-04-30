@@ -1,6 +1,6 @@
 # This file tells docker what image must be created
 # in order to be ahble to test this library
-FROM ros:noetic-ros-base
+FROM ros:melodic-ros-base
 
 # Install packages
 RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \
@@ -74,3 +74,4 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-ins
 COPY configfiles/vimrc /etc/vim/
 COPY configfiles/ycm_extra_conf_ros.py /etc/vim/ycm_extra_conf.py
 COPY configfiles/ctags /etc/vim/
+

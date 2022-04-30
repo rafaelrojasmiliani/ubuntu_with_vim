@@ -6,10 +6,10 @@ FROM ros:melodic-ros-base
 RUN apt-get update \
     && DEBIAN_FRONTEND=noninteractive apt-get install \
         -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \
-        software-properties-common ca-certificates gnupg \
-	&& add-apt-repository ppa:jonathonf/vim -y \
-    && bash -c 'wget -O - https://apt.kitware.com/keys/kitware-archive-latest.asc 2>/dev/null | apt-key add -' \
-    && apt-add-repository 'deb https://apt.kitware.com/ubuntu/ bionic main' 
+        software-properties-common ca-certificates gnupg 
+RUN add-apt-repository ppa:jonathonf/vim -y 
+RUN bash -c 'wget -O - https://apt.kitware.com/keys/kitware-archive-latest.asc 2>/dev/null | apt-key add -' 
+RUN apt-add-repository 'deb https://apt.kitware.com/ubuntu/ bionic main' 
 RUN apt-get update \
     && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \
                     python3-pip git iputils-ping net-tools netcat screen   less \

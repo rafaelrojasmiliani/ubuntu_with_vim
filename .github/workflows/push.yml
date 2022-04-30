@@ -114,3 +114,14 @@ jobs:
           contains(steps.changed-files.outputs.modified_files, 'configfiles/ycm_extra_conf.py') ||
           contains(steps.changed-files.outputs.modified_files, 'configfiles/ctags')
 
+      - name: build and push alpine c++ vim
+        uses: docker/build-push-action@v2
+        with:
+          tags: rafa606/alpine-cpp-vim
+          file: alpine_cpp_vim.dockerfile
+          push: true
+        if: |
+          contains(steps.changed-files.outputs.modified_files, 'alpine_cpp_vim.dockerfile') ||
+          contains(steps.changed-files.outputs.modified_files, 'configfiles/vimrc') ||
+          contains(steps.changed-files.outputs.modified_files, 'configfiles/ycm_extra_conf.py') ||
+          contains(steps.changed-files.outputs.modified_files, 'configfiles/ctags')

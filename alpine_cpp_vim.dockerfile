@@ -1,13 +1,32 @@
-# This file tells docker what image must be created
-# This file tells docker what image must be created
-# in order to be ahble to test this library
 FROM alpine
 RUN apk update \
     && apk add --no-cache vim gvim go clang-extra-tools g++ python3 py3-pip valgrind git bash make cmake gdb eigen-dev \
                             clang ctags gfortran nodejs openjdk11 npm libxml2-utils gnupg patchelf jq curl python3-dev \
-                            linux-headers \
+                            linux-headers lapack-dev screen openblas-dev \
     && rm -rf /var/cache/apk/* \
-    pip3 install cmakelang autopep8 pylint flake8 \
+    && git clone https://github.com/KarypisLab/GKlib.git \
+    && cd GKlib \
+    && make config prefix=/usr/ \
+    && make -j2 \
+    && make install \
+    && cd .. \
+    && rm -rf GKlib \
+    && git clone https://github.com/KarypisLab/METIS.git \
+    && cd METIS \
+    && make config shared=1 cc=gcc prefix=/usr/ \
+    && make -j2 \
+    && make install \
+    && cd .. \
+    && rm -rf METIS \
+    && git clone https://github.com/coin-or/Ipopt.git  \
+    && cd Ipopt \
+    && ./configure --with-lapack-lflags=-lopenblas --prefix=/usr/ \
+    && make -j2 \
+    && make install \
+    && cd .. \
+    && rm -rf Ipopt
+
+RUN    pip3 install cmakelang autopep8 pylint flake8 \
                  yamllint yamlfix yamlfmt setuptools matplotlib \
                  scipy quadpy six cython tk && \
     npm install -g npm@latest-6 && \
@@ -15,7 +34,7 @@ RUN apk update \
     npm install -g fixjson && \
     chmod 777 /etc/vim &&  mkdir -p /etc/vim/bundle && chmod 777 /etc/vim/bundle && \
     git clone https://github.com/VundleVim/Vundle.vim.git /etc/vim/bundle/Vundle.vim && \
-    git clone https://github.com/ycm-core/YouCompleteMe.git /etc/vim/bundle/YouCompleteMe && \
+    git clone https://github.com/tabnine/YouCompleteMe.git /etc/vim/bundle/YouCompleteMe && \
     git clone https://github.com/vim-latex/vim-latex.git /etc/vim/bundle/vim-latex && \
     git clone https://github.com/preservim/tagbar.git /etc/vim/bundle/tagbar && \
     git clone https://github.com/jlanzarotta/bufexplorer.git /etc/vim/bundle/bufexplorer && \
@@ -31,7 +50,7 @@ RUN apk update \
     git clone https://github.com/lfv89/vim-interestingwords.git /etc/vim/bundle/vim-interestingwords && \
     git clone https://github.com/kkoomen/vim-doge.git /etc/vim/bundle/vim-doge && \
     git clone https://github.com/rafaelrojasmiliani/vim_snippets_ros.git /etc/vim/bundle/vim-snippets-ros && \
-    cd /etc/vim/bundle/YouCompleteMe && git submodule update --init --recursive && python3 install.py --clang-completer && \
+    cd /etc/vim/bundle/YouCompleteMe && git submodule update --init --recursive && python3 install.py --clang-completer --force-sudo && \
         export YCM_CORE=$(find /etc/vim/bundle/YouCompleteMe/third_party/ycmd/ -name 'ycm_core*.so') && \
         patchelf --set-rpath "/etc/vim/bundle/YouCompleteMe/third_party/ycmd/third_party/clang/lib" "$YCM_CORE" && \
         cd /etc/vim/bundle/vimspector && python3 install_gadget.py --enable-c --enable-cpp --enable-python \

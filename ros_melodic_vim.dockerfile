@@ -19,7 +19,7 @@ RUN apt-get update \
                     libgfortran-7-dev cmake libgsl-dev gdb python3-tk libeigen3-dev \
                     libboost-math-dev build-essential cmake python3-dev mono-complete \
                     golang nodejs default-jdk clang-tidy-9 clang-format-10 \
-                    apt-transport-https   \
+                    apt-transport-https libgtest-dev  \
                     g++-8 golang clang clang-format clang-tidy jsonlint jq libxml2-utils patchelf \
                     ros-melodic-control-msgs \
                     ros-melodic-velocity-controllers \

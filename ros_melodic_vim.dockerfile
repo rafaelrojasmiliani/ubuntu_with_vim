@@ -4,6 +4,9 @@ FROM ros:melodic-ros-base
 
 # Install packages
 RUN apt-get update \
+    && DEBIAN_FRONTEND=noninteractive apt-get install \
+        -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \
+        software-properties-common  \
 	&& add-apt-repository ppa:jonathonf/vim -y \
     && bash -c 'wget -O - https://apt.kitware.com/keys/kitware-archive-latest.asc 2>/dev/null | apt-key add -' \
     && apt-add-repository 'deb https://apt.kitware.com/ubuntu/ bionic main' \

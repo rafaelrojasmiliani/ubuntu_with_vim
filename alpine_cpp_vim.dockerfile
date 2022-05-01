@@ -28,9 +28,6 @@ RUN apk update \
     && git clone https://github.com/ethz-adrl/ifopt.git /ifopt && cd /ifopt && mkdir build && cd build && cmake .. -DCMAKE_INSTALL_PREFIX=/usr && make -j2 && make install && cd .. \
     && cd .. \
     && rm -rf /ifopt \
-    && pip install cmakelang autopep8 pylint flake8 \
-                 yamllint yamlfix yamlfmt setuptools matplotlib \
-                 scipy quadpy six cython tk && \
     npm install -g npm@latest-6 && \
     npm install -g --save-dev --save-exact prettier && \
     npm install -g fixjson && \
@@ -63,3 +60,6 @@ COPY configfiles/vimrc /etc/vim/
 COPY configfiles/ycm_extra_conf.py /etc/vim/
 COPY configfiles/ctags /etc/vim/
 
+#    && pip install cmakelang autopep8 pylint flake8 \
+#                 yamllint yamlfix yamlfmt setuptools matplotlib \
+#                 scipy quadpy six cython tk && \

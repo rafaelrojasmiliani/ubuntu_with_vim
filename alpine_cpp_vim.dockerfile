@@ -62,3 +62,4 @@ RUN apk update \
 COPY configfiles/vimrc /etc/vim/
 COPY configfiles/ycm_extra_conf.py /etc/vim/
 COPY configfiles/ctags /etc/vim/
+

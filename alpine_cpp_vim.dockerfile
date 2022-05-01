@@ -27,7 +27,7 @@ RUN apk update \
     && rm -rf Ipopt \
     && git clone https://github.com/ethz-adrl/ifopt.git /ifopt && cd /ifopt && mkdir build && cd build && cmake .. -DCMAKE_INSTALL_PREFIX=/usr && make -j2 && make install && cd .. \
     && cd .. \
-    && rm -rf /ifopt \
+    && rm -rf /ifopt && \
     npm install -g npm@latest-6 && \
     npm install -g --save-dev --save-exact prettier && \
     npm install -g fixjson && \

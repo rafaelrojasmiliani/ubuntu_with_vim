@@ -46,6 +46,11 @@ RUN apt-get update \
                     ros-melodic-rqt-joint-trajectory-controller \
                     ros-melodic-jsk-rviz-plugins  \
                     vim vim-gtk \
+    && mkdir /usr/src/gtest/build && cd /usr/src/gtest/build \
+    && cmake .. -DCMAKE_INSTALL_PREFIX=/usr && make -j2 \
+    && make install \
+    && cd / \
+    && rm -rf /usr/src/gtest/build \
     && pip3 install cmakelang autopep8 pylint flake8 prospector yamllint yamlfix yamlfmt \
     && update-alternatives --install /usr/bin/gcc gcc \
 			/usr/bin/gcc-7 700 --slave /usr/bin/g++ g++ /usr/bin/g++-7 \

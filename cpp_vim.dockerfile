@@ -57,8 +57,10 @@ RUN apt-get update \
    && mkdir /workspace \
    && chmod 777 /workspace \
    && cd / && wget https://download.mosek.com/stable/9.3.6/mosektoolslinux64x86.tar.bz2 \
-   && tar xf /mosektoolslinux64x86.tar.bz2 -C /home/${myuser}/ \
-   && cd /home/${myuser}/mosek/9.3/tools/platform/linux64x86/src/fusion_cxx && make -j2 && make install
+   && tar xf /mosektoolslinux64x86.tar.bz2 -C / \
+   && cd /mosek/9.3/tools/platform/linux64x86/src/fusion_cxx && make -j2 && make install \
+   && rm -rf $(find /etc/vim/bundle -name .git) \
+   && rm -rf /mosek
 
 COPY configfiles/vimrc /etc/vim/
 COPY configfiles/ycm_extra_conf.py /etc/vim/

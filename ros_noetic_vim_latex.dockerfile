@@ -1,9 +1,5 @@
-# This file tells docker what image must be created
-# in order to be ahble to test this library
-ARG ROS_DISTRO=noetic
-FROM ros:${ROS_DISTRO}-ros-base
+FROM ros:noetic-ros-base
 
-# Install packages
 RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \
                     python3-pip git iputils-ping net-tools netcat screen   less \
                     python3-sympy coinor-libipopt-dev  valgrind \
@@ -43,6 +39,7 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-ins
         export YCM_CORE=$(find /etc/vim/bundle/YouCompleteMe/third_party/ycmd/ -name 'ycm_core*.so') && \
         patchelf --set-rpath "/etc/vim/bundle/YouCompleteMe/third_party/ycmd/third_party/clang/lib" "$YCM_CORE" && \
         cd /etc/vim/bundle/vimspector && python3 install_gadget.py --enable-c --enable-cpp --enable-python \
+   && rm -rf $(find /etc/vim/bundle -name .git) \
    && echo 'source /opt/ros/noetic/setup.bash' > /etc/bash.bashrc \
    && mkdir /workspace \
    && chmod 777 /workspace

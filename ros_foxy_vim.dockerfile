@@ -42,6 +42,7 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-ins
         patchelf --set-rpath "/etc/vim/bundle/YouCompleteMe/third_party/ycmd/third_party/clang/lib" "$YCM_CORE" && \
         chmod 777 -R *  && \
         cd /etc/vim/bundle/vimspector && python3 install_gadget.py --enable-c --enable-cpp --enable-python \
+   && rm -rf $(find /etc/vim/bundle -name .git) \
    && echo 'source /opt/ros/foxy/setup.bash' > /etc/bash.bashrc \
    && mkdir /workspace \
    && chmod 777 /workspace

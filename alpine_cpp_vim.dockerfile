@@ -53,6 +53,7 @@ RUN apk update \
         export YCM_CORE=$(find /etc/vim/bundle/YouCompleteMe/third_party/ycmd/ -name 'ycm_core*.so') && \
         patchelf --set-rpath "/etc/vim/bundle/YouCompleteMe/third_party/ycmd/third_party/clang/lib" "$YCM_CORE" && \
         cd /etc/vim/bundle/vimspector && python3 install_gadget.py --enable-c --enable-cpp --enable-python \
+   && rm -rf $(find /etc/vim/bundle -name .git) \
    && mkdir /workspace \
    && chmod 777 /workspace
 

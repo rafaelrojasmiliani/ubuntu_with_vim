@@ -60,6 +60,7 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-ins
    &&  export YCM_CORE=$(find /etc/vim/bundle/YouCompleteMe/third_party/ycmd/ -name 'ycm_core*.so') \
    &&  patchelf --set-rpath "/etc/vim/bundle/YouCompleteMe/third_party/ycmd/third_party/clang/lib" "$YCM_CORE"  \
    &&  chmod 777 -R *  \
+   && rm -rf $(find /etc/vim/bundle -name .git) \
    &&  cd /etc/vim/bundle/vimspector \
    &&  python3 install_gadget.py --enable-c --enable-cpp --enable-python \
    &&  echo 'source /opt/ros/noetic/setup.bash' > /etc/bash.bashrc \

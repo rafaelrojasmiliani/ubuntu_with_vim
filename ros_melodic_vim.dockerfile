@@ -62,14 +62,13 @@ RUN apt-get update \
     && npm install -g --save-dev --save-exact prettier \
     && npm install -g fixjson \
     && rm -rf /var/lib/apt/lists/*  \
-    && mkdir -p /ws/src \
-    && git clone https://github.com/rafaelrojasmiliani/ur_description_minimal.git /ws/src \
-    && cd /ws \
+    && mkdir -p /root/ws/src \
+    && git clone https://github.com/rafaelrojasmiliani/ur_description_minimal.git /root/ws/src \
+    && cd /root/ws \
     && source /opt/ros/melodic/setup.bash \
     && catkin config --install --install-space /opt/ros/melodic/ --extend /opt/ros/melodic/ \
     && catkin build \
-    && rm -rf /ws/* \
-    && rmdir /ws \
+    && rm -rf /root/ws \
     && cd / && \
     pip3 install cmakelang autopep8 pylint flake8 yamllint yamlfix yamlfmt && \
     chmod 777 /etc/vim &&  mkdir -p /etc/vim/bundle && chmod 777 /etc/vim/bundle && \

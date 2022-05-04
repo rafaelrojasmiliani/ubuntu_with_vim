@@ -39,9 +39,9 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-ins
                     ros-noetic-jsk-rviz-plugins  \
                     vim vim-gtk \
     && rm -rf /var/lib/apt/lists/* \
-    && mkdir -p /ws/src \
-    && git clone https://github.com/rafaelrojasmiliani/ur_description_minimal.git /ws/src \
-    && cd /ws \
+    && mkdir -p /root/ws/src \
+    && git clone https://github.com/rafaelrojasmiliani/ur_description_minimal.git /root/ws/src \
+    && cd /root/ws \
     && source /opt/ros/noetic/setup.bash \
     && catkin config --install --install-space /opt/ros/noetic/ --extend /opt/ros/noetic/ \
     && catkin build \

@@ -1,7 +1,7 @@
 # This file tells docker what image must be created
 # in order to be ahble to test this library
 FROM ros:noetic-ros-base
-
+SHELL ["bash", "-c"]
 # Install packages
 RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \
                     python3-pip git iputils-ping net-tools netcat screen   less \

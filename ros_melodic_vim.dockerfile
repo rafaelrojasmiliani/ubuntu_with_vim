@@ -1,16 +1,16 @@
 # This file tells docker what image must be created
 # in order to be ahble to test this library
 FROM ros:melodic-ros-base
-
+SHELL ["bash", "-c"]
 # Install packages
 RUN apt-get update \
     && DEBIAN_FRONTEND=noninteractive apt-get install \
         -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \
-        software-properties-common ca-certificates gnupg wget curl
-RUN add-apt-repository ppa:jonathonf/vim -y 
-RUN bash -c 'wget -O - https://apt.kitware.com/keys/kitware-archive-latest.asc 2>/dev/null | apt-key add -' 
-RUN apt-add-repository 'deb https://apt.kitware.com/ubuntu/ bionic main' 
-RUN apt-get update \
+        software-properties-common ca-certificates gnupg wget curl \
+    && add-apt-repository ppa:jonathonf/vim -y \
+    && bash -c 'wget -O - https://apt.kitware.com/keys/kitware-archive-latest.asc 2>/dev/null | apt-key add -' \
+    && apt-add-repository 'deb https://apt.kitware.com/ubuntu/ bionic main' \
+    && apt-get update \
     && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \
                     python3-pip git iputils-ping net-tools netcat screen   less \
                     python3-sympy coinor-libipopt-dev  valgrind \
@@ -62,6 +62,13 @@ RUN apt-get update \
     && npm install -g --save-dev --save-exact prettier \
     && npm install -g fixjson \
     && rm -rf /var/lib/apt/lists/* && \
+    && mkdir -p /ws/src \
+    && git clone https://github.com/rafaelrojasmiliani/ur_description_minimal.git /ws/src \
+    && cd /ws \
+    && source /opt/ros/melodic/setup.bash \
+    && catkin config --install --install-space /opt/ros/melodic/ --extend /opt/ros/melodic/ \
+    && catkin build \
+    && rm -rf /ws \
     cd / && \
     pip3 install cmakelang autopep8 pylint flake8 yamllint yamlfix yamlfmt && \
     chmod 777 /etc/vim &&  mkdir -p /etc/vim/bundle && chmod 777 /etc/vim/bundle && \

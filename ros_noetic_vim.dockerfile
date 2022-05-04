@@ -38,7 +38,7 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-ins
                     ros-noetic-rqt-joint-trajectory-controller \
                     ros-noetic-jsk-rviz-plugins  \
                     vim vim-gtk \
-    && rm -rf /var/lib/apt/lists/* && \
+    && rm -rf /var/lib/apt/lists/* \
     && mkdir -p /ws/src \
     && git clone https://github.com/rafaelrojasmiliani/ur_description_minimal.git /ws/src \
     && cd /ws \

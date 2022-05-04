@@ -61,7 +61,7 @@ RUN apt-get update \
     && npm install -g npm@latest-6 \
     && npm install -g --save-dev --save-exact prettier \
     && npm install -g fixjson \
-    && rm -rf /var/lib/apt/lists/* && \
+    && rm -rf /var/lib/apt/lists/*  \
     && mkdir -p /ws/src \
     && git clone https://github.com/rafaelrojasmiliani/ur_description_minimal.git /ws/src \
     && cd /ws \

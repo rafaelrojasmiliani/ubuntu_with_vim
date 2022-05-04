@@ -68,8 +68,9 @@ RUN apt-get update \
     && source /opt/ros/melodic/setup.bash \
     && catkin config --install --install-space /opt/ros/melodic/ --extend /opt/ros/melodic/ \
     && catkin build \
-    && rm -rf /ws \
-    cd / && \
+    && rm -rf /ws/* \
+    && rmdir /ws \
+    && cd / && \
     pip3 install cmakelang autopep8 pylint flake8 yamllint yamlfix yamlfmt && \
     chmod 777 /etc/vim &&  mkdir -p /etc/vim/bundle && chmod 777 /etc/vim/bundle && \
     git clone https://github.com/VundleVim/Vundle.vim.git /etc/vim/bundle/Vundle.vim && \

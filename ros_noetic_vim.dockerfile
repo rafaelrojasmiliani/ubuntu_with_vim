@@ -45,8 +45,9 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-ins
     && source /opt/ros/noetic/setup.bash \
     && catkin config --install --install-space /opt/ros/noetic/ --extend /opt/ros/noetic/ \
     && catkin build \
-    && rm -rf /ws \
-    cd / && \
+    && rm -rf /ws/* \
+    && rmdir /ws \
+    && cd / && \
     pip3 install cmakelang autopep8 pylint flake8 yamllint yamlfix yamlfmt && \
     npm install -g npm@latest-6 && \
     npm install -g --save-dev --save-exact prettier && \

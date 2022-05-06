@@ -1,13 +1,13 @@
 set mouse=r
 set guifont=Monospace
-set si 					"Smart indent see help
-set ai 					"Auto indent Copy indent from current line when starting a new line
-set shiftwidth=4 		"Number of spaces to use for each step of (auto)indent
+set si
+set ai
+set shiftwidth=4
 set softtabstop=4
-set tabstop=4   		"Number of spaces that a <Tab> in the file counts for
-set expandtab           "set tab to spaces
-set smarttab     		"When on, a <Tab> in front of a line inserts blanks according to
-set backspace=2			"Fix BS issue
+set tabstop=4
+set expandtab
+set smarttab
+set backspace=2
 set hidden
 au BufRead,BufNewFile *.tex syntax spell toplevel " enable spelling without sections
 colorscheme desert

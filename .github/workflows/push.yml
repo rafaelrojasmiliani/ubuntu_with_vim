@@ -62,7 +62,7 @@ jobs:
         id: changed-files
         uses: tj-actions/changed-files@v17.2
 
-      - name: build and push ros noetic with vim image
+      - name: build and push ${{ matrix.docker_image.image_name }}
         uses: docker/build-push-action@v2
         with:
           tags: ${{ matrix.docker_image.image_name }}
@@ -75,7 +75,7 @@ jobs:
           contains(steps.changed-files.outputs.modified_files, 'configfiles/ctags')
 
   deploy_ros_2:
-    name: Build ros 1 images
+    name: Build ros 2 images
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -100,7 +100,7 @@ jobs:
         id: changed-files
         uses: tj-actions/changed-files@v17.2
 
-      - name: build and push ros noetic with vim image
+      - name: build and push ${{ matrix.docker_image.image_name }}
         uses: docker/build-push-action@v2
         with:
           tags: ${{ matrix.docker_image.image_name }}

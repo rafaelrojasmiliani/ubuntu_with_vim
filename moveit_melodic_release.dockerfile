@@ -9,7 +9,7 @@ RUN apt-get update \
         && bash -c 'wget -O - https://apt.kitware.com/keys/kitware-archive-latest.asc 2>/dev/null | apt-key add -' \
         && apt-add-repository 'deb https://apt.kitware.com/ubuntu/ bionic main' \
         && apt-get update \
-        DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \
+        && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \
         python3-pip git iputils-ping net-tools netcat screen   less \
         python3-sympy coinor-libipopt-dev  valgrind \
         pkg-config exuberant-ctags \

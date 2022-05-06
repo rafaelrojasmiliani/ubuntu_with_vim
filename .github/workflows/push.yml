@@ -27,8 +27,8 @@ jobs:
           file: latex.dockerfile
           push: true
         if: |
-          contains(steps.changed-files.outputs.modified_files, 'latex.dockerfile' ||
-          contains(steps.changed-files.outputs.modified_files, 'configfiles/vimrc_latex'
+          contains(steps.changed-files.outputs.modified_files, 'latex.dockerfile') ||
+          contains(steps.changed-files.outputs.modified_files, 'configfiles/vimrc_latex')
 
   deploy_ros_1:
     name: Build ros 1 images
@@ -69,10 +69,10 @@ jobs:
           file: ${{ matrix.docker_image.file_name }}
           push: true
         if: |
-          contains(steps.changed-files.outputs.modified_files, ${{ matrix.docker_image.file_name }} ||
-          contains(steps.changed-files.outputs.modified_files, 'configfiles/vimrc' ||
-          contains(steps.changed-files.outputs.modified_files, 'configfiles/ycm_extra_conf_ros.py' ||
-          contains(steps.changed-files.outputs.modified_files, 'configfiles/ctags'
+          contains(steps.changed-files.outputs.modified_files, ${{ matrix.docker_image.file_name }}) ||
+          contains(steps.changed-files.outputs.modified_files, 'configfiles/vimrc') ||
+          contains(steps.changed-files.outputs.modified_files, 'configfiles/ycm_extra_conf_ros.py') ||
+          contains(steps.changed-files.outputs.modified_files, 'configfiles/ctags')
 
   deploy_ros_2:
     name: Build ros 1 images
@@ -107,7 +107,7 @@ jobs:
           file: ${{ matrix.docker_image.file_name }}
           push: true
         if: |
-          contains(steps.changed-files.outputs.modified_files, ${{ matrix.docker_image.file_name }} ||
-          contains(steps.changed-files.outputs.modified_files, 'configfiles/vimrc' ||
-          contains(steps.changed-files.outputs.modified_files, 'configfiles/ycm_extra_conf_ros2.py' ||
-          contains(steps.changed-files.outputs.modified_files, 'configfiles/ctags'
+          contains(steps.changed-files.outputs.modified_files, ${{ matrix.docker_image.file_name }}) ||
+          contains(steps.changed-files.outputs.modified_files, 'configfiles/vimrc') ||
+          contains(steps.changed-files.outputs.modified_files, 'configfiles/ycm_extra_conf_ros2.py') ||
+          contains(steps.changed-files.outputs.modified_files, 'configfiles/ctags')

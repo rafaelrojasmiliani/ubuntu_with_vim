@@ -15,7 +15,9 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-ins
                     wget g++-8 golang clang jsonlint jq libxml2-utils patchelf \
                     vim vim-gtk \
                     && rm -rf /var/lib/apt/lists/* && \
-    pip3 install cmakelang autopep8 pylint flake8 yamllint yamlfix yamlfmt && \
+   git clone https://github.com/ethz-adrl/ifopt.git /ifopt && cd /ifopt && mkdir build && cd build && cmake .. -DCMAKE_INSTALL_PREFIX=/usr && make -j2 && make install \
+   && rm -rf /ifopt \
+   && pip3 install cmakelang autopep8 pylint flake8 yamllint yamlfix yamlfmt && \
     npm install -g npm@latest-6 && \
     npm install -g --save-dev --save-exact prettier && \
     npm install -g fixjson && \

@@ -1,7 +1,7 @@
 name: deploy
 on: push
 jobs:
-  deploy:
+  deploy_latex:
     name: build image
     runs-on: ubuntu-latest
     steps:
@@ -30,98 +30,85 @@ jobs:
           contains(steps.changed-files.outputs.modified_files, 'latex.dockerfile') ||
           contains(steps.changed-files.outputs.modified_files, 'configfiles/vimrc_latex')
 
+  deploy_ros_1:
+    name: Build ros 1 images
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        docker_image: 
+			- file_name: "ros_noetic_vim.dockerfile"
+              image_name: "rafa606/ros-noetic-vim"
+			- file_name: "ros_melodic_vim.dockerfile"
+              image_name: "rafa606/ros-melodic-vim"
+			- file_name: "moveit_noetic_source.dockerfile"
+              image_name: "rafa606/ros-moveit-noetic-source-vim"
+			- file_name: "moveit_noetic_release.dockerfile"
+              image_name: "rafa606/ros-moveit-noetic-vim"
+			- file_name: "moveit_melodic_release.dockerfile"
+              image_name: "rafa606/ros-moveit-melodic-vim"
+    steps:
+      - name: checkout code
+        uses: actions/checkout@master
+        with:
+          fetch-depth: 2
+
+      - name: Login to DockerHub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Get changed files using defaults
+        id: changed-files
+        uses: tj-actions/changed-files@v17.2
+
       - name: build and push ros noetic with vim image
         uses: docker/build-push-action@v2
         with:
-          tags: rafa606/ros_noetic_vim
-          file: ros_noetic_vim.dockerfile
+          tags: ${{ matrix.docker_image.image_name }} 
+          file: ${{ matrix.docker_image.file_name }} 
           push: true
         if: |
-          contains(steps.changed-files.outputs.modified_files, 'ros_noetic_vim.dockerfile') ||
+          contains(steps.changed-files.outputs.modified_files, ${{ matrix.docker_image.file_name }}) ||
           contains(steps.changed-files.outputs.modified_files, 'configfiles/vimrc') ||
           contains(steps.changed-files.outputs.modified_files, 'configfiles/ycm_extra_conf_ros.py') ||
           contains(steps.changed-files.outputs.modified_files, 'configfiles/ctags')
 
-      - name: build and push ros melodic with vim image
-        uses: docker/build-push-action@v2
+  deploy_ros_2:
+    name: Build ros 1 images
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        docker_image: 
+			- file_name: "ros_foxy_vim.dockerfile"
+              image_name: "rafa606/ros-foxy-vim"
+			- file_name: "ros_galactic_vim.dockerfile"
+              image_name: "rafa606/ros-galactic-vim"
+    steps:
+      - name: checkout code
+        uses: actions/checkout@master
         with:
-          tags: rafa606/ros_melodic_vim
-          file: ros_melodic_vim.dockerfile
-          push: true
-        if: |
-          contains(steps.changed-files.outputs.modified_files, 'ros_melodic_vim.dockerfile') ||
-          contains(steps.changed-files.outputs.modified_files, 'configfiles/vimrc') ||
-          contains(steps.changed-files.outputs.modified_files, 'configfiles/ycm_extra_conf_ros.py') ||
-          contains(steps.changed-files.outputs.modified_files, 'configfiles/ctags')
+          fetch-depth: 2
 
-      - name: build and push ros moveit noetic with vim image
-        uses: docker/build-push-action@v2
+      - name: Login to DockerHub
+        uses: docker/login-action@v1
         with:
-          tags: rafa606/ros_moveit_noetic_source_vim
-          file: moveit_noetic_source.dockerfile
-          push: true
-        if: |
-          contains(steps.changed-files.outputs.modified_files, 'moveit_noetic_source.dockerfile') ||
-          contains(steps.changed-files.outputs.modified_files, 'configfiles/vimrc') ||
-          contains(steps.changed-files.outputs.modified_files, 'configfiles/ycm_extra_conf_ros.py') ||
-          contains(steps.changed-files.outputs.modified_files, 'configfiles/ctags')
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: build and push ros galactic with vim image
+      - name: Get changed files using defaults
+        id: changed-files
+        uses: tj-actions/changed-files@v17.2
+
+      - name: build and push ros noetic with vim image
         uses: docker/build-push-action@v2
         with:
-          tags: rafa606/ros-base-galactic-vim
-          file: ros_galactic_vim.dockerfile
+          tags: ${{ matrix.docker_image.image_name }} 
+          file: ${{ matrix.docker_image.file_name }} 
           push: true
         if: |
-          contains(steps.changed-files.outputs.modified_files, 'ros_galactic_vim.dockerfile') ||
+          contains(steps.changed-files.outputs.modified_files, ${{ matrix.docker_image.file_name }}) ||
           contains(steps.changed-files.outputs.modified_files, 'configfiles/vimrc') ||
           contains(steps.changed-files.outputs.modified_files, 'configfiles/ycm_extra_conf_ros2.py') ||
           contains(steps.changed-files.outputs.modified_files, 'configfiles/ctags')
 
-      - name: build and push ros foxy with vim image
-        uses: docker/build-push-action@v2
-        with:
-          tags: rafa606/ros-base-foxy-vim
-          file: ros_galactic_vim.dockerfile
-          push: true
-        if: |
-          contains(steps.changed-files.outputs.modified_files, 'ros_foxy_vim.dockerfile') ||
-          contains(steps.changed-files.outputs.modified_files, 'configfiles/vimrc') ||
-          contains(steps.changed-files.outputs.modified_files, 'configfiles/ycm_extra_conf_ros2.py') ||
-          contains(steps.changed-files.outputs.modified_files, 'configfiles/ctags')
-
-      - name: build and push ros noetic with vim and latex image
-        uses: docker/build-push-action@v2
-        with:
-          tags: rafa606/ros-noetic-vim-latex
-          file: ros_noetic_vim_latex.dockerfile
-          push: true
-        if: |
-          contains(steps.changed-files.outputs.modified_files, 'ros_noetic_vim_latex.dockerfile') ||
-          contains(steps.changed-files.outputs.modified_files, 'configfiles/vimrc') ||
-          contains(steps.changed-files.outputs.modified_files, 'configfiles/ycm_extra_conf_ros.py') ||
-          contains(steps.changed-files.outputs.modified_files, 'configfiles/ctags')
-
-      - name: build and push c++ vim
-        uses: docker/build-push-action@v2
-        with:
-          tags: rafa606/cpp-vim
-          file: cpp_vim.dockerfile
-          push: true
-        if: |
-          contains(steps.changed-files.outputs.modified_files, 'cpp_vim.dockerfile') ||
-          contains(steps.changed-files.outputs.modified_files, 'configfiles/vimrc') ||
-          contains(steps.changed-files.outputs.modified_files, 'configfiles/ycm_extra_conf.py') ||
-          contains(steps.changed-files.outputs.modified_files, 'configfiles/ctags')
-
-      - name: build and push alpine c++ vim
-        uses: docker/build-push-action@v2
-        with:
-          tags: rafa606/alpine-cpp-vim
-          file: alpine_cpp_vim.dockerfile
-          push: true
-        if: |
-          contains(steps.changed-files.outputs.modified_files, 'alpine_cpp_vim.dockerfile') ||
-          contains(steps.changed-files.outputs.modified_files, 'configfiles/vimrc') ||
-          contains(steps.changed-files.outputs.modified_files, 'configfiles/ycm_extra_conf.py') ||
-          contains(steps.changed-files.outputs.modified_files, 'configfiles/ctags')

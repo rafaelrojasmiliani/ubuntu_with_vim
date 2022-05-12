@@ -48,6 +48,7 @@ RUN apt-get update \
     git clone https://github.com/kkoomen/vim-doge.git /etc/vim/bundle/vim-doge && \
     git clone https://github.com/rafaelrojasmiliani/vim_snippets_ros.git /etc/vim/bundle/vim-snippets-ros && \
     cd /etc/vim/bundle/YouCompleteMe \
+    && rm -rf $(find /etc/vim/bundle -name .git) \
     && git submodule update --init --recursive && python3 install.py --clang-completer --force-sudo && \
     export YCM_CORE=$(find /etc/vim/bundle/YouCompleteMe/third_party/ycmd/ -name 'ycm_core*.so') && \
     patchelf --set-rpath "/etc/vim/bundle/YouCompleteMe/third_party/ycmd/third_party/clang/lib" "$YCM_CORE" && \
@@ -57,10 +58,11 @@ RUN apt-get update \
    && rm -rf /ifopt \
    && mkdir /workspace \
    && chmod 777 /workspace \
-   && cd / && wget https://download.mosek.com/stable/9.3.6/mosektoolslinux64x86.tar.bz2 \
+   && cd / && wget https://download.mosek.com/stable/9.3.20/mosektoolslinux64x86.tar.bz2 \
    && tar xf /mosektoolslinux64x86.tar.bz2 -C / \
    && cd /mosek/9.3/tools/platform/linux64x86/src/fusion_cxx && make -j2 && make install \
-   && rm -rf $(find /etc/vim/bundle -name .git) \
+   && install /mosek/9.3/tools/platform/linux64x86/bin/* /usr/lib/ \
+   && install /mosek/9.3/tools/platform/linux64x86/h/* /usr/include/ \
    && rm -rf /mosek
 
 COPY configfiles/vimrc /etc/vim/

@@ -49,6 +49,8 @@ class FlagGenerator:
             '/usr/include/eigen3',
             '-I',
             '/usr/local/include',
+            '-I',
+            '/opt/openrobots/include',
         ]
         if not hasattr(ycm_core, 'CompilationDatabase'):
             raise RuntimeError('YouCompleteMe must be compiled with' +

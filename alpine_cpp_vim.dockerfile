@@ -60,6 +60,8 @@ RUN apk update \
 COPY configfiles/vimrc /etc/vim/
 COPY configfiles/ycm_extra_conf.py /etc/vim/
 COPY configfiles/ctags /etc/vim/
+COPY configfiles/gdbinit /etc/gdb/
+COPY configfiles/printers.py /etc/gdb/
 
 #    && pip install cmakelang autopep8 pylint flake8 \
 #                 yamllint yamlfix yamlfmt setuptools matplotlib \

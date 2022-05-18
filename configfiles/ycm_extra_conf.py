@@ -45,11 +45,11 @@ class FlagGenerator:
             'c++',
             '-I',
             '.',
-            '-I',
+            '-isystem',
             '/usr/include/eigen3',
-            '-I',
+            '-isystem',
             '/usr/local/include',
-            '-I',
+            '-isystem',
             '/opt/openrobots/include',
         ]
         if not hasattr(ycm_core, 'CompilationDatabase'):

@@ -30,8 +30,9 @@ class FlagGenerator:
             self.current_file_ = _current_file
 
         if self.current_ws_path_.find('src') > 0:
-            self.current_ws_path_ = self.current_ws_path_[
-                :self.current_ws_path_.find('src')]
+            self.current_ws_path_ = self.current_ws_path_[:self.
+                                                          current_ws_path_.
+                                                          find('src')]
 
         self.logger_ = logging.getLogger('vim-ros-ycm')
         self.source_extensions_ = ['.cpp', '.cxx', '.cc', '.c', '.m', '.mm']
@@ -52,16 +53,14 @@ class FlagGenerator:
             'c++',
             '-I',
             '.',
-            '-I',
+            '-isystem',
             '/usr/include/eigen3',
-            '-I',
+            '-isystem',
             '/usr/local/include',
         ]
         if not hasattr(ycm_core, 'CompilationDatabase'):
-            raise RuntimeError(
-                'YouCompleteMe must be compiled with' +
-                ' the --clang-completer flag'
-            )
+            raise RuntimeError('YouCompleteMe must be compiled with' +
+                               ' the --clang-completer flag')
 
     def get_ros_include_paths(self):
         """Return a list of potential include directories
@@ -71,7 +70,8 @@ class FlagGenerator:
         includes = []
         list_of_workspaces = [
             ws_path for ws_path in get_workspaces()
-            if ws_path != self.current_ws_path_]
+            if ws_path != self.current_ws_path_
+        ]
 
         for ws_path in list_of_workspaces:
             includes.append(ws_path + '/include/')
@@ -83,6 +83,7 @@ class FlagGenerator:
                 if name == 'include':
                     includes.append(root + '/include/')
         return includes
+
 
 #    def search_compile_commands_json_folder(self) -> str:
 #        """ Search for a comile_commands.json"""
@@ -110,20 +111,20 @@ class FlagGenerator:
     def get_flags(self) -> List[str]:
         """ Return the compilation flags
         """
-#        def is_currentf_file_header():
-#            """ Determines wheter the current file is a header"""
-#            return os.path.splitext(self.current_file_)[1] \
-#                in ['.h', '.hxx', '.hpp', '.hh']
+        #        def is_currentf_file_header():
+        #            """ Determines wheter the current file is a header"""
+        #            return os.path.splitext(self.current_file_)[1] \
+        #                in ['.h', '.hxx', '.hpp', '.hh']
 
-#        compile_commands_folder = self.search_compile_commands_json_folder()
-#
-#        if not is_currentf_file_header() and compile_commands_folder:
-#            ycm_db = ycm_core.CompilationDatabase(compile_commands_folder)
-#            compilation_flags = ycm_db.GetCompilationInfoForFile(
-#                self.current_file_)
-#            if compilation_flags:
-#                print('compiler flags: ', compilation_flags.compiler_flags_)
-#                pass
+        #        compile_commands_folder = self.search_compile_commands_json_folder()
+        #
+        #        if not is_currentf_file_header() and compile_commands_folder:
+        #            ycm_db = ycm_core.CompilationDatabase(compile_commands_folder)
+        #            compilation_flags = ycm_db.GetCompilationInfoForFile(
+        #                self.current_file_)
+        #            if compilation_flags:
+        #                print('compiler flags: ', compilation_flags.compiler_flags_)
+        #                pass
 
         result = []
         for include in self.get_ros_include_paths():

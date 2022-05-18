@@ -68,3 +68,5 @@ RUN apt-get update \
 COPY configfiles/vimrc /etc/vim/
 COPY configfiles/ycm_extra_conf.py /etc/vim/
 COPY configfiles/ctags /etc/vim/
+COPY configfiles/gdbinit /etc/gdb/
+COPY configfiles/printers.py /etc/gdb/

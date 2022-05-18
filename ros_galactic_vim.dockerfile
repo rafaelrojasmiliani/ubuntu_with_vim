@@ -53,3 +53,5 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-ins
 COPY configfiles/vimrc /etc/vim/
 COPY configfiles/ycm_extra_conf_ros2.py /etc/vim/ycm_extra_conf.py
 COPY configfiles/ctags /etc/vim/
+COPY configfiles/gdbinit /etc/gdb/
+COPY configfiles/printers.py /etc/gdb/

@@ -19,6 +19,7 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-ins
                     texlive-publishers \
                     texlive-fonts-extra \
                     texlive-bibtex-extra \
+                    texlive-plain-generic \
                     lmodern \
                     texlive-xetex \
                     pandoc maven curl python-is-python3 \

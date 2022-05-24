@@ -143,3 +143,10 @@ def Settings(**kwargs) -> List[str]:
     flag_generator = FlagGenerator(kwargs['filename'])
     flags = flag_generator.get_flags()
     return {'flags': flags, 'do_cache': True}
+
+
+def PythonSysPath(**kwargs):
+    sys_path = kwargs['sys_path']
+    for work_space in get_workspaces():
+        sys_path.insert(1, work_space + '/lib/python3/dist-packages/')
+    return sys_path

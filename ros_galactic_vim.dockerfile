@@ -14,6 +14,7 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-ins
                     apt-transport-https ca-certificates gnupg software-properties-common \
                     wget g++-8 golang clang jsonlint jq libxml2-utils patchelf \
                     vim vim-gtk \
+                    python3-flask \
                     && rm -rf /var/lib/apt/lists/* && \
    git clone https://github.com/ethz-adrl/ifopt.git /ifopt && cd /ifopt && mkdir build && cd build && cmake .. -DCMAKE_INSTALL_PREFIX=/usr && make -j2 && make install \
    && rm -rf /ifopt \

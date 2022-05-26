@@ -12,6 +12,7 @@ RUN apt-get update \
         && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \
         python3-pip git iputils-ping net-tools netcat screen   less \
         python3-sympy coinor-libipopt-dev  valgrind \
+        python3-flask \
         pkg-config exuberant-ctags \
         liblapack-dev liblapack3 libopenblas-base libopenblas-dev \
         libgfortran-7-dev cmake libgsl-dev gdb python3-tk libeigen3-dev \

@@ -12,6 +12,7 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-ins
                     apt-transport-https ca-certificates gnupg software-properties-common \
                     wget g++-8 golang clang jsonlint jq libxml2-utils patchelf \
                     vim vim-gtk \
+                    python3-flask \
                     ros-noetic-moveit-msgs \
                     ros-noetic-geometric-shapes \
                     ros-noetic-moveit-resources-fanuc-moveit-config \

@@ -20,6 +20,7 @@ RUN apt-get update \
                     libboost-math-dev build-essential cmake python3-dev mono-complete \
                     golang nodejs default-jdk clang-tidy-9 clang-format-10 \
                     apt-transport-https libgtest-dev  \
+                    python3-flask \
                     g++-8 golang clang clang-format clang-tidy jsonlint jq libxml2-utils patchelf \
                     ros-melodic-control-msgs \
                     ros-melodic-velocity-controllers \

@@ -14,6 +14,7 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-ins
                     apt-transport-https ca-certificates gnupg software-properties-common \
                     wget g++-8 golang clang jsonlint jq libxml2-utils patchelf \
                     vim vim-gtk \
+                    python3-flask \
                     && rm -rf /var/lib/apt/lists/* && \
     pip3 install cmakelang autopep8 pylint flake8 yamllint yamlfix yamlfmt && \
     npm install -g npm@latest-6 && \

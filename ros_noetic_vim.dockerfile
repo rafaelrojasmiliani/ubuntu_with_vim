@@ -48,8 +48,9 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-ins
     && catkin build \
     && rm -rf /ws/* \
     && cd / && \
-    pip3 install cmakelang autopep8 pylint flake8 yamllint yamlfix yamlfmt && \
+    pip3 install cmakelang autopep8 pylint flake8 yamllint yamlfix yamlfmt  rospkg numpy scipy && \
     npm install -g npm@latest-6 && \
+    npm install -g htmlhint && \
     npm install -g --save-dev --save-exact prettier && \
     npm install -g fixjson && \
     chmod 777 /etc/vim &&  mkdir -p /etc/vim/bundle && chmod 777 /etc/vim/bundle && \

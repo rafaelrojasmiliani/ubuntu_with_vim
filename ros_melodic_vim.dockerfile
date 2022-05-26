@@ -52,7 +52,7 @@ RUN apt-get update \
     && make install \
     && cd / \
     && rm -rf /usr/src/gtest/build \
-    && pip3 install cmakelang autopep8 pylint flake8 prospector yamllint yamlfix yamlfmt \
+    && pip3 install cmakelang autopep8 pylint flake8 prospector yamllint yamlfix yamlfmt rospkg numpy scipy\
     && update-alternatives --install /usr/bin/gcc gcc \
 			/usr/bin/gcc-7 700 --slave /usr/bin/g++ g++ /usr/bin/g++-7 \
     && update-alternatives --install /usr/bin/gcc gcc \
@@ -62,6 +62,7 @@ RUN apt-get update \
     && npm install -g npm@latest-6 \
     && npm install -g --save-dev --save-exact prettier \
     && npm install -g fixjson \
+    && npm install -g htmlhint \
     && rm -rf /var/lib/apt/lists/*  \
     && mkdir -p /root/ws/src \
     && git clone https://github.com/rafaelrojasmiliani/ur_description_minimal.git /root/ws/src \
@@ -71,7 +72,7 @@ RUN apt-get update \
     && catkin build \
     && rm -rf /root/ws \
     && cd / && \
-    pip3 install cmakelang autopep8 pylint flake8 yamllint yamlfix yamlfmt && \
+    pip3 install cmakelang autopep8 pylint flake8 yamllint yamlfix yamlfmt  rospkg numpy scipy && \
     chmod 777 /etc/vim &&  mkdir -p /etc/vim/bundle && chmod 777 /etc/vim/bundle && \
     git clone https://github.com/VundleVim/Vundle.vim.git /etc/vim/bundle/Vundle.vim && \
     git clone https://github.com/tabnine/YouCompleteMe.git /etc/vim/bundle/YouCompleteMe && \

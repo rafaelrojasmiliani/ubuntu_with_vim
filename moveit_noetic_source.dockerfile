@@ -31,8 +31,9 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-ins
    &&  dpkg -i gsplines-0.0.1-amd64.deb \
    &&  rm gsplines-0.0.1-amd64.deb \
    &&  rm -rf /var/lib/apt/lists/* \
-   &&  pip3 install cmakelang autopep8 pylint flake8 yamllint yamlfix yamlfmt \
+   &&  pip3 install cmakelang autopep8 pylint flake8 yamllint yamlfix yamlfmt  rospkg numpy scipy \
    &&  npm install -g npm@latest-6 \
+   &&  npm install -g htmlhint \
    &&  npm install --save-dev --save-exact prettier \
    &&  npm install -g fixjson \
    &&  chmod 777 /etc/vim \

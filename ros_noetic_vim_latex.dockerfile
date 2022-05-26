@@ -14,8 +14,9 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-ins
                     python3-flask \
                     vim vim-gtk \
                     && rm -rf /var/lib/apt/lists/* && \
-    pip3 install cmakelang autopep8 pylint flake8 yamllint yamlfix yamlfmt pylatex && \
+    pip3 install cmakelang autopep8 pylint flake8 yamllint yamlfix yamlfmt pylatex rospkg numpy scipy && \
     npm install -g npm@latest-6 && \
+    npm install -g htmlhint && \
     npm install -g --save-dev --save-exact prettier && \
     npm install -g fixjson && \
     chmod 777 /etc/vim &&  mkdir -p /etc/vim/bundle && chmod 777 /etc/vim/bundle && \

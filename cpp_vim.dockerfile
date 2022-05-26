@@ -26,8 +26,9 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/* && \
     pip3 install cmakelang autopep8 pylint flake8 \
                  yamllint yamlfix yamlfmt setuptools matplotlib \
-                 scipy quadpy six cython tk Mosek && \
+                 scipy quadpy six cython tk Mosek numpy && \
     npm install -g npm@latest-6 && \
+    npm install -g htmlhint && \
     npm install -g --save-dev --save-exact prettier && \
     npm install -g fixjson && \
     chmod 777 /etc/vim &&  mkdir -p /etc/vim/bundle && chmod 777 /etc/vim/bundle && \

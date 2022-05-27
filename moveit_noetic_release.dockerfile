@@ -55,6 +55,7 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-ins
    &&  git clone https://github.com/Xuyuanp/nerdtree-git-plugin.git /etc/vim/bundle/nerdtree-git-plugin \
    &&  git clone https://github.com/lfv89/vim-interestingwords.git /etc/vim/bundle/vim-interestingwords \
    &&  git clone https://github.com/kkoomen/vim-doge.git /etc/vim/bundle/vim-doge \
+   &&  git clone https://github.com/Glench/Vim-Jinja2-Syntax.git \
    &&  git clone https://github.com/rafaelrojasmiliani/vim_snippets_ros.git /etc/vim/bundle/vim-snippets-ros \
    &&  cd /etc/vim/bundle/YouCompleteMe \
    &&  git submodule update --init --recursive \

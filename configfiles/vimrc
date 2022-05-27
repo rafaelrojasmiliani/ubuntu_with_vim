@@ -94,6 +94,7 @@ EOF
     Plugin 'nerdtree-git-plugin'
     Plugin 'vim-interestingwords'
     Plugin 'vim-doge'
+    Plugin 'Vim-Jinja2-Syntax'
 call vundle#end()
 filetype plugin indent on
 filetype plugin on

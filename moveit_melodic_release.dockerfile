@@ -95,6 +95,7 @@ RUN apt-get update \
         && rm -rf /root/ws \
         && cd / && \
         chmod 777 /etc/vim &&  mkdir -p /etc/vim/bundle && chmod 777 /etc/vim/bundle && \
+        git clone https://github.com/VundleVim/Vundle.vim.git /etc/vim/bundle/Vundle.vim && \
         git clone https://github.com/tabnine/YouCompleteMe.git /etc/vim/bundle/YouCompleteMe && \
         git clone https://github.com/vim-latex/vim-latex.git /etc/vim/bundle/vim-latex && \
         git clone https://github.com/preservim/tagbar.git /etc/vim/bundle/tagbar && \

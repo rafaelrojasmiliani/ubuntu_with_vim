@@ -67,6 +67,7 @@ RUN apt-get update \
    && install /mosek/9.3/tools/platform/linux64x86/bin/* /usr/lib/ \
    && install /mosek/9.3/tools/platform/linux64x86/h/* /usr/include/ \
    && rm -rf /mosek
+
 COPY configfiles/vimrc /etc/vim/
 COPY configfiles/ycm_extra_conf_ros2.py /etc/vim/ycm_extra_conf.py
 COPY configfiles/ctags /etc/vim/

@@ -64,6 +64,10 @@ jobs:
             image_name: "rafa606/ros-galactic-vim"
             ycm_file: "configfiles/ycm_extra_conf_ros2.py"
 
+          - file_name: "ros_humble_vim.dockerfile"
+            image_name: "rafa606/ros-humble-vim"
+            ycm_file: "configfiles/ycm_extra_conf_ros2.py"
+
           - file_name: "cpp_vim.dockerfile"
             image_name: "rafa606/cpp-vim"
             ycm_file: "configfiles/ycm_extra_conf.py"

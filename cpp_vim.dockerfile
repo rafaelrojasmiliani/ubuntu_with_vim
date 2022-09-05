@@ -16,17 +16,17 @@ RUN apt-get update \
                     python3-sympy coinor-libipopt-dev  valgrind \
                      pkg-config exuberant-ctags vim-nox \
                     liblapack-dev liblapack3 libopenblas-base libopenblas-dev \
-                    libgfortran-7-dev cmake libgsl-dev gdb python3-tk libeigen3-dev \
+                    libgfortran-12-dev cmake libgsl-dev gdb python3-tk libeigen3-dev \
                     libboost-math-dev build-essential cmake python3-dev mono-complete \
-                    golang nodejs default-jdk npm clang-tidy-9 clang-format-10 \
+                    golang nodejs default-jdk npm clang-tidy clang-format \
                     apt-transport-https ca-certificates gnupg software-properties-common \
-                    wget g++-8 golang clang jsonlint jq libxml2-utils patchelf \
-                    vim vim-gtk robotpkg-py38-pinocchio sudo unzip libgtest-dev \
+                    wget g++ golang clang jsonlint jq libxml2-utils patchelf \
+                    vim vim-gtk robotpkg-py310-pinocchio sudo unzip libgtest-dev \
                     libgmp3-dev libmpc-dev  libtrilinos-trilinosss-dev libsuitesparse-dev \
+                    python3-autopep8 python3-flake8 pylint
     && rm -rf /var/lib/apt/lists/* && \
-    pip3 install cmakelang autopep8 pylint flake8 \
-                 yamllint yamlfix yamlfmt setuptools matplotlib \
-                 scipy quadpy six cython tk Mosek numpy && \
+    pip3 install cmakelang   yamllint yamlfix  setuptools matplotlib \
+                 scipy quadpy six tk numpy && \
     npm install -g npm@latest-6 && \
     npm install -g htmlhint && \
     npm install -g --save-dev --save-exact prettier && \

@@ -23,7 +23,7 @@ RUN apt-get update \
                     wget g++ golang clang jsonlint jq libxml2-utils patchelf \
                     vim vim-gtk robotpkg-py310-pinocchio sudo unzip libgtest-dev \
                     libgmp3-dev libmpc-dev  libtrilinos-trilinosss-dev libsuitesparse-dev \
-                    python3-autopep8 python3-flake8 pylint
+                    python3-autopep8 python3-flake8 pylint \
     && rm -rf /var/lib/apt/lists/* && \
     pip3 install cmakelang   yamllint yamlfix  setuptools matplotlib \
                  scipy quadpy six tk numpy && \

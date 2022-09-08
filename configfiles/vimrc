@@ -48,12 +48,16 @@ call vundle#begin('/etc/vim/bundle/')
         let g:ale_completion_enabled = 0
         let g:ale_fixers = {'python': ['autopep8'], 'cpp': ['clang-format'], 'cmake': ['cmakeformat'], 'xml':['xmllint'], 'javascript':['prettier'], '*':['remove_trailing_lines', 'trim_whitespace'], 'json':['jq'], 'yaml':['prettier'], 'html':['prettier']}
         let g:ale_linters = {'python': ['pylint', 'flake8', 'prospector'],'xml':['xmllint'], 'cpp':['clangtidy', 'cc'], 'html':['htmlhint']}
-        let g:ale_c_clangformat_executable='clang-format-10'
 python3 << EOF
 import vim, sys, os
 sys.path.append('/etc/vim/bundle/YouCompleteMe/python')
 sys.path.append('/etc/vim/bundle/YouCompleteMe/third_party/ycmd')
-sys.path.append('/etc/vim/')
+print(os.getcwd()+'/ycm_extra_conf.py')
+if os.path.isfile(os.getcwd()+'/ycm_extra_conf.py'):
+    sys.path.append(os.getcwd())
+else:
+    sys.path.append('/etc/vim/')
+
 from ycm_extra_conf import FlagGenerator
 flag_generator = FlagGenerator(os.getcwd())
 flag_list = flag_generator.get_flags()
@@ -63,10 +67,11 @@ for i, flag in enumerate(flag_list, start=1):
 
 result = ' '.join(flag_list)
 vim.command("let g:ale_cpp_cc_options='%s'"% result)
-vim.command("let g:ale_cpp_clangtidy_extra_options='%s'"% result)
+vim.command("let g:ale_cpp_clangtidy_options='%s'"% result)
 #start = vim.eval("startline")
 #end = vim.eval("endline")
 EOF
+        let g:cpp_clangtidy_executable = 'clang-tidy-13'
         let g:ale_sign_error = 'E'
         let g:ale_sign_warning = 'W'
         let g:ale_lint_on_text_changed = 'never'

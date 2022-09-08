@@ -13,6 +13,8 @@ import ycm_core
 import copy
 from typing import List, Set, Dict, Tuple, Optional
 from pathlib import Path
+import subprocess
+from itertools import chain
 
 
 class FlagGenerator:
@@ -48,10 +50,24 @@ class FlagGenerator:
             '-isystem',
             '/usr/include/eigen3',
             '-isystem',
-            '/usr/local/include',
-            '-isystem',
             '/opt/openrobots/include',
+            '-isystem',
+            '/usr/include/x86_64-linux-gnu/qt5'
         ]
+        command = "g++ -xc++ /dev/null -x c++ -E -Wp,-v"
+        result = subprocess.run(
+            command.split(), stderr=subprocess.PIPE, stdout=subprocess.PIPE)
+        header_paths = [line.strip() for line in result.stderr.decode(
+            'utf-8').splitlines() if line[0] == ' ']
+
+        self.default_flags_ = self.default_flags_ + \
+            list(chain.from_iterable(
+                zip(len(header_paths)*['-isystem'], header_paths)))
+        print(self.default_flags_)
+        # output, _ = process.communicate()
+
+        # print(output)
+
         if not hasattr(ycm_core, 'CompilationDatabase'):
             raise RuntimeError('YouCompleteMe must be compiled with' +
                                ' the --clang-completer flag')
@@ -60,14 +76,23 @@ class FlagGenerator:
         """ Return the compilation flags
         """
 
-        other_include_paths = []
-        other_include_paths = glob.glob(
-            '/workspace/**/include', recursive=True)
+        other_include_paths = list(glob.glob(
+            '/workspace/externals-ubuntu-22.04/**/include', recursive=True)) + list(glob.glob(
+                '/workspace/plugins/ImFusionSuite/**/include', recursive=True))
         result = []
         for include in other_include_paths:
-            result.append('-I')
+            result.append('-isystem')
             result.append(include)
-        return result + self.default_flags_
+
+        other_include_paths = list(glob.glob(
+            '/workspace/plugins/ROSPlugin/**/include', recursive=True)) + list(glob.glob(
+                '/workspace/plugins/RoboticsPlugin/**/include', recursive=True))
+
+        for include in other_include_paths:
+            result.append('-isystem')
+            result.append(include)
+
+        return self.default_flags_ + result
 
 
 def Settings(**kwargs) -> List[str]:

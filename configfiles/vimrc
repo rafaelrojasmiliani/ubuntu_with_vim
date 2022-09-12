@@ -20,6 +20,8 @@ inoremap <silent><Down> <C-o>gj
 set display+=lastline "prevent @ when a line doesn't fit on screen
 " ---------------------------------------
 set nocompatible
+set number
+set cursorline
 filetype off
 set rtp+=/etc/vim/bundle/Vundle.vim
 call vundle#begin('/etc/vim/bundle/')

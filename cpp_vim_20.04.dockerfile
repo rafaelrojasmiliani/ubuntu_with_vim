@@ -16,12 +16,12 @@ RUN apt-get update \
                     python3-sympy coinor-libipopt-dev  valgrind \
                      pkg-config exuberant-ctags vim-nox \
                     liblapack-dev liblapack3 libopenblas-base libopenblas-dev \
-                    libgfortran-12-dev cmake libgsl-dev gdb python3-tk libeigen3-dev \
+                    libgfortran-10-dev cmake libgsl-dev gdb python3-tk libeigen3-dev \
                     libboost-math-dev build-essential cmake python3-dev mono-complete \
                     golang nodejs default-jdk npm clang-tidy clang-format \
                     apt-transport-https ca-certificates gnupg software-properties-common \
                     wget g++ golang clang jsonlint jq libxml2-utils patchelf \
-                    vim vim-gtk robotpkg-py310-pinocchio sudo unzip libgtest-dev \
+                    vim vim-gtk robotpkg-py38-pinocchio sudo unzip libgtest-dev \
                     libgmp3-dev libmpc-dev  libtrilinos-trilinosss-dev libsuitesparse-dev \
                     python3-autopep8 python3-flake8 pylint \
     && rm -rf /var/lib/apt/lists/* && \

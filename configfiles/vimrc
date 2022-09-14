@@ -57,7 +57,7 @@ sys.path.append('/etc/vim/bundle/YouCompleteMe/third_party/ycmd')
 print(os.getcwd()+'/ycm_extra_conf.py')
 if os.path.isfile(os.getcwd()+'/ycm_extra_conf.py'):
     sys.path.append(os.getcwd())
-    vim.command('let g:ycm_global_ycm_extra_conf=%s'%os.getcwd()+'/ycm_extra_conf.py')
+    vim.command("let g:ycm_global_ycm_extra_conf='%s'"%os.getcwd()+'/ycm_extra_conf.py')
 
 else:
     sys.path.append('/etc/vim/')

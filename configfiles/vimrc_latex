@@ -22,6 +22,7 @@ set display+=lastline "prevent @ when a line doesn't fit on screen
 set nocompatible
 set cursorline
 set number
+set guioptions=i
 filetype off
 set rtp+=/etc/vim/bundle/Vundle.vim
 call vundle#begin('/etc/vim/bundle/')

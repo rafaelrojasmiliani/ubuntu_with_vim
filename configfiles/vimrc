@@ -97,8 +97,15 @@ EOF
     Plugin 'vim-fugitive'
     Plugin 'xmledit'
     Plugin 'vimspector'
-        "let g:vimspector_enable_mappings = 'HUMAN'
+        let g:vimspector_enable_mappings = 'HUMAN'
         map  <F4>          :TagbarToggle<CR>
+    Plugin 'cmake4vim'
+        let g:cmake_vimspector_support=1
+        let g:cmake_build_executor='dispatch'
+    Plugin 'vim-dispatch'
+    Plugin 'fzf'
+    Plugin 'fzf.vim'
+
     Plugin 'nerdtree'
     let NERDTreeShowHidden=1
     Plugin 'nerdtree-git-plugin'

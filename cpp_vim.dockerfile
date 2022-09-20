@@ -24,6 +24,7 @@ RUN apt-get update \
                     vim vim-gtk robotpkg-py310-pinocchio sudo unzip libgtest-dev \
                     libgmp3-dev libmpc-dev  libtrilinos-trilinosss-dev libsuitesparse-dev \
                     python3-autopep8 python3-flake8 pylint \
+                    bat silversearcher-ag ripgrep cmake-curses-gui \
     && rm -rf /var/lib/apt/lists/* && \
     pip3 install cmakelang   yamllint yamlfix  setuptools matplotlib \
                  scipy quadpy six tk numpy && \
@@ -51,11 +52,14 @@ RUN chmod 777 /etc/vim &&  mkdir -p /etc/vim/bundle && chmod 777 /etc/vim/bundle
     git clone https://github.com/tpope/vim-fugitive.git /etc/vim/bundle/vim-fugitive && \
     git clone https://github.com/sukima/xmledit.git /etc/vim/bundle/xmledit && \
     git clone https://github.com/puremourning/vimspector.git /etc/vim/bundle/vimspector && \
+    git clone https://github.com/junegunn/fzf.git /etc/vim/bundle/fzf && \
+    git clone https://github.com/junegunn/fzf.vim.git /etc/vim/bundle/fzf.vim  && \
     git clone https://github.com/preservim/nerdtree.git /etc/vim/bundle/nerdtree && \
     git clone https://github.com/Xuyuanp/nerdtree-git-plugin.git /etc/vim/bundle/nerdtree-git-plugin && \
     git clone https://github.com/lfv89/vim-interestingwords.git /etc/vim/bundle/vim-interestingwords && \
     git clone https://github.com/kkoomen/vim-doge.git /etc/vim/bundle/vim-doge && \
-    git clone https://github.com/Glench/Vim-Jinja2-Syntax.git && \
+    git clone https://github.com/Glench/Vim-Jinja2-Syntax.git /etc/vim/bundle/Vim-Jinja2-Syntax && \
+    git clone https://github.com/tpope/vim-dispatch.git /etc/vim/bundle/vim-dispatch  && \
     git clone https://github.com/rafaelrojasmiliani/vim_snippets_ros.git /etc/vim/bundle/vim-snippets-ros && \
     cd /etc/vim/bundle/YouCompleteMe \
     && git submodule update --init --recursive && python3 install.py --clang-completer --force-sudo && \
@@ -64,6 +68,7 @@ RUN chmod 777 /etc/vim &&  mkdir -p /etc/vim/bundle && chmod 777 /etc/vim/bundle
     chmod 777 -R * && \
     rm -rf $(find /etc/vim/bundle -name .git) \
    && cd /etc/vim/bundle/vimspector && python3 install_gadget.py --enable-c --enable-cpp --enable-python \
+   &&  cd /etc/vim/bundle/fzf && ./install --all \
    && git clone https://github.com/ethz-adrl/ifopt.git /ifopt && cd /ifopt && mkdir build && cd build && cmake .. -DCMAKE_INSTALL_PREFIX=/usr && make -j2 && make install \
    && rm -rf /ifopt \
    && mkdir /workspace \

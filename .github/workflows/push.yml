@@ -76,6 +76,10 @@ jobs:
           - file_name: "cpp_vim_20.04.dockerfile"
             image_name: "rafa606/cpp-vim:ubuntu20.04"
             ycm_file: "configfiles/ycm_extra_conf.py"
+
+          - file_name: "moveit_humble_release.dockerfile"
+            image_name: "rafa606/ros-moveit-humble-vim"
+            ycm_file: "configfiles/ycm_extra_conf_ros2.py"
     steps:
       - name: checkout code
         uses: actions/checkout@master

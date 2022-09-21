@@ -1,6 +1,4 @@
-# This file tells docker what image must be created
-# in order to be ahble to test this library
-FROM ubuntu:22.04
+FROM moveit/moveit2:humble-release
 
 RUN apt-get update \
     && DEBIAN_FRONTEND=noninteractive apt-get install \

@@ -40,46 +40,62 @@ jobs:
           - file_name: "ros_noetic_vim.dockerfile"
             image_name: "rafa606/ros-noetic-vim"
             ycm_file: "configfiles/ycm_extra_conf_ros.py"
+            vim_plugins: "configfiles/plugin_list"
 
           - file_name: "ros_melodic_vim.dockerfile"
             image_name: "rafa606/ros-melodic-vim"
             ycm_file: "configfiles/ycm_extra_conf_ros.py"
+            vim_plugins: "configfiles/plugin_list"
 
           - file_name: "moveit_noetic_source.dockerfile"
             image_name: "rafa606/ros-moveit-noetic-source-vim"
             ycm_file: "configfiles/ycm_extra_conf_ros.py"
+            vim_plugins: "configfiles/plugin_list"
 
           - file_name: "moveit_noetic_release.dockerfile"
             image_name: "rafa606/ros-moveit-noetic-vim"
             ycm_file: "configfiles/ycm_extra_conf_ros.py"
+            vim_plugins: "configfiles/plugin_list"
 
           - file_name: "moveit_melodic_release.dockerfile"
             image_name: "rafa606/ros-moveit-melodic-vim"
             ycm_file: "configfiles/ycm_extra_conf_ros.py"
+            vim_plugins: "configfiles/plugin_list"
 
           - file_name: "ros_foxy_vim.dockerfile"
             image_name: "rafa606/ros-foxy-vim"
             ycm_file: "configfiles/ycm_extra_conf_ros2.py"
+            vim_plugins: "configfiles/plugin_list"
 
           - file_name: "ros_galactic_vim.dockerfile"
             image_name: "rafa606/ros-galactic-vim"
             ycm_file: "configfiles/ycm_extra_conf_ros2.py"
+            vim_plugins: "configfiles/plugin_list"
 
           - file_name: "ros_humble_vim.dockerfile"
             image_name: "rafa606/ros-humble-vim"
             ycm_file: "configfiles/ycm_extra_conf_ros2.py"
+            vim_plugins: "configfiles/plugin_list"
 
           - file_name: "cpp_vim.dockerfile"
             image_name: "rafa606/cpp-vim"
             ycm_file: "configfiles/ycm_extra_conf.py"
+            vim_plugins: "configfiles/plugin_list"
 
           - file_name: "cpp_vim_20.04.dockerfile"
             image_name: "rafa606/cpp-vim:ubuntu20.04"
             ycm_file: "configfiles/ycm_extra_conf.py"
+            vim_plugins: "configfiles/plugin_list"
+
+          - file_name: "cpp_vim_18.04.dockerfile"
+            image_name: "rafa606/cpp-vim:ubuntu18.04"
+            ycm_file: "configfiles/ycm_extra_conf.py"
+            vim_plugins: "configfiles/plugin_list"
 
           - file_name: "moveit_humble_release.dockerfile"
             image_name: "rafa606/ros-moveit-humble-vim"
             ycm_file: "configfiles/ycm_extra_conf_ros2.py"
+            vim_plugins: "configfiles/plugin_list"
     steps:
       - name: checkout code
         uses: actions/checkout@master
@@ -96,8 +112,11 @@ jobs:
         id: changed-files
         uses: tj-actions/changed-files@v17.2
 
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
       - name: build and push ${{ matrix.docker_image.image_name }}
-        uses: docker/build-push-action@v2
+        uses: docker/build-push-action@v3
         with:
           tags: ${{ matrix.docker_image.image_name }}
           file: ${{ matrix.docker_image.file_name }}

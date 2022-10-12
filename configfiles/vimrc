@@ -76,7 +76,8 @@ vim.command("let g:ale_cpp_clangtidy_options='%s'"% result)
 #start = vim.eval("startline")
 #end = vim.eval("endline")
 EOF
-        let g:cpp_clangtidy_executable = 'clang-tidy-13'
+        let g:ale_cpp_clangtidy_executable = 'clang-tidy'
+        let g:ale_cpp_cc_executable = 'gcc'
         let g:ale_sign_error = 'E'
         let g:ale_sign_warning = 'W'
         let g:ale_lint_on_text_changed = 'never'
@@ -102,6 +103,7 @@ EOF
     Plugin 'cmake4vim'
         let g:cmake_vimspector_support=1
         let g:cmake_build_executor='dispatch'
+        let g:make_arguments='-j20'
     Plugin 'vim-dispatch'
     Plugin 'fzf'
     Plugin 'fzf.vim'

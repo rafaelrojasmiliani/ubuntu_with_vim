@@ -104,6 +104,11 @@ if [ $DISTRIB_RELEASE = "18.04" ]; then
     && DEBIAN_FRONTEND=noninteractive apt-get install \
                     -y --no-install-recommends -o Dpkg::Options::="--force-confnew" vim
 
+    mkdir /usr/src/gtest/build && cd /usr/src/gtest/build \
+    && cmake .. -DCMAKE_INSTALL_PREFIX=/usr && make -j$(nproc) \
+    && make install \
+    && cd / \
+    && rm -rf /usr/src/gtest/build
 
 
 else

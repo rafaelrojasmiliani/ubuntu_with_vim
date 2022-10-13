@@ -2,7 +2,7 @@
 # in order to be ahble to test this library
 ARG BASEIMAGE
 ARG ROSDISTRO=""
-FROM BASEIMAGE
+FROM ${BASEIMAGE}
 
 RUN --mount=type=bind,source=./,target=/workspace,rw \
     cd / \

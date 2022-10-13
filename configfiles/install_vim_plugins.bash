@@ -1,7 +1,7 @@
 plugins=(
 https://github.com/VundleVim/Vundle.vim.git                      # package manager
 https://github.com/junegunn/vim-easy-align.git                   # aligning tool
-https://github.com/tabnine/YouCompleteMe.git                     # autocompleter
+https://github.com/ycm-core/YouCompleteMe.git                     # autocompleter
 https://github.com/vim-latex/vim-latex.git                       # latex tools
 https://github.com/include-what-you-use/include-what-you-use.git # include what you use
 https://github.com/preservim/tagbar.git                          # tag bar

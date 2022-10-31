@@ -100,20 +100,34 @@ EOF
     Plugin 'vimspector'
         let g:vimspector_enable_mappings = 'HUMAN'
         map  <F4>          :TagbarToggle<CR>
-    Plugin 'cmake4vim'
-        let g:cmake_vimspector_support=1
-        let g:cmake_build_executor='dispatch'
-        let g:make_arguments='-j20'
     Plugin 'vim-dispatch'
     Plugin 'fzf'
     Plugin 'fzf.vim'
 
     Plugin 'nerdtree'
-    let NERDTreeShowHidden=1
+        let NERDTreeShowHidden=1
+
+    Plugin 'cmake4vim'
+        let g:cmake_vimspector_support=1
+        let g:cmake_build_executor='dispatch'
+        let g:make_arguments='-j20'
+
+    Plugin 'lualine-cmake4vim'
+
     Plugin 'nerdtree-git-plugin'
     Plugin 'vim-interestingwords'
     Plugin 'vim-doge'
     Plugin 'Vim-Jinja2-Syntax'
+    Plugin 'indentLine'
+    Plugin 'vim-commentary'
+    Plugin 'vim-repeat'
+    Plugin 'vim-surround'
+    Plugin 'vim-unimpaired'
+    Plugin 'vim-cutclass'
+    Plugin 'vim-yoink'
+    Plugin 'vim-editvar'
+    Plugin 'powerline'
+    Plugin 'vim-be-good'
 call vundle#end()
 filetype plugin indent on
 filetype plugin on

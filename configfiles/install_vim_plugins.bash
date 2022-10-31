@@ -1,7 +1,7 @@
 plugins=(
 https://github.com/VundleVim/Vundle.vim.git                      # package manager
-https://github.com/junegunn/vim-easy-align.git                   # aligning tool
-https://github.com/ycm-core/YouCompleteMe.git                     # autocompleter
+https://github.com/junegunn/vim-easy-align.git                   # aligning with :EasyAlign
+https://github.com/ycm-core/YouCompleteMe.git                    # autocompleter
 https://github.com/vim-latex/vim-latex.git                       # latex tools
 https://github.com/include-what-you-use/include-what-you-use.git # include what you use
 https://github.com/preservim/tagbar.git                          # tag bar
@@ -23,7 +23,18 @@ https://github.com/kkoomen/vim-doge.git                          # automatic doc
 https://github.com/Glench/Vim-Jinja2-Syntax.git                  # Jinja syntax
 https://github.com/tpope/vim-dispatch.git                        # Async terminal, make qfix stuff
 https://github.com/ilyachur/cmake4vim.git                        # cmake tools
-https://github.com/SantinoKeupp/lualine-cmake4vim.nvim.git       # more cmake tools
+https://github.com/Yggdroot/indentLine.git                       # indent lines
+https://github.com/tpope/vim-commentary.git                      # comment with gc in visual mode and gcc+count in normal mode
+https://github.com/tpope/vim-repeat.git                          # remaps .
+https://github.com/tpope/vim-surround.git                        # mappings to del, change and add surroundings in pairs.
+https://github.com/tpope/vim-unimpaired.git                      # ???
+https://github.com/svermeulen/vim-cutlass.git                    # overrides delete operations to avoind affecting the current yank.
+https://github.com/svermeulen/vim-yoink.git                      # maintain a history of yanks that you can choose between when pasting.
+https://github.com/mbbill/undotree.git                           # visualizes undo history
+https://github.com/airblade/vim-gitgutter                        # shows a git diff in the sign column.
+https://github.com/thinca/vim-editvar                            # edit a variable on the buffer
+https://github.com/powerline/powerline.git                       # fancy status line
+https://github.com/ThePrimeagen/vim-be-good.git                  # game to learn vim
 )
 
 main(){

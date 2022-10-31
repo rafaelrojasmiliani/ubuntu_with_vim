@@ -17,7 +17,7 @@ main(){
             clang-format \
             clang-tidy \
             cmake \
-libncurses-dev \
+            libncurses-dev \
             cmake-curses-gui \
             coinor-libipopt-dev \
             default-jdk \
@@ -77,6 +77,11 @@ libncurses-dev \
 source /etc/lsb-release
 
 if [ $DISTRIB_RELEASE = "18.04" ]; then
+    # 1. Install ripgrep and bat from github releases
+    # 2. install lastest cmake
+    # 3. update gcc to one compatible with c++17
+    # 4. install latest vim
+    # 5. install gtest
     cd / \
     && wget https://github.com/BurntSushi/ripgrep/releases/download/13.0.0/ripgrep_13.0.0_amd64.deb \
     && wget https://github.com/sharkdp/bat/releases/download/v0.22.1/bat-musl_0.22.1_amd64.deb \

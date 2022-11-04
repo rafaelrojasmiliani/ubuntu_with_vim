@@ -64,6 +64,8 @@ main(){
             wget \
             python3-pip \
             python3-dev \
+            llvm-dev \
+            libclang-dev \
     && pip3 install \
             autopep8 \
             flake8 \
@@ -86,8 +88,11 @@ if [ $DISTRIB_RELEASE = "18.04" ]; then
     && wget https://github.com/BurntSushi/ripgrep/releases/download/13.0.0/ripgrep_13.0.0_amd64.deb \
     && wget https://github.com/sharkdp/bat/releases/download/v0.22.1/bat-musl_0.22.1_amd64.deb \
     && dpkg -i *.deb \
-    && rm *deb \
-    && sudo apt remove --purge --auto-remove -y cmake \
+    && rm *deb
+    # --------------------
+    # 2. Install latest cmake
+    # -------------------
+    cd / && sudo apt remove --purge --auto-remove -y cmake \
     && wget -O - https://apt.kitware.com/keys/kitware-archive-latest.asc 2>/dev/null | \
             gpg --dearmor - | \
             tee /etc/apt/trusted.gpg.d/kitware.gpg >/dev/null \
@@ -98,17 +103,26 @@ if [ $DISTRIB_RELEASE = "18.04" ]; then
             cmake-curses-gui \
             cmake-qt-gui
 
+    # --------------------
+    # 3. Install gcc compatible with c++17
+    # -------------------
     DEBIAN_FRONTEND=noninteractive apt-get install \
                     -y --no-install-recommends -o Dpkg::Options::="--force-confnew" gcc-8 g++-8
 
     update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-7 700 --slave /usr/bin/g++ g++ /usr/bin/g++-7
     update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-8 800 --slave /usr/bin/g++ g++ /usr/bin/g++-8
 
+    # --------------------
+    # 4. Install latest vim
+    # -------------------
     apt-add-repository ppa:jonathonf/vim
     apt-get update \
     && DEBIAN_FRONTEND=noninteractive apt-get install \
                     -y --no-install-recommends -o Dpkg::Options::="--force-confnew" vim
 
+    # --------------------
+    # 5. Install Gtest
+    # -------------------
     mkdir /usr/src/gtest/build && cd /usr/src/gtest/build \
     && cmake .. -DCMAKE_INSTALL_PREFIX=/usr && make -j$(nproc) \
     && make install \

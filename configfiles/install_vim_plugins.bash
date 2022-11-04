@@ -55,6 +55,8 @@ main(){
     patchelf --set-rpath "/etc/vim/bundle/YouCompleteMe/third_party/ycmd/third_party/clang/lib" "$YCM_CORE"
     #chmod 777 /etc/vim/bundle/YouCompleteMe/third_party/ycmd/third_party/tabnine
 
+    cd /etc/vim/bundle/fzf &&  ./install --all
+
 }
 
 main

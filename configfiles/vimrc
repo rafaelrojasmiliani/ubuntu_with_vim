@@ -122,9 +122,10 @@ EOF
     Plugin 'vim-commentary'
     Plugin 'vim-repeat'
     Plugin 'vim-surround'
-    Plugin 'vim-unimpaired'
+    "Plugin 'vim-unimpaired'  not sufficiently useful
     Plugin 'vim-cutclass'
     Plugin 'vim-yoink'
+        let g:yoinkIncludeDeleteOperations=1
     Plugin 'vim-editvar'
     Plugin 'powerline'
     Plugin 'vim-be-good'

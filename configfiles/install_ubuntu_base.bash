@@ -66,6 +66,7 @@ main(){
             python3-dev \
             llvm-dev \
             libclang-dev \
+            libomp-dev \
     && pip3 install \
             autopep8 \
             flake8 \

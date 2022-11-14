@@ -32,8 +32,7 @@ call vundle#begin('/etc/vim/bundle/')
         let g:ycm_key_list_select_completion = ['<C-n>']
         let g:ycm_key_list_previous_completion = ['<C-p>']
         let g:ycm_python_binary_path='/usr/bin/python3'
-        let g:ycm_enable_diagnostic_signs=0
-        let g:ycm_enable_diagnostic_highlighting=0
+        let g:ycm_clangd_binary_path='/usr/bin/clang'
         let g:ycm_global_ycm_extra_conf='/etc/vim/ycm_extra_conf.py'
         let g:ycm_confirm_extra_conf = 1
         let g:ycm_compilation_database_folder = 'build'
@@ -85,6 +84,9 @@ EOF
         let g:ale_lint_on_insert_leave = 1
         let g:ale_fix_on_save = 1
         let g:ale_python_pylint_options = "--init-hook='import sys; sys.path.append(\".\")' --extension-pkg-allow-list=.so"
+        nmap <silent> <leader>aj :ALENext<cr>
+        nmap <silent> <leader>ak :ALEPrevious<cr>
+
     " ------- vim-substitute -------
     Plugin 'vim-substitute'
         let g:substitute_SingleWordSize=100
@@ -135,20 +137,12 @@ filetype plugin on
 " ----------------------------------------------------
 " ---------------- Status Line -----------------------
 " ----------------------------------------------------
-function! GitBranch()
-  return system("git rev-parse --abbrev-ref HEAD 2>/dev/null | tr -d '\n'")
-endfunction
 
-function! StatuslineGit()
-  let l:branchname = GitBranch()
-  return strlen(l:branchname) > 0?'('.l:branchname.')':''
-endfunction
-
+highlight GITPART ctermbg=yellow  guifg=yellow
 " jamessan's
 set laststatus=2
 set statusline=   " clear the statusline for when vimrc is reloaded
-set statusline+=%1*[\ WS00\ ]%*
-"set statusline+=%{StatuslineGit()}
+set statusline+=%1*%#GITPART#%{FugitiveStatusline()}%*
 set statusline+=%-2.2n                       " buffer number
 set statusline+=%t\                          " tail of file name
 set statusline+=%h%m%r%w                     " flags_

@@ -14,6 +14,7 @@ main(){
             build-essential \
             ca-certificates \
             clang \
+            clangd \
             clang-format \
             clang-tidy \
             cmake \

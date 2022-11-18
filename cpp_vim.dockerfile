@@ -5,7 +5,7 @@ ARG ROSDISTRO=""
 FROM ${BASEIMAGE}
 
 RUN --mount=type=bind,source=./,target=/workspace,rw \
-    cd /workspace/configfiles \
+    set -x && cd /workspace/configfiles \
     && bash install_ubuntu_base.bash \
     && bash install_vim_plugins.bash \
     && if [ ! -z ${ROSDISTRO} ]; then bash install_ros_packages.bash ${ROSDISTRO}; fi \

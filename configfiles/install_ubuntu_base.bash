@@ -78,76 +78,76 @@ main(){
 
     npm install -g --save-dev --save-exact npm@latest-6
     npm install -g --save-dev --save-exact htmlhint prettier fixjson
-source /etc/lsb-release
+    source /etc/lsb-release
 
-if [ $DISTRIB_RELEASE = "18.04" ]; then
-    # 1. Install ripgrep and bat from github releases
-    # 2. install lastest cmake
-    # 3. update gcc to one compatible with c++17
-    # 4. install latest vim
-    # 5. install gtest
-    # 6. install clangd-10
-    cd / \
-    && wget https://github.com/BurntSushi/ripgrep/releases/download/13.0.0/ripgrep_13.0.0_amd64.deb \
-    && wget https://github.com/sharkdp/bat/releases/download/v0.22.1/bat-musl_0.22.1_amd64.deb \
-    && dpkg -i *.deb \
-    && rm *deb
-    # --------------------
-    # 2. Install latest cmake
-    # -------------------
-    cd /
-    [ ! dpkg --verify cmake 2>/dev/null ] && apt remove --purge --auto-remove -y cmake
-    wget -O - https://apt.kitware.com/keys/kitware-archive-latest.asc 2>/dev/null | \
-            gpg --dearmor - | \
-            tee /etc/apt/trusted.gpg.d/kitware.gpg >/dev/null \
-    && apt-add-repository "deb https://apt.kitware.com/ubuntu/ $(lsb_release -cs) main" \
-    && apt-get update \
-    && DEBIAN_FRONTEND=noninteractive apt-get install \
-                    -y --no-install-recommends -o Dpkg::Options::="--force-confnew" cmake \
-            cmake-curses-gui \
-            cmake-qt-gui
+    if [ $DISTRIB_RELEASE = "18.04" ]; then
+        # 1. Install ripgrep and bat from github releases
+        # 2. install lastest cmake
+        # 3. update gcc to one compatible with c++17
+        # 4. install latest vim
+        # 5. install gtest
+        # 6. install clangd-10
+        cd / \
+        && wget https://github.com/BurntSushi/ripgrep/releases/download/13.0.0/ripgrep_13.0.0_amd64.deb \
+        && wget https://github.com/sharkdp/bat/releases/download/v0.22.1/bat-musl_0.22.1_amd64.deb \
+        && dpkg -i *.deb \
+        && rm *deb
+        # --------------------
+        # 2. Install latest cmake
+        # -------------------
+        cd /
+        [ ! dpkg --verify cmake 2>/dev/null ] && apt remove --purge --auto-remove -y cmake
+        wget -O - https://apt.kitware.com/keys/kitware-archive-latest.asc 2>/dev/null | \
+                gpg --dearmor - | \
+                tee /etc/apt/trusted.gpg.d/kitware.gpg >/dev/null \
+        && apt-add-repository "deb https://apt.kitware.com/ubuntu/ $(lsb_release -cs) main" \
+        && apt-get update \
+        && DEBIAN_FRONTEND=noninteractive apt-get install \
+                        -y --no-install-recommends -o Dpkg::Options::="--force-confnew" cmake \
+                cmake-curses-gui \
+                cmake-qt-gui
 
-    # --------------------
-    # 3. Install gcc compatible with c++17
-    # -------------------
-    DEBIAN_FRONTEND=noninteractive apt-get install \
-                    -y --no-install-recommends -o Dpkg::Options::="--force-confnew" gcc-8 g++-8
+        # --------------------
+        # 3. Install gcc compatible with c++17
+        # -------------------
+        DEBIAN_FRONTEND=noninteractive apt-get install \
+                        -y --no-install-recommends -o Dpkg::Options::="--force-confnew" gcc-8 g++-8
 
-    update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-7 700 --slave /usr/bin/g++ g++ /usr/bin/g++-7
-    update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-8 800 --slave /usr/bin/g++ g++ /usr/bin/g++-8
+        update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-7 700 --slave /usr/bin/g++ g++ /usr/bin/g++-7
+        update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-8 800 --slave /usr/bin/g++ g++ /usr/bin/g++-8
 
-    # --------------------
-    # 4. Install latest vim
-    # -------------------
-    apt-add-repository ppa:jonathonf/vim
-    apt-get update \
-    && DEBIAN_FRONTEND=noninteractive apt-get install \
-                    -y --no-install-recommends -o Dpkg::Options::="--force-confnew" vim
+        # --------------------
+        # 4. Install latest vim
+        # -------------------
+        apt-add-repository ppa:jonathonf/vim
+        apt-get update \
+        && DEBIAN_FRONTEND=noninteractive apt-get install \
+                        -y --no-install-recommends -o Dpkg::Options::="--force-confnew" vim
 
-    # --------------------
-    # 5. Install Gtest
-    # -------------------
-    mkdir -p /usr/src/gtest/build && cd /usr/src/gtest/build \
-    && cmake .. -DCMAKE_INSTALL_PREFIX=/usr && make -j$(nproc) \
-    && make install \
-    && cd / \
-    && rm -rf /usr/src/gtest/build
+        # --------------------
+        # 5. Install Gtest
+        # -------------------
+        mkdir -p /usr/src/gtest/build && cd /usr/src/gtest/build \
+        && cmake .. -DCMAKE_INSTALL_PREFIX=/usr && make -j$(nproc) \
+        && make install \
+        && cd / \
+        && rm -rf /usr/src/gtest/build
 
-    # --------------------
-    # 4. Install clang-10
-    # -------------------
-    apt-get update \
-    && DEBIAN_FRONTEND=noninteractive apt-get install \
-                    -y --no-install-recommends -o Dpkg::Options::="--force-confnew" clangd-10
-    [ ! -f '/usr/bin/clangd' ] && ln -s /usr/bin/clang-10 /usr/bin/clangd
+        # --------------------
+        # 4. Install clang-10
+        # -------------------
+        apt-get update \
+        && DEBIAN_FRONTEND=noninteractive apt-get install \
+                        -y --no-install-recommends -o Dpkg::Options::="--force-confnew" clangd-10
+        [ ! -f '/usr/bin/clangd' ] && ln -s /usr/bin/clang-10 /usr/bin/clangd
 
-else
-    DEBIAN_FRONTEND=noninteractive apt-get install \
-                    -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \
-                bat \
-                clangd \
-                ripgrep
-fi
+    else
+        DEBIAN_FRONTEND=noninteractive apt-get install \
+                        -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \
+                    bat \
+                    clangd \
+                    ripgrep
+    fi
 }
 
 

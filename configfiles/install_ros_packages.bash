@@ -1,6 +1,7 @@
 
 
 main(){
+    set -x
     distro=$1
     if [[ ! "$distro" =~ ^(kinetic|melodic|noetic)$ ]]; then
         exit 1

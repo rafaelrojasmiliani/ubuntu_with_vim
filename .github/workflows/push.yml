@@ -31,7 +31,7 @@ jobs:
           contains(steps.changed-files.outputs.modified_files, 'configfiles/vimrc_latex')
 
   deploy_ros:
-    name: Build images
+    name: Image ${{ matrix.docker_.image_name }}
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false

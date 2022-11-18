@@ -1,8 +1,9 @@
 # This file tells docker what image must be created
 # in order to be ahble to test this library
 ARG BASEIMAGE
-ARG ROSDISTRO
 FROM ${BASEIMAGE}
+
+ARG ROSDISTRO
 
 RUN --mount=type=bind,source=./,target=/workspace,rw \
     set -x && cd /workspace/configfiles \

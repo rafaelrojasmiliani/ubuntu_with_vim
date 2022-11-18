@@ -33,7 +33,19 @@ main(){
                     ros-$distro-moveit-msgs \
                     ros-$distro-rqt-joint-trajectory-controller \
                     ros-$distro-jsk-rviz-plugins
-
+                    ros-$distro-pcl-ros
+    if ! dpkg --verify ros-$distro-moveit-ros 2>/dev/null; then
+        apt-get update \
+        && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \
+            ros-$distro-moveit-resources-fanuc-moveit-config \
+            ros-$distro-moveit-resources-fanuc-description \
+            ros-$distro-moveit-resources-panda-description \
+            ros-$distro-moveit-resources-panda-moveit-config \
+            ros-$distro-moveit-resources-pr2-description \
+            ros-$distro-moveit-resources-prbt-moveit-config \
+            ros-$distro-moveit-resources-prbt-support \
+            ros-$distro-moveit-resources-prbt-pg70-support
+    fi
 }
 
 

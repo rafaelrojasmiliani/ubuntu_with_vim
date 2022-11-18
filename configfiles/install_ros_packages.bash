@@ -33,7 +33,7 @@ main(){
                     ros-$distro-rqt-py-common \
                     ros-$distro-moveit-msgs \
                     ros-$distro-rqt-joint-trajectory-controller \
-                    ros-$distro-jsk-rviz-plugins
+                    ros-$distro-jsk-rviz-plugins \
                     ros-$distro-pcl-ros
     if ! dpkg --verify ros-$distro-moveit-ros 2>/dev/null; then
         apt-get update \

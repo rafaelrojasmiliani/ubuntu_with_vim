@@ -1,7 +1,7 @@
 # This file tells docker what image must be created
 # in order to be ahble to test this library
 ARG BASEIMAGE
-ARG ROSDISTRO=""
+ARG ROSDISTRO
 FROM ${BASEIMAGE}
 
 RUN --mount=type=bind,source=./,target=/workspace,rw \

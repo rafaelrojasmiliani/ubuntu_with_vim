@@ -49,7 +49,6 @@ main(){
             net-tools \
             netcat \
             nodejs \
-            npm \
             patchelf \
             pkg-config \
             pylint \
@@ -76,8 +75,6 @@ main(){
             sympy \
             tk
 
-    npm install -g --save-dev --save-exact npm@latest-6
-    npm install -g --save-dev --save-exact htmlhint prettier fixjson
     source /etc/lsb-release
 
     if [ $DISTRIB_RELEASE = "18.04" ]; then
@@ -146,7 +143,10 @@ main(){
                         -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \
                     bat \
                     clangd \
+                    npm \
                     ripgrep
+        npm install -g --save-dev --save-exact npm@latest-6
+        npm install -g --save-dev --save-exact htmlhint prettier fixjson
     fi
 }
 

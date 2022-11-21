@@ -3,7 +3,8 @@
 main(){
     set -x
     distro=$1
-    if [[ ! "$distro" =~ ^(kinetic|melodic|noetic)$ ]]; then
+    if [[ ! "$distro" =~ ^(foxy|galactic|humble|kinetic|melodic|noetic)$ ]]; then
+        echo "Error: Distro $distro does not exists"
         exit 1
     fi
 

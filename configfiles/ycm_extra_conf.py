@@ -47,6 +47,8 @@ class FlagGenerator:
             'c++',
             '-I',
             '.',
+            '-I',
+            './include/',
             '-isystem',
             '/usr/include/eigen3',
             '-isystem',

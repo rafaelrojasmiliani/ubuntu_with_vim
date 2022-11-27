@@ -145,7 +145,9 @@ main(){
                     bat \
                     clangd \
                     npm \
-                    ripgrep
+                    ripgrep \
+                    librange-v3-dev \
+                    libasan5
         npm install -g --save-dev --save-exact npm@latest-6
         npm install -g --save-dev --save-exact htmlhint prettier fixjson
     fi

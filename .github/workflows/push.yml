@@ -70,10 +70,10 @@ jobs:
 
           # ------------ ROS to build MoveIt from source -----------------------------------
 
-          - file_name: "moveit_noetic_source.dockerfile"
-            image_name: "rafa606/ros-moveit-noetic-source-vim"
-            ycm_file: "configfiles/ycm_extra_conf_ros.py"
-            ros: ""
+          #- file_name: "moveit_noetic_source.dockerfile"
+          #image_name: "rafa606/ros-moveit-noetic-source-vim"
+          #ycm_file: "configfiles/ycm_extra_conf_ros.py"
+          #ros: ""
 
           # ------------ ROS with MoveIt -----------------------------------
 

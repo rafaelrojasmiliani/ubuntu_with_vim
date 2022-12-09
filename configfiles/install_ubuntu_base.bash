@@ -74,7 +74,8 @@ main(){
             flask \
             pip \
             sympy \
-            tk
+            tk \
+            cmake-format
 
     source /etc/lsb-release
 
@@ -85,6 +86,9 @@ main(){
         # 4. install latest vim
         # 5. install gtest
         # 6. install clangd-10
+        # --------------------
+        # 1. Install ripgrep
+        # -------------------
         cd / \
         && wget https://github.com/BurntSushi/ripgrep/releases/download/13.0.0/ripgrep_13.0.0_amd64.deb \
         && wget https://github.com/sharkdp/bat/releases/download/v0.22.1/bat-musl_0.22.1_amd64.deb \

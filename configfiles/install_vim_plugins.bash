@@ -35,6 +35,14 @@ https://github.com/airblade/vim-gitgutter                        # shows a git d
 https://github.com/thinca/vim-editvar                            # edit a variable on the buffer
 https://github.com/powerline/powerline.git                       # fancy status line
 https://github.com/ThePrimeagen/vim-be-good.git                  # game to learn vim
+https///github.com/LucHermitte/lh-vim-lib.git
+https///github.com/LucHermitte/lh-tags.git
+https///github.com/LucHermitte/lh-dev.git
+https///github.com/LucHermitte/lh-style.git
+https///github.com/LucHermitte/lh-brackets.git
+https///github.com/LucHermitte/vim-refactor.git
+https///github.com/LucHermitte/mu-template.git
+https///github.com/tomtom/stakeholders_vim.git
 )
 
 main(){

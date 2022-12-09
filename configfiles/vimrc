@@ -18,6 +18,7 @@ vnoremap <silent><Up> gk
 vnoremap <silent><Down> gj
 inoremap <silent><Up> <C-o>gk
 inoremap <silent><Down> <C-o>gj
+nnoremap <silent> yr :call setreg(v:register, getreg(nr2char(getchar())))<cr>
 set display+=lastline "prevent @ when a line doesn't fit on screen
 " ---------------------------------------
 set nocompatible
@@ -74,6 +75,7 @@ vim.command("let g:ale_cpp_clangtidy_options='%s'"% result)
 #start = vim.eval("startline")
 #end = vim.eval("endline")
 EOF
+        let g:ale_c_clangformat_use_local_file = 1
         let g:ale_cpp_clangtidy_executable = 'clang-tidy'
         let g:ale_cpp_cc_executable = 'gcc'
         let g:ale_sign_error = 'E'
@@ -127,9 +129,20 @@ EOF
     Plugin 'vim-cutclass'
     Plugin 'vim-yoink'
         let g:yoinkIncludeDeleteOperations=1
+    " vim refactor stuff
     Plugin 'vim-editvar'
     Plugin 'powerline'
     Plugin 'vim-be-good'
+    Plugin 'lh-vim-lib'
+    Plugin 'lh-tags'
+    Plugin 'lh-dev'
+    Plugin 'lh-style'
+    Plugin 'lh-brackets'
+    Plugin 'vim-refactor'
+
+    " For experimental function extraction
+    Plugin 'mu-template'
+    Plugin 'stakeholders_vim'
 call vundle#end()
 filetype plugin indent on
 filetype plugin on

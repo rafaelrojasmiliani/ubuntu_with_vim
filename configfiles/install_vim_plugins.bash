@@ -47,6 +47,7 @@ https://github.com/samoshkin/vim-find-files.git # find files with Find
 https://github.com/samoshkin/vim-mergetool.git
 https://github.com/kien/ctrlp.vim.git # several stuff to find
 https://github.com/tacahiroy/ctrlp-funky.git # finds functions with CtrlPFunky
+https://github.com/liuchengxu/vim-clap.git # seval stuff
 
 )
 

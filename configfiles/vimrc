@@ -150,6 +150,7 @@ EOF
     Plugin 'vim-mergetool'
     Plugin 'ctrlp.vim'
     Plugin 'ctrlp-funky'
+    Plugin 'vim-clap'
 call vundle#end()
 filetype plugin indent on
 filetype plugin on

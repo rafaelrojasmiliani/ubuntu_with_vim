@@ -129,20 +129,23 @@ EOF
     Plugin 'vim-cutclass'
     Plugin 'vim-yoink'
         let g:yoinkIncludeDeleteOperations=1
-    " vim refactor stuff
+
     Plugin 'vim-editvar'
     Plugin 'powerline'
     Plugin 'vim-be-good'
+
+    " vim refactor stuff
     Plugin 'lh-vim-lib'
     Plugin 'lh-tags'
     Plugin 'lh-dev'
     Plugin 'lh-style'
     Plugin 'lh-brackets'
     Plugin 'vim-refactor'
-
     " For experimental function extraction
     Plugin 'mu-template'
     Plugin 'stakeholders_vim'
+
+    Plugin 'undotree'
 call vundle#end()
 filetype plugin indent on
 filetype plugin on

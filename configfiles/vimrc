@@ -146,6 +146,7 @@ EOF
     Plugin 'stakeholders_vim'
 
     Plugin 'undotree'
+    Plugin 'vim-find-files'
 call vundle#end()
 filetype plugin indent on
 filetype plugin on

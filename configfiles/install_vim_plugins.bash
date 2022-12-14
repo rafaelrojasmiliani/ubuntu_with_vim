@@ -43,6 +43,7 @@ https///github.com/LucHermitte/lh-brackets.git
 https///github.com/LucHermitte/vim-refactor.git
 https///github.com/LucHermitte/mu-template.git
 https///github.com/tomtom/stakeholders_vim.git
+https://github.com/samoshkin/vim-find-files.git # find files with Find
 )
 
 main(){

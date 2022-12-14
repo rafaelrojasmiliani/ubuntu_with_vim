@@ -44,6 +44,10 @@ https///github.com/LucHermitte/vim-refactor.git
 https///github.com/LucHermitte/mu-template.git
 https///github.com/tomtom/stakeholders_vim.git
 https://github.com/samoshkin/vim-find-files.git # find files with Find
+https://github.com/samoshkin/vim-mergetool.git
+https://github.com/kien/ctrlp.vim.git # several stuff to find
+https://github.com/tacahiroy/ctrlp-funky.git # finds functions with CtrlPFunky
+
 )
 
 main(){

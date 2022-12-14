@@ -147,6 +147,9 @@ EOF
 
     Plugin 'undotree'
     Plugin 'vim-find-files'
+    Plugin 'vim-mergetool'
+    Plugin 'ctrlp.vim'
+    Plugin 'ctrlp-funky'
 call vundle#end()
 filetype plugin indent on
 filetype plugin on

@@ -68,6 +68,7 @@ main(){
             libclang-dev \
             libomp-dev \
             pybind11-dev \
+            cargo \
     && pip3 install \
             autopep8 \
             flake8 \
@@ -78,6 +79,13 @@ main(){
             cmake-format
 
     source /etc/lsb-release
+
+    git clone https://github.com/universal-ctags/ctags.git /ctags \
+        && cd ctags \
+        && ./autogen.sh \
+        && ./configure --prefix=/usr \
+        && make \
+        && make install # may require extra privileges depending on where to install
 
     if [ $DISTRIB_RELEASE = "18.04" ]; then
         # 1. Install ripgrep and bat from github releases

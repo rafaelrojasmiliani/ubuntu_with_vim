@@ -57,6 +57,7 @@ main(){
         git clone $plugin /etc/vim/bundle/$(echo $(basename $plugin) | sed 's/\.git//')
     done
 
+    # --------------  vimspector
     source /etc/lsb-release
     if [ $DISTRIB_RELEASE = "18.04" ]; then
         cd /etc/vim/bundle/vimspector &&  python3 install_gadget.py --enable-c --enable-cpp  --sudo
@@ -65,12 +66,17 @@ main(){
         cd /etc/vim/bundle/vimspector &&  python3 install_gadget.py --enable-c --enable-cpp --enable-python --sudo
     fi
 
+    # --------------  youcomplement
     cd /etc/vim/bundle/YouCompleteMe &&  git submodule update --init --recursive && python3 install.py --clang-completer --clangd-completer --force-sudo
     export YCM_CORE=$(find /etc/vim/bundle/YouCompleteMe/third_party/ycmd/ -name 'ycm_core*.so')
     patchelf --set-rpath "/etc/vim/bundle/YouCompleteMe/third_party/ycmd/third_party/clang/lib" "$YCM_CORE"
     #chmod 777 /etc/vim/bundle/YouCompleteMe/third_party/ycmd/third_party/tabnine
 
+    # --------------  fzf
     cd /etc/vim/bundle/fzf &&  ./install --all
+
+    # --------------  install maple with cargo and vim-clap
+    cd /etc/vim/bundle/vim-clap &&  cargo build --release
 
 }
 

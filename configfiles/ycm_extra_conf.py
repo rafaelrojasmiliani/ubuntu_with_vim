@@ -65,7 +65,6 @@ class FlagGenerator:
         self.default_flags_ = self.default_flags_ + \
             list(chain.from_iterable(
                 zip(len(header_paths)*['-isystem'], header_paths)))
-        print(self.default_flags_)
         # output, _ = process.communicate()
 
         # print(output)
@@ -78,17 +77,23 @@ class FlagGenerator:
         """ Return the compilation flags
         """
 
-        other_include_paths = list(glob.glob(
-            '/workspace/externals-ubuntu-22.04/**/include', recursive=True)) + list(glob.glob(
-                '/workspace/plugins/ImFusionSuite/**/include', recursive=True))
+        other_include_paths = list(
+            glob.glob('/workspace/externals-ubuntu-22.04/**/include',
+                      recursive=True)) + \
+            list(glob.glob('/workspace/plugins/ImFusionSuite/**/include',
+                           recursive=True)) + \
+            list(glob.glob('/workspace/plugins/ImFusionSuite/**/Include',
+                           recursive=True))
         result = []
         for include in other_include_paths:
             result.append('-isystem')
             result.append(include)
 
         other_include_paths = list(glob.glob(
-            '/workspace/plugins/ROSPlugin/**/include', recursive=True)) + list(glob.glob(
-                '/workspace/plugins/RoboticsPlugin/**/include', recursive=True))
+            '/workspace/plugins/ROSPlugin/**/Include', recursive=True)) + \
+            list(glob.glob(
+                '/workspace/plugins/RoboticsPlugin/**/Include',
+                recursive=True))
 
         for include in other_include_paths:
             result.append('-isystem')

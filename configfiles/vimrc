@@ -150,8 +150,17 @@ EOF
     Plugin 'vim-mergetool'
     Plugin 'ctrlp.vim'
     Plugin 'ctrlp-funky'
-    Plugin 'vim-clap'
+
     Plugin 'vista'
+    Plugin 'vim-clap'
+        nmap <leader>cb :Clap buffer<CR>
+        nmap <leader>cfl :Clap files<CR>
+        nmap <leader>cfg :Clap files .<CR>
+        nmap <leader>ctl :Clap tags<cr>
+        nmap <leader>cgc :Clap bcommits<cr>
+        nmap <leader>cgr :Clap grep<cr>
+        nmap <leader>cm :Clap marks<cr>
+
 call vundle#end()
 filetype plugin indent on
 filetype plugin on

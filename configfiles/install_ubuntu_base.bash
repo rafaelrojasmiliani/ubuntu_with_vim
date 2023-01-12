@@ -6,33 +6,33 @@ main(){
     apt-get update \
     && DEBIAN_FRONTEND=noninteractive apt-get install \
                     -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \
-            cmake-curses-gui \
-            cmake-qt-gui \
-            curl \
-            lsb-core \
-            gnupg2 \
             apt-transport-https \
             build-essential \
             ca-certificates \
+            cargo \
             clang \
             clang-format \
             clang-tidy \
             cmake \
-            libncurses-dev \
             cmake-curses-gui \
+            cmake-curses-gui \
+            cmake-qt-gui \
             coinor-libipopt-dev \
+            curl \
             default-jdk \
             exuberant-ctags \
             g++ \
             gdb \
             git \
             gnupg \
+            gnupg2 \
             golang \
             iputils-ping \
             jq \
             jsonlint \
             less \
             libboost-math-dev \
+            libclang-dev \
             libeigen3-dev \
             libgmp3-dev \
             libgsl-dev \
@@ -40,43 +40,44 @@ main(){
             liblapack-dev \
             liblapack3 \
             libmpc-dev \
+            libncurses-dev \
+            libomp-dev \
             libopenblas-base \
             libopenblas-dev \
             libsuitesparse-dev \
             libtrilinos-trilinosss-dev \
             libxml2-utils \
+            llvm-dev \
+            lsb-core \
             mono-complete \
             net-tools \
             netcat \
             nodejs \
             patchelf \
             pkg-config \
+            pybind11-dev \
             pylint \
+            python3-dev \
+            python3-pip \
             screen \
             silversearcher-ag \
             software-properties-common \
             sudo \
+            terminator \
             unzip \
             valgrind \
             vim \
             vim-gtk \
             vim-nox \
             wget \
-            python3-pip \
-            python3-dev \
-            llvm-dev \
-            libclang-dev \
-            libomp-dev \
-            pybind11-dev \
-            cargo \
     && pip3 install \
             autopep8 \
+            cmake-format \
             flake8 \
             flask \
             pip \
             sympy \
-            tk \
-            cmake-format
+            tk
 
     source /etc/lsb-release
 
@@ -163,6 +164,9 @@ main(){
         npm install -g --save-dev --save-exact npm@latest-6
         npm install -g --save-dev --save-exact htmlhint prettier fixjson
     fi
+
+    git config --global merge.tool vimdiff
+    git config --global merge.conflictstyle diff3
 }
 
 

@@ -84,7 +84,7 @@ EOF
         let g:ale_lint_on_enter = 1
         let g:ale_lint_on_insert_leave = 1
         let g:ale_fix_on_save = 1
-        let g:ale_python_pylint_options = "--init-hook='import sys; sys.path.append(\".\")' --extension-pkg-allow-list=.so"
+        let g:ale_python_pylint_options = "--rcfile .pylintrc --init-hook='import sys; sys.path.append(\".\")' --extension-pkg-allow-list=.so"
         nmap <silent> <leader>aj :ALENext<cr>
         nmap <silent> <leader>ak :ALEPrevious<cr>
 
@@ -153,13 +153,14 @@ EOF
 
     Plugin 'vista'
     Plugin 'vim-clap'
-        nmap <leader>cb :Clap buffer<CR>
+        nmap <leader>cb :Clap buffers<CR>
         nmap <leader>cfl :Clap files<CR>
         nmap <leader>cfg :Clap files .<CR>
         nmap <leader>ctl :Clap tags<cr>
         nmap <leader>cgc :Clap bcommits<cr>
         nmap <leader>cgr :Clap grep<cr>
         nmap <leader>cm :Clap marks<cr>
+        nmap <leader>cy :Clap yanks<cr>
 
 call vundle#end()
 filetype plugin indent on

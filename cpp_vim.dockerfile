@@ -2,6 +2,7 @@
 # in order to be ahble to test this library
 ARG BASEIMAGE
 FROM ${BASEIMAGE}
+SHELL ["bash", "-c"]
 
 ARG ROSDISTRO
 

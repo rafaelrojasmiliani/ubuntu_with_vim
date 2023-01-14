@@ -53,6 +53,7 @@ https://github.com/liuchengxu/vista.vim    # vista
 )
 
 main(){
+    set -x
     for plugin in ${plugins[@]}; do
         git clone $plugin /etc/vim/bundle/$(echo $(basename $plugin) | sed 's/\.git//')
     done
@@ -76,6 +77,7 @@ main(){
     cd /etc/vim/bundle/fzf &&  ./install --all
 
     # --------------  install maple with cargo and vim-clap
+    source /root/.cargo/env
     cd /etc/vim/bundle/vim-clap &&  cargo build --release
 
 }

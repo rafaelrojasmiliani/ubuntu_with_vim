@@ -77,13 +77,16 @@ main(){
             pip \
             sympy \
             tk
-    curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+
+    curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- --default-toolchain stable -y
+
+    export PATH=/root/.cargo/bin:$PATH
 
 
     source /etc/lsb-release
 
     git clone https://github.com/universal-ctags/ctags.git /ctags \
-        && cd ctags \
+        && cd /ctags \
         && ./autogen.sh \
         && ./configure --prefix=/usr \
         && make \

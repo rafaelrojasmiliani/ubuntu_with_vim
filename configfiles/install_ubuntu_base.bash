@@ -30,6 +30,7 @@ main(){
             jq \
             jsonlint \
             less \
+            tmux \
             libboost-math-dev \
             libclang-dev \
             libeigen3-dev \

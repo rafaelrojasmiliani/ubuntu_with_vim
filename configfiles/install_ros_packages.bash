@@ -37,20 +37,22 @@ main(){
                     ros-$distro-rqt-py-common \
                     ros-$distro-rqt-service-caller \
                     ros-$distro-rqt-tf-tree \
+                    ros-$distro-smach \
                     ros-$distro-velocity-controllers \
-                    ros-$distro-xacro \
-                    ros-$distro-smach
+                    ros-$distro-xacro
     if ! dpkg --verify ros-$distro-moveit-ros 2>/dev/null; then
         apt-get update \
         && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \
-            ros-$distro-moveit-resources-fanuc-moveit-config \
             ros-$distro-moveit-resources-fanuc-description \
+            ros-$distro-moveit-resources-fanuc-moveit-config \
             ros-$distro-moveit-resources-panda-description \
+            ros-$distro-moveit-resources-panda-moveit-config \
             ros-$distro-moveit-resources-panda-moveit-config \
             ros-$distro-moveit-resources-pr2-description \
             ros-$distro-moveit-resources-prbt-moveit-config \
+            ros-$distro-moveit-resources-prbt-pg70-support \
             ros-$distro-moveit-resources-prbt-support \
-            ros-$distro-moveit-resources-prbt-pg70-support
+            ros-$distro-panda-moveit-config
     fi
 }
 

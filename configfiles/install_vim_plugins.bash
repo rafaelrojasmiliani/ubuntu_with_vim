@@ -67,7 +67,7 @@ main(){
         cd /etc/vim/bundle/vimspector &&  python3 install_gadget.py --enable-c --enable-cpp --enable-python --sudo
     fi
 
-    # --------------  youcomplement
+    # --------------  youcompleteme
     cd /etc/vim/bundle/YouCompleteMe &&  git submodule update --init --recursive && python3 install.py --clang-completer --clangd-completer --force-sudo
     export YCM_CORE=$(find /etc/vim/bundle/YouCompleteMe/third_party/ycmd/ -name 'ycm_core*.so')
     patchelf --set-rpath "/etc/vim/bundle/YouCompleteMe/third_party/ycmd/third_party/clang/lib" "$YCM_CORE"
@@ -79,6 +79,9 @@ main(){
     # --------------  install maple with cargo and vim-clap
     source /root/.cargo/env
     cd /etc/vim/bundle/vim-clap &&  cargo build --release
+
+    # --------------  install doge
+    echo -ne '\n' | vim -c ':call doge#install()' -c ':q'
 
 }
 

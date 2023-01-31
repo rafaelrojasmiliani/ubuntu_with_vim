@@ -81,9 +81,21 @@ main(){
             pandas \
             tk
 
+    # --------------------
+    # Install rust
+    # -------------------
     curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- --default-toolchain stable -y
 
     export PATH=/root/.cargo/bin:$PATH
+
+    # --------------------
+    # Install arduino-cli
+    # -------------------
+    cd / \
+        && wget -qO arduino-cli.tar.gz https://downloads.arduino.cc/arduino-cli/arduino-cli_latest_Linux_64bit.tar.gz \
+        && sudo tar xf arduino-cli.tar.gz -C /usr/local/bin arduino-cli \
+        && rm -rf /arduino-cli.tar.gz
+
 
 
     source /etc/lsb-release

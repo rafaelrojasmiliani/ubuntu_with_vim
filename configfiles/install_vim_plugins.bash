@@ -49,7 +49,7 @@ https://github.com/kien/ctrlp.vim.git # several stuff to find
 https://github.com/tacahiroy/ctrlp-funky.git # finds functions with CtrlPFunky
 https://github.com/liuchengxu/vim-clap.git # seval stuff Clab (files|buffers|yanks|registers)
 https://github.com/liuchengxu/vista.vim    # vista
-
+https://github.com/stevearc/vim-arduino.git # arduino interface
 )
 
 main(){

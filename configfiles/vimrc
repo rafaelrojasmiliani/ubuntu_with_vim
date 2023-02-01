@@ -162,6 +162,8 @@ EOF
         nmap <leader>cm :Clap marks<cr>
         nmap <leader>cy :Clap yanks<cr>
 
+    Plugin 'vim-arduino'
+
 call vundle#end()
 filetype plugin indent on
 filetype plugin on

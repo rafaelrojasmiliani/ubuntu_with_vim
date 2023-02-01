@@ -79,7 +79,9 @@ main(){
             sympy \
             numpy \
             pandas \
-            tk
+            tk \
+            scipy \
+            matplotlib
 
     # --------------------
     # Install rust

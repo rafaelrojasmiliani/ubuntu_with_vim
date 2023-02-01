@@ -186,6 +186,12 @@ main(){
 
     git config --global merge.tool vimdiff
     git config --global merge.conflictstyle diff3
+
+    # --- Install ifopt
+    if [ ! -d /opt/ros ]; then
+        source /workspace/configfiles/install_ifopt.bash
+        install_ifopt
+    fi
 }
 
 

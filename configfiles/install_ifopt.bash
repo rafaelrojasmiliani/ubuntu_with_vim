@@ -1,8 +1,8 @@
 
 
-set -e
 
-main(){
+install_ifopt(){
+    set -ex
     git clone https://github.com/ethz-adrl/ifopt.git /ifopt
     cd /ifopt
     mkdir build
@@ -12,5 +12,3 @@ main(){
     make install
     rm -rf /ifopt
 }
-
-main

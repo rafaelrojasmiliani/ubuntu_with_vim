@@ -39,7 +39,8 @@ main(){
                     ros-$distro-rqt-tf-tree \
                     ros-$distro-smach \
                     ros-$distro-velocity-controllers \
-                    ros-$distro-xacro
+                    ros-$distro-xacro \
+                    ros-$distro-rqt-logger-level
     if ! dpkg --verify ros-$distro-moveit-ros 2>/dev/null; then
         apt-get update \
         && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \

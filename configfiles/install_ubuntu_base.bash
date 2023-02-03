@@ -96,7 +96,8 @@ main(){
     cd / \
         && wget -qO arduino-cli.tar.gz https://downloads.arduino.cc/arduino-cli/arduino-cli_latest_Linux_64bit.tar.gz \
         && tar xf arduino-cli.tar.gz -C /usr/local/bin arduino-cli \
-        && rm -rf /arduino-cli.tar.gz && arduino-cli completion bash > /etc/bash_completion.d/arduino-cli.sh
+        && rm -rf /arduino-cli.tar.gz && arduino-cli completion bash > /etc/bash_completion.d/arduino-cli.sh \
+        && arduino-cli core install arduino:avr
 
 
 

@@ -51,6 +51,7 @@ https://github.com/liuchengxu/vim-clap.git # seval stuff Clab (files|buffers|yan
 https://github.com/liuchengxu/vista.vim    # vista
 https://github.com/stevearc/vim-arduino.git # arduino interface
 https://github.com/sheerun/vim-polyglot.git
+https://github.com/tpope/vim-markdown.git
 )
 
 main(){

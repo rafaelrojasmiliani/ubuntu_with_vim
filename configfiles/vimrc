@@ -84,7 +84,14 @@ EOF
         let g:ale_lint_on_enter = 1
         let g:ale_lint_on_insert_leave = 1
         let g:ale_fix_on_save = 1
-        let g:ale_python_pylint_options = "--rcfile .pylintrc --init-hook='import sys; sys.path.append(\".\")' --extension-pkg-allow-list=.so"
+        function! SetAlePylint()
+			let g:ale_python_pylint_options = "--init-hook='import sys; sys.path.append(\".\")' --extension-pkg-allow-list=.so"
+			if filereadable(".pylintrc")
+				let g:ale_python_pylint_options = "--rcfile .pylintrc " . g:ale_python_pylint_options
+			endif
+        endfunction
+        autocmd BufRead,BufNewFile *.py call SetAlePylint()
+
         nmap <silent> <leader>aj :ALENext<cr>
         nmap <silent> <leader>ak :ALEPrevious<cr>
 

@@ -110,6 +110,8 @@ EOF
     Plugin 'vimspector'
         let g:vimspector_enable_mappings = 'HUMAN'
         map  <F4>          :TagbarToggle<CR>
+		nmap <Leader>di <Plug>VimspectorBalloonEval
+		xmap <Leader>di <Plug>VimspectorBalloonEval
     Plugin 'vim-dispatch'
     Plugin 'fzf'
     Plugin 'fzf.vim'
@@ -121,6 +123,17 @@ EOF
         let g:cmake_vimspector_support=1
         let g:cmake_build_executor='dispatch'
         let g:make_arguments='-j20'
+    autocmd BufRead,BufNewFile *.cpp
+   			\ let g:cmake_vimspector_default_configuration = {
+               \ 'adapter': 'vscode-cpptools',
+               \ 'configuration': {
+                   \ 'request': 'launch',
+                   \ 'cwd': '${workspaceRoot}',
+                   \ 'Mimode': '',
+                   \ 'args': [],
+                   \ 'program': ''
+                   \ }
+               \ }
 
     Plugin 'lualine-cmake4vim'
 

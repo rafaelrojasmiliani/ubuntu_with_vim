@@ -213,3 +213,4 @@ function! MyFormatExpr(start, end)
 endfunction
 
 set formatexpr=MyFormatExpr(v:lnum,v:lnum+v:count-1)
+set conceallevel=0

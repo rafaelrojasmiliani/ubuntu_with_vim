@@ -187,6 +187,7 @@ EOF
     Plugin 'vim-markdown'
         let g:markdown_syntax_conceal = 0
         let g:markdown_fenced_languages = ['html', 'python', 'bash=sh', 'cpp', 'xml']
+    Plugin 'vim-easy-align'
 
 call vundle#end()
 filetype plugin indent on

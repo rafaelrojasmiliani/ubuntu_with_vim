@@ -10,6 +10,9 @@ main(){
             build-essential \
             ca-certificates \
             clang \
+            clang \
+            ccls  \
+            flawfinder \
             clang-format \
             clang-tidy \
             cmake \

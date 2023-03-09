@@ -204,6 +204,9 @@ EOF
         let g:markdown_fenced_languages = ['html', 'python', 'bash=sh', 'cpp', 'xml']
     Plugin 'vim-easy-align'
     Plugin 'gtest-vim'
+    Plugin 'spelunker.vim'
+    highlight SpelunkerSpellBad cterm=underline ctermfg=247 gui=underline guifg=#9e9e9e
+    highlight SpelunkerComplexOrCompoundWord cterm=underline ctermfg=NONE gui=underline guifg=NONE
 
 call vundle#end()
 filetype plugin indent on

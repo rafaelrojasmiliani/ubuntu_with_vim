@@ -53,6 +53,7 @@ https://github.com/stevearc/vim-arduino.git # arduino interface
 https://github.com/sheerun/vim-polyglot.git
 https://github.com/tpope/vim-markdown.git
 https://github.com/ilyachur/gtest-vim
+https://github.com/kamykn/spelunker.vim.git
 )
 
 main(){

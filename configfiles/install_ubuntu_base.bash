@@ -9,12 +9,8 @@ main(){
             apt-transport-https \
             build-essential \
             ca-certificates \
-            clang \
-            clang \
             ccls  \
             flawfinder \
-            clang-format \
-            clang-tidy \
             cmake \
             cmake-curses-gui \
             cmake-curses-gui \
@@ -113,13 +109,59 @@ main(){
         && make \
         && make install # may require extra privileges depending on where to install
 
+
+    # --------------------
+    # Install latest cmake
+    # -------------------
+    cd /
+    [ ! dpkg --verify cmake 2>/dev/null ] && apt remove --purge --auto-remove -y cmake
+    wget -O - https://apt.kitware.com/keys/kitware-archive-latest.asc 2>/dev/null | \
+            gpg --dearmor - | \
+            tee /etc/apt/trusted.gpg.d/kitware.gpg >/dev/null \
+    && apt-add-repository "deb https://apt.kitware.com/ubuntu/ $(lsb_release -cs) main" \
+    && apt-get update \
+    && DEBIAN_FRONTEND=noninteractive apt-get install \
+                    -y --no-install-recommends -o Dpkg::Options::="--force-confnew" cmake \
+            cmake-curses-gui \
+            cmake-qt-gui
+
+    # --------------------
+    # Install latest clant
+    # -------------------
+    local distcodename=$(lsb_release -sc)
+    echo "deb http://apt.llvm.org/$distcodename/ llvm-toolchain-$distcodename main" >> /etc/apt/sources.list \
+        && wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | sudo apt-key add - \
+        && apt-get update \
+        && DEBIAN_FRONTEND=noninteractive apt-get install \
+                    -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \
+                    clang-format \
+                    clang-tidy \
+                    clang-tools \
+                    clang \
+                    clangd \
+                    libc++-dev \
+                    libc++1 \
+                    libc++abi-dev \
+                    libc++abi1 \
+                    libclang-dev \
+                    libclang1 \
+                    liblldb-dev \
+                    libllvm-ocaml-dev \
+                    libomp-dev \
+                    libomp5 \
+                    lld \
+                    lldb \
+                    llvm-dev \
+                    llvm-runtime \
+                    llvm \
+                    python3-clang
+
+
     if [ $DISTRIB_RELEASE = "18.04" ]; then
         # 1. Install ripgrep and bat from github releases
-        # 2. install lastest cmake
         # 3. update gcc to one compatible with c++17
         # 4. install latest vim
         # 5. install gtest
-        # 6. install clangd-10
         # --------------------
         # 1. Install ripgrep
         # -------------------
@@ -128,21 +170,6 @@ main(){
         && wget https://github.com/sharkdp/bat/releases/download/v0.22.1/bat-musl_0.22.1_amd64.deb \
         && dpkg -i *.deb \
         && rm *deb
-        # --------------------
-        # 2. Install latest cmake
-        # -------------------
-        cd /
-        [ ! dpkg --verify cmake 2>/dev/null ] && apt remove --purge --auto-remove -y cmake
-        wget -O - https://apt.kitware.com/keys/kitware-archive-latest.asc 2>/dev/null | \
-                gpg --dearmor - | \
-                tee /etc/apt/trusted.gpg.d/kitware.gpg >/dev/null \
-        && apt-add-repository "deb https://apt.kitware.com/ubuntu/ $(lsb_release -cs) main" \
-        && apt-get update \
-        && DEBIAN_FRONTEND=noninteractive apt-get install \
-                        -y --no-install-recommends -o Dpkg::Options::="--force-confnew" cmake \
-                cmake-curses-gui \
-                cmake-qt-gui
-
         # --------------------
         # 3. Install gcc compatible with c++17
         # -------------------
@@ -169,13 +196,6 @@ main(){
         && cd / \
         && rm -rf /usr/src/gtest/build
 
-        # --------------------
-        # 4. Install clang-10
-        # -------------------
-        apt-get update \
-        && DEBIAN_FRONTEND=noninteractive apt-get install \
-                        -y --no-install-recommends -o Dpkg::Options::="--force-confnew" clangd-10
-        [ ! -f '/usr/bin/clangd' ] && ln -s /usr/bin/clang-10 /usr/bin/clangd
 
     else
         DEBIAN_FRONTEND=noninteractive apt-get install \

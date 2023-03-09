@@ -63,6 +63,7 @@ call vundle#begin('/etc/vim/bundle/')
                     \'python': ['pylint', 'flake8', 'prospector'],
                     \'xml':['xmllint'],
                     \'cpp':['clangtidy', 'cc', 'ccls', 'flawfinder'],
+                    \'dockerfile':['hadolint'],
                     \'html':['htmlhint']}
 python3 << EOF
 import vim, sys, os
@@ -205,6 +206,9 @@ EOF
     Plugin 'vim-easy-align'
     Plugin 'gtest-vim'
     Plugin 'spelunker.vim'
+    let g:spelunker_white_list_for_user = ['ros', 'vimrc', 'yaml', 'rcl', 'of', 'os', 'alloc', 'cpp', 'filesystem', 'rclcpp']
+    let g:spelunker_white_list_for_user += ['ofstream', 'iostream', 'osstringstream', 'imfusion', 'rosparam', 'trunc', 'ifdef']
+    let g:spelunker_white_list_for_user += ['chrono']
     highlight SpelunkerSpellBad cterm=underline ctermfg=247 gui=underline guifg=#9e9e9e
     highlight SpelunkerComplexOrCompoundWord cterm=underline ctermfg=NONE gui=underline guifg=NONE
 

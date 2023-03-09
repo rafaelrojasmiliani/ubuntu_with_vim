@@ -156,6 +156,10 @@ main(){
                     llvm \
                     python3-clang
 
+    # -----------------
+    # Install handolint: dockerfile lineter
+    # -----------------
+    curl -LJ  https://github.com/hadolint/hadolint/releases/download/v2.12.0/hadolint-Linux-x86_64 --output /usr/bin/handolint
 
     if [ $DISTRIB_RELEASE = "18.04" ]; then
         # 1. Install ripgrep and bat from github releases

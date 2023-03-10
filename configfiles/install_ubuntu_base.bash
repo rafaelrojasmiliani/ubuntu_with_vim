@@ -6,6 +6,7 @@ main(){
     apt-get update \
     && DEBIAN_FRONTEND=noninteractive apt-get install \
                     -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \
+            software-properties-common \
             apt-transport-https \
             build-essential \
             ca-certificates \
@@ -31,7 +32,6 @@ main(){
             less \
             tmux \
             libboost-math-dev \
-            libclang-dev \
             libeigen3-dev \
             libgmp3-dev \
             libgsl-dev \
@@ -131,6 +131,7 @@ main(){
     local distcodename=$(lsb_release -sc)
     echo "deb http://apt.llvm.org/$distcodename/ llvm-toolchain-$distcodename main" >> /etc/apt/sources.list \
         && wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | sudo apt-key add - \
+        && add-apt-repository ppa:ubuntu-toolchain-r/test \
         && apt-get update \
         && DEBIAN_FRONTEND=noninteractive apt-get install \
                     -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \
@@ -150,16 +151,15 @@ main(){
                     libomp-dev \
                     libomp5 \
                     lld \
-                    lldb \
                     llvm-dev \
                     llvm-runtime \
                     llvm \
                     python3-clang
 
     # -----------------
-    # Install handolint: dockerfile lineter
+    # Install hadolint: dockerfile lineter
     # -----------------
-    curl -LJ  https://github.com/hadolint/hadolint/releases/download/v2.12.0/hadolint-Linux-x86_64 --output /usr/bin/handolint
+    curl -LJ  https://github.com/hadolint/hadolint/releases/download/v2.12.0/hadolint-Linux-x86_64 --output /usr/bin/hadolint
 
     if [ $DISTRIB_RELEASE = "18.04" ]; then
         # 1. Install ripgrep and bat from github releases

@@ -64,7 +64,9 @@ call vundle#begin('/etc/vim/bundle/')
                     \'xml':['xmllint'],
                     \'cpp':['clangtidy', 'cc', 'ccls', 'flawfinder'],
                     \'dockerfile':['hadolint'],
-                    \'html':['htmlhint']}
+                    \'sh':['bashate'],
+                    \'html':['htmlhint']
+                    \}
 python3 << EOF
 import vim, sys, os
 sys.path.append('/etc/vim/bundle/YouCompleteMe/python')

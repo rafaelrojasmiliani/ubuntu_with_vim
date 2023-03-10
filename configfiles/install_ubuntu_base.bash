@@ -1,4 +1,4 @@
-
+#!/bin/bash
 
 
 main(){
@@ -40,13 +40,11 @@ main(){
             liblapack3 \
             libmpc-dev \
             libncurses-dev \
-            libomp-dev \
             libopenblas-base \
             libopenblas-dev \
             libsuitesparse-dev \
             libtrilinos-trilinosss-dev \
             libxml2-utils \
-            llvm-dev \
             lsb-core \
             mono-complete \
             net-tools \
@@ -80,8 +78,8 @@ main(){
             pandas \
             tk \
             scipy \
-            matplotlib
-
+            matplotlib \
+            bashate
     # --------------------
     # Install rust
     # -------------------

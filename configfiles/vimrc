@@ -57,15 +57,18 @@ call vundle#begin('/etc/vim/bundle/')
                     \ '*':['remove_trailing_lines', 'trim_whitespace'],
                     \ 'json':['jq'],
                     \ 'yaml':['prettier'],
-                    \ 'html':['prettier']
+                    \ 'html':['prettier'],
+                    \ 'sh':['shfmt']
                     \ }
+        let g:ale_sh_shfmt_options='-i 4'
+
         let g:ale_linters = {
                     \'python': ['pylint', 'flake8', 'prospector'],
                     \'xml':['xmllint'],
                     \'cpp':['clangtidy', 'cc', 'ccls', 'flawfinder'],
                     \'dockerfile':['hadolint'],
                     \'sh':['bashate'],
-                    \'html':['htmlhint']
+                    \'html':['htmlhint'],
                     \}
 python3 << EOF
 import vim, sys, os

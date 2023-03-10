@@ -1,7 +1,6 @@
+#!/bin/bash
 
-
-
-install_ifopt(){
+install_ifopt() {
     set -ex
     git clone https://github.com/ethz-adrl/ifopt.git /ifopt
     cd /ifopt

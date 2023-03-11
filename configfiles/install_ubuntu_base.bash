@@ -9,7 +9,6 @@ main() {
             apt-transport-https \
             build-essential \
             ca-certificates \
-            ccls \
             flawfinder \
             cmake \
             cmake-curses-gui \
@@ -225,6 +224,7 @@ main() {
             npm \
             ripgrep \
             librange-v3-dev \
+            ccls \
             libasan5
         npm install -g --save-dev --save-exact npm@latest-6
         npm install -g --save-dev --save-exact htmlhint prettier fixjson

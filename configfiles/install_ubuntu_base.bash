@@ -64,20 +64,27 @@ main() {
             vim \
             vim-gtk \
             vim-nox \
-            wget &&
-        pip3 install \
-            autopep8 \
-            cmake-format \
-            flake8 \
-            flask \
-            pip \
-            sympy \
-            numpy \
-            pandas \
-            tk \
-            scipy \
-            matplotlib \
-            bashate
+            wget
+
+    if [ $DISTRIB_RELEASE = "18.04" ]; then
+        DEBIAN_FRONTEND=noninteractive apt-get install \
+            -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \
+            python3-setuptools
+    fi
+
+    pip3 install \
+        autopep8 \
+        cmake-format \
+        flake8 \
+        flask \
+        pip \
+        sympy \
+        numpy \
+        pandas \
+        tk \
+        scipy \
+        matplotlib \
+        bashate
     # --------------------
     # Install rust
     # -------------------

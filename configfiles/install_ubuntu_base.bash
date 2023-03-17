@@ -133,7 +133,7 @@ main() {
             cmake-curses-gui cmake-qt-gui
 
     # --------------------
-    # Install latest clant
+    # Install latest clang
     # -------------------
     dcn=$(lsb_release -sc)
     echo \
@@ -158,13 +158,17 @@ main() {
             libclang1 \
             liblldb-dev \
             libllvm-ocaml-dev \
-            libomp-dev \
-            libomp5 \
             lld \
             llvm-dev \
             llvm-runtime \
             llvm \
             python3-clang
+
+    clangd_version=$(clangd --version |
+        grep version | cut -d' ' -f4 | cut -d'.' -f1)
+    DEBIAN_FRONTEND=noninteractive apt-get install \
+        -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \
+        "libomp-$clangd_version-dev"
 
     # -----------------
     # Install hadolint: dockerfile lineter

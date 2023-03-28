@@ -66,6 +66,15 @@ main() {
             vim-nox \
             wget
 
+    # --------------------
+    # Install latest vim
+    # -------------------
+    apt-add-repository ppa:jonathonf/vim
+    apt-get update &&
+        DEBIAN_FRONTEND=noninteractive apt-get install \
+            -y --no-install-recommends -o \
+            Dpkg::Options::="--force-confnew" vim
+
     if [ $DISTRIB_RELEASE = "18.04" ]; then
         DEBIAN_FRONTEND=noninteractive apt-get install \
             -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \
@@ -186,8 +195,7 @@ main() {
     if [ $DISTRIB_RELEASE = "18.04" ]; then
         # 1. Install ripgrep and bat from github releases
         # 3. update gcc to one compatible with c++17
-        # 4. install latest vim
-        # 5. install gtest
+        # 4. install gtest
         # --------------------
         # 1. Install ripgrep
         # -------------------
@@ -209,16 +217,7 @@ main() {
             --slave /usr/bin/g++ g++ /usr/bin/g++-8
 
         # --------------------
-        # 4. Install latest vim
-        # -------------------
-        apt-add-repository ppa:jonathonf/vim
-        apt-get update &&
-            DEBIAN_FRONTEND=noninteractive apt-get install \
-                -y --no-install-recommends -o \
-                Dpkg::Options::="--force-confnew" vim
-
-        # --------------------
-        # 5. Install Gtest
+        # 4. Install Gtest
         # -------------------
         mkdir -p /usr/src/gtest/build && cd /usr/src/gtest/build &&
             cmake .. -DCMAKE_INSTALL_PREFIX=/usr && make -j$(nproc) &&

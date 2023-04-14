@@ -42,7 +42,7 @@ main() {
             ros-$distro-xacro \
             ros-$distro-rqt-logger-level
 
-    if ! dpkg --verify ros-$distro-moveit-ros 2>/dev/null; then
+    if dpkg --verify ros-$distro-moveit-ros 2>/dev/null; then
         apt-get update &&
             DEBIAN_FRONTEND=noninteractive apt-get install \
                 -y --no-install-recommends \

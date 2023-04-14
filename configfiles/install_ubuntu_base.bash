@@ -31,6 +31,7 @@ main() {
             tmux \
             libboost-math-dev \
             libeigen3-dev \
+            libjpeg-dev \
             libgmp3-dev \
             libgsl-dev \
             libgtest-dev \
@@ -208,10 +209,6 @@ main() {
             make install &&
             cd / &&
             rm -rf /usr/src/gtest/build
-
-        DEBIAN_FRONTEND=noninteractive apt-get install \
-            -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \
-            install python3-setuptools
 
     else
         DEBIAN_FRONTEND=noninteractive apt-get install \

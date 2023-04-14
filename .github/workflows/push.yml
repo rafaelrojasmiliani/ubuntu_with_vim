@@ -30,7 +30,7 @@ jobs:
           contains(steps.changed-files.outputs.modified_files, 'latex.dockerfile') ||
           contains(steps.changed-files.outputs.modified_files, 'configfiles/vimrc_latex')
 
-  deploy_ros:
+  basis:
     name: Image ${{ matrix.docker_image.image_name }}
     runs-on: ubuntu-latest
     strategy:
@@ -38,81 +38,16 @@ jobs:
       matrix:
         docker_image:
           # ------------ ROS BASE -----------------------------------
-          - file_name: "cpp_vim.dockerfile"
-            image_name: "rafa606/ros-noetic-vim"
-            ycm_file: "configfiles/ycm_extra_conf_ros.py"
-            ros: "noetic"
-            base_image: "ros:noetic-ros-base"
-
-          - file_name: "cpp_vim.dockerfile"
-            image_name: "rafa606/ros-melodic-vim"
-            ycm_file: "configfiles/ycm_extra_conf_ros.py"
-            ros: "melodic"
-            base_image: "ros:melodic-ros-base"
-
-          - file_name: "cpp_vim.dockerfile"
-            image_name: "rafa606/ros-foxy-vim"
-            ycm_file: "configfiles/ycm_extra_conf_ros2.py"
-            ros: "foxy"
-            base_image: "ros:foxy-ros-base"
-
-          - file_name: "cpp_vim.dockerfile"
-            image_name: "rafa606/ros-galactic-vim"
-            ycm_file: "configfiles/ycm_extra_conf_ros2.py"
-            ros: "galactic"
-            base_image: "ros:galactic-ros-base"
-
-          - file_name: "cpp_vim.dockerfile"
-            image_name: "rafa606/ros-humble-vim"
-            ycm_file: "configfiles/ycm_extra_conf_ros2.py"
-            ros: "humble"
-            base_image: "ros:humble-ros-base"
-
-          # ------------ ROS to build MoveIt from source -----------------------------------
-
-          #- file_name: "moveit_noetic_source.dockerfile"
-          #image_name: "rafa606/ros-moveit-noetic-source-vim"
-          #ycm_file: "configfiles/ycm_extra_conf_ros.py"
-          #ros: ""
-
-          # ------------ ROS with MoveIt -----------------------------------
-
-          - file_name: "cpp_vim.dockerfile"
-            image_name: "rafa606/ros-moveit-noetic-vim"
-            ycm_file: "configfiles/ycm_extra_conf_ros.py"
-            ros: "noetic"
-            base_image: "moveit/moveit:noetic-release"
-
-          - file_name: "cpp_vim.dockerfile"
-            image_name: "rafa606/ros-moveit-melodic-vim"
-            ycm_file: "configfiles/ycm_extra_conf_ros.py"
-            ros: "melodic"
-            base_image: "moveit/moveit:melodic-release"
-
-          - file_name: "cpp_vim.dockerfile"
-            image_name: "rafa606/ros-moveit-humble-vim"
-            ycm_file: "configfiles/ycm_extra_conf_ros2.py"
-            ros: "humble"
-            base_image: "moveit/moveit2:humble-release"
-
-          # ------------ Basic cpp tools  -----------------------------------
-          - file_name: "cpp_vim.dockerfile"
-            image_name: "rafa606/cpp-vim"
-            ycm_file: "configfiles/ycm_extra_conf.py"
-            base_image: "ubuntu:22.04"
-            ros: ""
-
-          - file_name: "cpp_vim.dockerfile"
-            image_name: "rafa606/cpp-vim:ubuntu20.04"
-            ycm_file: "configfiles/ycm_extra_conf.py"
-            base_image: "ubuntu:20.04"
-            ros: ""
-
-          - file_name: "cpp_vim.dockerfile"
-            image_name: "rafa606/cpp-vim:ubuntu18.04"
-            ycm_file: "configfiles/ycm_extra_conf.py"
+          - file_name: "base.dockerfile"
+            image_name: "rafa606/ubuntu:18.04"
             base_image: "ubuntu:18.04"
-            ros: ""
+          - file_name: "base.dockerfile"
+            image_name: "rafa606/ubuntu:20.04"
+            base_image: "ubuntu:20.04"
+          - file_name: "base.dockerfile"
+            image_name: "rafa606/ubuntu:22.04"
+            base_image: "ubuntu:22.04"
+
     steps:
       - name: checkout code
         uses: actions/checkout@master
@@ -125,14 +60,26 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: Get changed files using defaults
-        id: changed-files
-        uses: tj-actions/changed-files@v34.1.1
+      - name: Check last modified time of Foo Dockerfile
+        id: check_file_time
+        run: |
+          echo "::set-output name=modified::$(stat -c %Y foo.dockerfile)"
+       - name: Check last modified time of Foo Docker image
+         id: check_image_time
+         run: |
+            manifest=$(docker manifest inspect ${{ matrix.docker_image.image }} 2>/dev/null || true)
+            if [ -z "$manifest" ]; then
+              echo "::set-output name=modified::0"
+            else
+              echo "::set-output name=modified::$(date -d "$(echo "$manifest" | jq -r '.lastModified')" +%s)"
+            fi
 
       - name: Set up Docker Buildx
+        if: steps.check_file_time.outputs.modified > steps.check_image_time.outputs.modified
         uses: docker/setup-buildx-action@v2
 
       - name: build and push ${{ matrix.docker_image.image_name }}
+        if: steps.check_file_time.outputs.modified > steps.check_image_time.outputs.modified
         uses: docker/build-push-action@v3
         with:
           tags: ${{ matrix.docker_image.image_name }}
@@ -140,9 +87,3 @@ jobs:
           push: true
           build-args: |
             BASEIMAGE=${{ matrix.docker_image.base_image }}
-            ROSDISTRO=${{ matrix.docker_image.ros }}
-        if: |
-          contains(steps.changed-files.outputs.modified_files, ${{ matrix.docker_image.file_name }}) ||
-          contains(steps.changed-files.outputs.modified_files, 'configfiles/vimrc') ||
-          contains(steps.changed-files.outputs.modified_files, ${{ matrix.docker_image.ycm_file }}) ||
-          contains(steps.changed-files.outputs.modified_files, 'configfiles/ctags')

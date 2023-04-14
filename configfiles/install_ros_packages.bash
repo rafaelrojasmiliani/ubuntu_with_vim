@@ -56,7 +56,8 @@ main() {
                 ros-$distro-moveit-resources-prbt-moveit-config \
                 ros-$distro-moveit-resources-prbt-pg70-support \
                 ros-$distro-moveit-resources-prbt-support \
-                ros-$distro-panda-moveit-config
+                ros-$distro-panda-moveit-config \
+                ros-$distro-franka-gripper
     fi
 }
 

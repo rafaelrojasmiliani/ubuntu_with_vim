@@ -38,11 +38,9 @@ jobs:
       matrix:
         docker_image:
           # ------------ ROS BASE -----------------------------------
-          - file_name: "cpp_vim.dockerfile"
-            image_name: "rafa606/ros-noetic-vim"
-            ycm_file: "configfiles/ycm_extra_conf_ros.py"
-            ros: "noetic"
-            base_image: "ros:noetic-ros-base"
+          - file_name: "base.dockerfile"
+            image_name: "rafa606/ubuntu:18.04"
+            base_image: "ubuntu:18.04"
 
     steps:
       - name: checkout code

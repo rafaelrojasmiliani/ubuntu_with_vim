@@ -152,13 +152,11 @@ main() {
             libc++abi1 \
             libclang-dev \
             libclang1 \
-            liblldb-dev \
             libllvm-ocaml-dev \
             lld \
             llvm-dev \
             llvm-runtime \
-            llvm \
-            python3-clang
+            llvm
 
     clangd_version=$(clangd --version |
         grep version | cut -d' ' -f4 | cut -d'.' -f1)
@@ -217,6 +215,10 @@ main() {
             install python3-setuptools
 
     else
+        DEBIAN_FRONTEND=noninteractive apt-get install \
+            -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \
+            liblldb-dev \
+            python3-clang
 
         DEBIAN_FRONTEND=noninteractive apt-get install \
             -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \

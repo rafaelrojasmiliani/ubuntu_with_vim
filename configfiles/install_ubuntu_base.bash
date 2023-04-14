@@ -143,7 +143,6 @@ main() {
             -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \
             clang-format \
             clang-tidy \
-            clang-tools \
             clang \
             clangd \
             libc++-dev \
@@ -218,6 +217,7 @@ main() {
         DEBIAN_FRONTEND=noninteractive apt-get install \
             -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \
             liblldb-dev \
+            clang-tools \
             python3-clang
 
         DEBIAN_FRONTEND=noninteractive apt-get install \

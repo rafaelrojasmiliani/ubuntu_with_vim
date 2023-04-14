@@ -43,6 +43,7 @@ main() {
             ros-$distro-rqt-logger-level
 
     if dpkg --verify ros-$distro-moveit-ros 2>/dev/null; then
+        echo "----- Installing moveit extra packages"
         apt-get update &&
             DEBIAN_FRONTEND=noninteractive apt-get install \
                 -y --no-install-recommends \
@@ -58,6 +59,8 @@ main() {
                 ros-$distro-moveit-resources-prbt-support \
                 ros-$distro-panda-moveit-config \
                 ros-$distro-franka-gripper
+    else
+        echo "----- Moveit Extra package will to be installed"
     fi
 }
 

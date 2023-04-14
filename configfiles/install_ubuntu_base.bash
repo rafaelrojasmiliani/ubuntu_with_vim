@@ -81,19 +81,6 @@ main() {
             python3-setuptools
     fi
 
-    pip3 install \
-        autopep8 \
-        cmake-format \
-        flake8 \
-        flask \
-        pip \
-        sympy \
-        numpy \
-        pandas \
-        tk \
-        scipy \
-        matplotlib \
-        bashate
     # --------------------
     # Install rust
     # -------------------
@@ -225,6 +212,10 @@ main() {
             cd / &&
             rm -rf /usr/src/gtest/build
 
+        DEBIAN_FRONTEND=noninteractive apt-get install \
+            -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \
+            install python3-setuptools
+
     else
 
         DEBIAN_FRONTEND=noninteractive apt-get install \
@@ -239,6 +230,20 @@ main() {
         npm install -g --save-dev --save-exact npm@latest-6
         npm install -g --save-dev --save-exact htmlhint prettier fixjson
     fi
+
+    pip3 install \
+        autopep8 \
+        cmake-format \
+        flake8 \
+        flask \
+        pip \
+        sympy \
+        numpy \
+        pandas \
+        tk \
+        scipy \
+        matplotlib \
+        bashate
 
     git config --global merge.tool vimdiff
     git config --global merge.conflictstyle diff3

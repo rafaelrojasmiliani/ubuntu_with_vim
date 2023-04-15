@@ -70,7 +70,7 @@ main() {
     # --------------------
     # Install latest vim
     # -------------------
-    apt-add-repository ppa:jonathonf/vim
+    echo -ne '\n' | apt-add-repository ppa:jonathonf/vim
     apt-get update &&
         DEBIAN_FRONTEND=noninteractive apt-get install \
             -y --no-install-recommends -o \
@@ -121,7 +121,7 @@ main() {
         https://apt.kitware.com/keys/kitware-archive-latest.asc 2>/dev/null |
         gpg --dearmor - |
         tee /etc/apt/trusted.gpg.d/kitware.gpg >/dev/null &&
-        apt-add-repository \
+        echo -ne '\n' | apt-add-repository \
             "deb https://apt.kitware.com/ubuntu/ $(lsb_release -cs) main" &&
         apt-get update &&
         DEBIAN_FRONTEND=noninteractive apt-get install \
@@ -138,7 +138,7 @@ main() {
         >>/etc/apt/sources.list &&
         wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key |
         sudo apt-key add - &&
-        add-apt-repository ppa:ubuntu-toolchain-r/test &&
+        echo -ne '\n' | add-apt-repository ppa:ubuntu-toolchain-r/test &&
         apt-get update &&
         DEBIAN_FRONTEND=noninteractive apt-get install \
             -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \
@@ -210,6 +210,7 @@ main() {
             cd / &&
             rm -rf /usr/src/gtest/build
 
+        pip3 install setuptools
     else
         DEBIAN_FRONTEND=noninteractive apt-get install \
             -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \
@@ -255,7 +256,7 @@ main() {
 
     # --- Allow to install firefox
 
-    add-apt-repository ppa:mozillateam/ppa
+    echo -ne '\n' | add-apt-repository ppa:mozillateam/ppa
     echo '
     Package: *
     Pin: release o=LP-PPA-mozillateam

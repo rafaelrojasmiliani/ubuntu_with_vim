@@ -93,7 +93,7 @@ jobs:
           contains(steps.changed-files.outputs.modified_files, 'configfiles/ctags')
 
   build_cpp:
-    needs: build_images
+    needs: base_images
     name: Image ${{ matrix.docker_image.image_name }}
     runs-on: ubuntu-latest
     strategy:

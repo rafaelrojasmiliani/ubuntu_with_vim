@@ -138,7 +138,7 @@ main() {
         "deb http://apt.llvm.org/$dcn/ llvm-toolchain-$dcn main" \
         >>/etc/apt/sources.list &&
         wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key |
-        sudo apt-key add - &&
+        apt-key add - &&
         echo -ne '\n' | add-apt-repository ppa:ubuntu-toolchain-r/test &&
         apt-get update &&
         DEBIAN_FRONTEND=noninteractive apt-get install \
@@ -212,6 +212,18 @@ main() {
             rm -rf /usr/src/gtest/build
 
         pip3 install setuptools
+
+        # --- Install pinocchio
+        echo "deb [arch=amd64] \
+            http://robotpkg.openrobots.org/packages/debian/pub \
+        $(lsb_release -cs) robotpkg" |
+            tee /etc/apt/sources.list.d/robotpkg.list
+        curl http://robotpkg.openrobots.org/packages/debian/robotpkg.key |
+            apt-key add -
+        apt-get update
+        DEBIAN_FRONTEND=noninteractive apt-get install \
+            -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \
+            robotpkg-py36-pinocchio
     else
         DEBIAN_FRONTEND=noninteractive apt-get install \
             -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \
@@ -230,6 +242,18 @@ main() {
             libasan5
         npm install -g --save-dev --save-exact npm@latest-6
         npm install -g --save-dev --save-exact htmlhint prettier fixjson
+
+        # --- Install pinocchio
+        echo "deb [arch=amd64] \
+            http://robotpkg.openrobots.org/packages/debian/pub \
+        $(lsb_release -cs) robotpkg" |
+            tee /etc/apt/sources.list.d/robotpkg.list
+        curl http://robotpkg.openrobots.org/packages/debian/robotpkg.key |
+            apt-key add -
+        apt-get update
+        DEBIAN_FRONTEND=noninteractive apt-get install \
+            -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \
+            robotpkg-py38-pinocchio
     fi
 
     pip3 install \
@@ -256,10 +280,10 @@ main() {
     Package: *
     Pin: release o=LP-PPA-mozillateam
     Pin-Priority: 1001
-    ' | sudo tee /etc/apt/preferences.d/mozilla-firefox
+    ' | tee /etc/apt/preferences.d/mozilla-firefox
 
     echo 'Unattended-Upgrade::Allowed-Origins:: "LP-PPA-mozillateam:${distro_codename}";' |
-        sudo tee /etc/apt/apt.conf.d/51unattended-upgrades-firefox
+        tee /etc/apt/apt.conf.d/51unattended-upgrades-firefox
 
     # --- Install ifopt
     git clone https://github.com/ethz-adrl/ifopt.git /ifopt
@@ -284,17 +308,6 @@ main() {
     rm -rf /mosek
 
     pip3 install Mosek
-
-    # --- Install pinocchio
-    echo "deb [arch=amd64] http://robotpkg.openrobots.org/packages/debian/pub \
-        $(lsb_release -cs) robotpkg" |
-        tee /etc/apt/sources.list.d/robotpkg.list
-    curl http://robotpkg.openrobots.org/packages/debian/robotpkg.key |
-        apt-key add -
-    apt-get update
-    DEBIAN_FRONTEND=noninteractive apt-get install \
-        -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \
-        robotpkg-py36-pinocchio
 
 }
 

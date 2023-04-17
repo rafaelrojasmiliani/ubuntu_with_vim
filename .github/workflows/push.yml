@@ -51,9 +51,8 @@ jobs:
           push: true
           build-args: |
             BASEIMAGE=${{ matrix.docker_image.base_image }}
-            ROSDISTRO=${{ matrix.docker_image.ros }}
         if: |
-          steps.image_modify_date.outputs.value > steps.file_modify_date.outputs.value
+          steps.image_modify_date.outputs.value < steps.file_modify_date.outputs.value
 
   build_cpp:
     needs: base_images
@@ -69,7 +68,7 @@ jobs:
           - file_name: "cpp_vim.dockerfile"
             base_image: "rafa606/ubuntu:20.04"
             image_name: "rafa606/cpp-vim:20.04"
-          - file_name: "base.dockerfile"
+          - file_name: "cpp_vim.dockerfile"
             base_image: "rafa606/ubuntu:22.04"
             image_name: "rafa606/cpp-vim:22.04"
 
@@ -80,19 +79,18 @@ jobs:
           fetch-depth: 2
 
       - name: Check last modified time of Foo Dockerfile
-        id: check_foo_modified
+        id: image_modify_date
         run: |
-          echo "::set-output name=modified::$(stat -c %Y foo.dockerfile)"
+          echo "::set-output name=value::$(date -d "$(docker inspect --format='{{.Created}}' ${{ matrix.docker_image.image_name }})" +%s)"
 
       - name: Check last modified time of Foo Docker image
-        id: check_foo_image_modified
+        id: file_modify_date
         run: |
-          manifest=$(docker manifest inspect ${{ matrix.docker_image.file_name }} 2>/dev/null || true)
-          if [ -z "$manifest" ]; then
-            echo "::set-output name=modified::0"
-          else
-            echo "::set-output name=modified::$(date -d "$(echo "$manifest" | jq -r '.lastModified')" +%s)"
-          fi
+          echo "::set-output name=dockerfile::$(date -d "$(git log -1 --format=%cd --date=iso -- ${{ matrix.docker_image.file_name }})" +%s)"
+          echo "::set-output name=vimrc::$(date -d "$(git log -1 --format=%cd --date=iso -- ./configfiles/vimrc)" +%s)"
+          echo "::set-output name=ycm::$(date -d "$(git log -1 --format=%cd --date=iso -- ./configfiles/ycm_extra_conf.py)" +%s)"
+          echo "::set-output name=ctags::$(date -d "$(git log -1 --format=%cd --date=iso -- ./configfiles/ctags)" +%s)"
+          echo "::set-output name=gdbinit::$(date -d "$(git log -1 --format=%cd --date=iso -- ./configfiles/gdbinit)" +%s)"
 
       - name: Login to DockerHub
         uses: docker/login-action@v2
@@ -113,7 +111,8 @@ jobs:
             BASEIMAGE=${{ matrix.docker_image.base_image }}
             ROSDISTRO=${{ matrix.docker_image.ros }}
         if: |
-          contains(steps.changed-files.outputs.modified_files, ${{ matrix.docker_image.file_name }}) ||
-          contains(steps.changed-files.outputs.modified_files, 'configfiles/vimrc') ||
-          contains(steps.changed-files.outputs.modified_files, ${{ matrix.docker_image.ycm_file }}) ||
-          contains(steps.changed-files.outputs.modified_files, 'configfiles/ctags')
+          steps.image_modify_date.outputs.value < steps.file_modify_date.outputs.Dockerfile ||
+          steps.image_modify_date.outputs.value < steps.file_modify_date.outputs.vimrc ||
+          steps.image_modify_date.outputs.value < steps.file_modify_date.outputs.ycm ||
+          steps.image_modify_date.outputs.value < steps.file_modify_date.outputs.ctags ||
+          steps.image_modify_date.outputs.value < steps.file_modify_date.outputs.gdbinit

@@ -9,7 +9,6 @@ main() {
             apt-transport-https \
             build-essential \
             ca-certificates \
-            flawfinder \
             cmake \
             cmake-curses-gui \
             cmake-curses-gui \
@@ -18,6 +17,7 @@ main() {
             curl \
             default-jdk \
             exuberant-ctags \
+            flawfinder \
             g++ \
             gdb \
             git \
@@ -28,13 +28,12 @@ main() {
             jq \
             jsonlint \
             less \
-            tmux \
             libboost-math-dev \
             libeigen3-dev \
-            libjpeg-dev \
             libgmp3-dev \
             libgsl-dev \
             libgtest-dev \
+            libjpeg-dev \
             liblapack-dev \
             liblapack3 \
             libmpc-dev \
@@ -53,6 +52,7 @@ main() {
             pkg-config \
             pybind11-dev \
             pylint \
+            python3-argcomplete \
             python3-dev \
             python3-pip \
             screen \
@@ -60,6 +60,7 @@ main() {
             software-properties-common \
             sudo \
             terminator \
+            tmux \
             unzip \
             valgrind \
             vim \
@@ -265,6 +266,40 @@ main() {
 
     echo 'Unattended-Upgrade::Allowed-Origins:: "LP-PPA-mozillateam:${distro_codename}";' |
         sudo tee /etc/apt/apt.conf.d/51unattended-upgrades-firefox
+
+    # --- Install ifopt
+    git clone https://github.com/ethz-adrl/ifopt.git /ifopt
+    cd /ifopt
+    mkdir build
+    cd build
+    cmake .. -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_BUILD_TYPE=Release
+    make -j$(nproc)
+    make install
+    rm -rf /ifopt
+
+    # --- Install Mosek
+    cd /
+    wget https://download.mosek.com/stable/9.3.20/mosektoolslinux64x86.tar.bz2
+    tar xf /mosektoolslinux64x86.tar.bz2 -C /
+    cd /mosek/9.3/tools/platform/linux64x86/src/fusion_cxx
+    make -j$(nproc) && make install
+    install /mosek/9.3/tools/platform/linux64x86/bin/* /usr/lib/
+    install /mosek/9.3/tools/platform/linux64x86/h/* /usr/include/
+    rm -rf /mosek
+
+    pip3 install Mosek
+
+    # --- Install pinocchio
+    echo "deb [arch=amd64] http://robotpkg.openrobots.org/packages/debian/pub \
+        $(lsb_release -cs) robotpkg" |
+        tee /etc/apt/sources.list.d/robotpkg.list
+    curl http://robotpkg.openrobots.org/packages/debian/robotpkg.key |
+        apt-key add -
+    apt-get update
+    DEBIAN_FRONTEND=noninteractive apt-get install \
+        -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \
+        robotpkg-py36-pinocchio
+
 }
 
 main

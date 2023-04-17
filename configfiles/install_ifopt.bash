@@ -6,7 +6,7 @@ install_ifopt() {
     cd /ifopt
     mkdir build
     cd build
-    cmake .. -DCMAKE_INSTALL_PREFIX=/usr
+    cmake .. -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_BUILD_TYPE=Release
     make -j$(nproc)
     make install
     rm -rf /ifopt

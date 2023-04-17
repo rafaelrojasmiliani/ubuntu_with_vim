@@ -92,8 +92,8 @@ jobs:
           contains(steps.changed-files.outputs.modified_files, ${{ matrix.docker_image.ycm_file }}) ||
           contains(steps.changed-files.outputs.modified_files, 'configfiles/ctags')
 
-  build-cpp:
-    needs: build-images
+  build_cpp:
+    needs: build_images
     name: Image ${{ matrix.docker_image.image_name }}
     runs-on: ubuntu-latest
     strategy:

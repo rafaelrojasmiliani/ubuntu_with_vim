@@ -269,6 +269,7 @@ main() {
     cmake .. -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_BUILD_TYPE=Release
     make -j$(nproc)
     make install
+    cd /
     rm -rf /ifopt
 
     # --- Install Mosek
@@ -279,6 +280,7 @@ main() {
     make -j$(nproc) && make install
     install /mosek/9.3/tools/platform/linux64x86/bin/* /usr/lib/
     install /mosek/9.3/tools/platform/linux64x86/h/* /usr/include/
+    cd /
     rm -rf /mosek
 
     pip3 install Mosek

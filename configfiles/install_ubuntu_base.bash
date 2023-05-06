@@ -253,7 +253,7 @@ main() {
         apt-get update
         DEBIAN_FRONTEND=noninteractive apt-get install \
             -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \
-            robotpkg-py38-pinocchio
+            robotpkg-py310-pinocchio
     fi
 
     pip3 install \

@@ -27,6 +27,7 @@ jobs:
       - name: Check last modified time of Foo Dockerfile
         id: image_modify_date
         run: |
+          docker pull ${{ matrix.docker_image.image_name }}
           echo "value=$(date -d "$(docker inspect --format='{{.Created}}' ${{ matrix.docker_image.image_name }})" +%s)" >> $GITHUB_OUTPUT
 
       - name: Check last modified time of Foo Docker image
@@ -83,6 +84,7 @@ jobs:
       - name: Check last modified time of Foo Dockerfile
         id: image_modify_date
         run: |
+          docker pull ${{ matrix.docker_image.image_name }}
           echo "value=$(date -d "$(docker inspect --format='{{.Created}}' ${{ matrix.docker_image.image_name }})" +%s)" >> $GITHUB_OUTPUT
 
       - name: Check last modified time of Foo Docker image
@@ -138,6 +140,7 @@ jobs:
       - name: Check last modified time of Foo Dockerfile
         id: image_modify_date
         run: |
+          docker pull ${{ matrix.docker_image.image_name }}
           echo "value=$(date -d "$(docker inspect --format='{{.Created}}' ${{ matrix.docker_image.image_name }})" +%s)" >> $GITHUB_OUTPUT
 
       - name: Check last modified time of Foo Docker image

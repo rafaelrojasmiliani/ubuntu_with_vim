@@ -255,9 +255,17 @@ main() {
         curl http://robotpkg.openrobots.org/packages/debian/robotpkg.key |
             apt-key add -
         apt-get update
-        DEBIAN_FRONTEND=noninteractive apt-get install \
-            -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \
-            robotpkg-py310-pinocchio
+        if [ $DISTRIB_RELEASE = "20.04" ]; then
+            DEBIAN_FRONTEND=noninteractive apt-get install \
+                -y --no-install-recommends \
+                -o Dpkg::Options::="--force-confnew" \
+                robotpkg-py38-pinocchio
+        else
+            DEBIAN_FRONTEND=noninteractive apt-get install \
+                -y --no-install-recommends \
+                -o Dpkg::Options::="--force-confnew" \
+                robotpkg-py310-pinocchio
+        fi
     fi
 
     pip3 install \

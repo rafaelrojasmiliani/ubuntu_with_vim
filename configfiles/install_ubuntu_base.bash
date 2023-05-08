@@ -2,10 +2,11 @@
 
 main() {
     set -xe
-    apt-get update &&
+    echo 'Etc/UTC' >/etc/timezone &&
+        ln -s /usr/share/zoneinfo/Etc/UTC /etc/localtime &&
+        apt-get update &&
         DEBIAN_FRONTEND=noninteractive apt-get install \
             -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \
-            software-properties-common \
             apt-transport-https \
             build-essential \
             ca-certificates \
@@ -16,6 +17,7 @@ main() {
             coinor-libipopt-dev \
             curl \
             default-jdk \
+            dirmngr \
             exuberant-ctags \
             flawfinder \
             g++ \
@@ -23,6 +25,7 @@ main() {
             git \
             gnupg \
             gnupg2 \
+            tzdata \
             golang \
             iputils-ping \
             jq \
@@ -57,6 +60,7 @@ main() {
             python3-pip \
             screen \
             silversearcher-ag \
+            software-properties-common \
             software-properties-common \
             sudo \
             terminator \

@@ -4,8 +4,6 @@ ARG BASEIMAGE
 FROM ${BASEIMAGE}
 SHELL ["bash", "-c"]
 
-ARG ROSDISTRO
-
 RUN --mount=type=bind,source=./,target=/workspace,rw \
     set -x && cd /workspace/configfiles \
     && cp vimrc /etc/vim/ \

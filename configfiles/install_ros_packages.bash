@@ -10,102 +10,65 @@ main() {
     rm -rf /usr/lib/x86_64-linux-gnu/ifopt/
     rm -rf /usr/lib/x86_64-linux-gnu/libifopt_ipopt.so
 
-    distro=$1
-    if [[ ! "$distro" =~ \
+    if [[ ! "${ROS_DISTRO}" =~ \
         ^(foxy|galactic|humble|kinetic|melodic|noetic)$ ]]; then
-        echo "Error: Distro $distro does not exists"
+        echo "Error: Distro \"${ROS_DISTRO}\" does not exists"
         exit 1
     fi
+    if [[ ! "${ROS_DISTRO}" =~ \
+        ^(kinetic|melodic|noetic)$ ]]; then
+        echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -cs) main" \
+            >/etc/apt/sources.list.d/ros1-latest.list
+        apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 \
+            --recv-keys C1CF6E31E6BADE8868B172B4F42ED6FBAB17C654
+        apt-get update
+        DEBIAN_FRONTEND=noninteractive apt-get install \
+            -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \
+            ros-${ROS_DISTRO}-ros-core
+    else
 
-    if [[ "$distro" = "melodic" ]]; then
-        echo "deb http://packages.ros.org/ros/ubuntu bionic main" \
-            >/etc/apt/sources.list.d/ros1-latest.list
-        apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 \
-            --recv-keys C1CF6E31E6BADE8868B172B4F42ED6FBAB17C654
-        apt-get update
-        DEBIAN_FRONTEND=noninteractive apt-get install \
-            -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \
-            ros-melodic-ros-core=1.4.1-0*
-    elif [[ "$distro" = "noetic" ]]; then
-        echo "deb http://packages.ros.org/ros/ubuntu bionic main" \
-            >/etc/apt/sources.list.d/ros1-latest.list
-        apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 \
-            --recv-keys C1CF6E31E6BADE8868B172B4F42ED6FBAB17C654
-        apt-get update
-        DEBIAN_FRONTEND=noninteractive apt-get install \
-            -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \
-            ros-noetic-ros-core=1.5.0-1*
-    elif [[ "$distro" = "foxy" ]]; then
-        apt update && sudo apt install curl -y
         curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o /usr/share/keyrings/ros-archive-keyring.gpg
-        echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/ros2/ubuntu $(. /etc/os-release && echo $UBUNTU_CODENAME) main" | sudo tee /etc/apt/sources.list.d/ros2.list >/dev/null
+        echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/ros2/ubuntu $(. /etc/os-release && echo $(lsb_release -cs)) main" | sudo tee /etc/apt/sources.list.d/ros2.list >/dev/null
         apt-get update
         DEBIAN_FRONTEND=noninteractive apt-get install \
             -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \
-            ros-foxy-ros-base
-    elif [[ "$distro" = "humble" ]]; then
-        apt update && sudo apt install curl -y
-        curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o /usr/share/keyrings/ros-archive-keyring.gpg
-        echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/ros2/ubuntu $(. /etc/os-release && echo $UBUNTU_CODENAME) main" | sudo tee /etc/apt/sources.list.d/ros2.list >/dev/null
-        apt-get update
-        DEBIAN_FRONTEND=noninteractive apt-get install \
-            -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \
-            ros-humble-ros-base
+            ros-${ROS_DISTRO}-ros-base
     fi
 
     apt-get update &&
         DEBIAN_FRONTEND=noninteractive apt-get install \
             -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \
             python3-catkin-tools \
-            ros-$distro-control-msgs \
-            ros-$distro-gazebo-ros \
-            ros-$distro-gazebo-ros-control \
-            ros-$distro-ifopt \
-            ros-$distro-joint-state-controller \
-            ros-$distro-joint-state-publisher \
-            ros-$distro-joint-trajectory-action \
-            ros-$distro-joint-trajectory-controller \
-            ros-$distro-jsk-rviz-plugins \
-            ros-$distro-moveit-msgs \
-            ros-$distro-pcl-ros \
-            ros-$distro-plotjuggler \
-            ros-$distro-plotjuggler-ros \
-            ros-$distro-position-controllers \
-            ros-$distro-robot-state-publisher \
-            ros-$distro-roslint \
-            ros-$distro-rqt \
-            ros-$distro-rqt-graph \
-            ros-$distro-rqt-gui \
-            ros-$distro-rqt-gui-py \
-            ros-$distro-rqt-joint-trajectory-controller \
-            ros-$distro-rqt-publisher ros-$distro-rqt-py-common \
-            ros-$distro-rqt-service-caller \
-            ros-$distro-rqt-tf-tree \
-            ros-$distro-smach \
-            ros-$distro-velocity-controllers \
-            ros-$distro-xacro \
-            ros-$distro-rqt-logger-level
+            ros-${ROS_DISTRO}-control-msgs \
+            ros-${ROS_DISTRO}-gazebo-ros \
+            ros-${ROS_DISTRO}-gazebo-ros-control \
+            ros-${ROS_DISTRO}-ifopt \
+            ros-${ROS_DISTRO}-joint-state-controller \
+            ros-${ROS_DISTRO}-joint-state-publisher \
+            ros-${ROS_DISTRO}-joint-trajectory-action \
+            ros-${ROS_DISTRO}-joint-trajectory-controller \
+            ros-${ROS_DISTRO}-jsk-rviz-plugins \
+            ros-${ROS_DISTRO}-moveit-msgs \
+            ros-${ROS_DISTRO}-pcl-ros \
+            ros-${ROS_DISTRO}-plotjuggler \
+            ros-${ROS_DISTRO}-plotjuggler-ros \
+            ros-${ROS_DISTRO}-position-controllers \
+            ros-${ROS_DISTRO}-robot-state-publisher \
+            ros-${ROS_DISTRO}-roslint \
+            ros-${ROS_DISTRO}-rqt \
+            ros-${ROS_DISTRO}-rqt-graph \
+            ros-${ROS_DISTRO}-rqt-gui \
+            ros-${ROS_DISTRO}-rqt-gui-py \
+            ros-${ROS_DISTRO}-rqt-joint-trajectory-controller \
+            ros-${ROS_DISTRO}-rqt-publisher \
+            ros-${ROS_DISTRO}-rqt-py-common \
+            ros-${ROS_DISTRO}-rqt-service-caller \
+            ros-${ROS_DISTRO}-rqt-tf-tree \
+            ros-${ROS_DISTRO}-smach \
+            ros-${ROS_DISTRO}-velocity-controllers \
+            ros-${ROS_DISTRO}-xacro \
+            ros-${ROS_DISTRO}-rqt-logger-level
 
-    if dpkg --verify ros-$distro-moveit-ros 2>/dev/null; then
-        echo "----- Installing moveit extra packages"
-        apt-get update &&
-            DEBIAN_FRONTEND=noninteractive apt-get install \
-                -y --no-install-recommends \
-                -o Dpkg::Options::="--force-confnew" \
-                ros-$distro-moveit-resources-fanuc-description \
-                ros-$distro-moveit-resources-fanuc-moveit-config \
-                ros-$distro-moveit-resources-panda-description \
-                ros-$distro-moveit-resources-panda-moveit-config \
-                ros-$distro-moveit-resources-panda-moveit-config \
-                ros-$distro-moveit-resources-pr2-description \
-                ros-$distro-moveit-resources-prbt-moveit-config \
-                ros-$distro-moveit-resources-prbt-pg70-support \
-                ros-$distro-moveit-resources-prbt-support \
-                ros-$distro-panda-moveit-config \
-                ros-$distro-franka-gripper
-    else
-        echo "----- Moveit Extra package will to be installed"
-    fi
 }
 
 main $@

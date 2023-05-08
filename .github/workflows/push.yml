@@ -27,12 +27,12 @@ jobs:
       - name: Check last modified time of Foo Dockerfile
         id: image_modify_date
         run: |
-          echo "value=hello3">> $GITHUB_OUTPUT
+          echo "value=$(date -d "$(docker inspect --format='{{.Created}}' ${{ matrix.docker_image.image_name }})" +%s)" >> $GITHUB_OUTPUT
 
       - name: Check last modified time of Foo Docker image
         id: file_modify_date
         run: |
-          echo "value=hello">> $GITHUB_OUTPUT
+          echo "value=$(date -d "$(git log -1 --format=%cd --date=iso -- ${{ matrix.docker_image.file_name }})" +%s)" >> $GITHUB_OUTPUT
       - name: Check last modified time of Foo Docker image
         id: test
         run: |

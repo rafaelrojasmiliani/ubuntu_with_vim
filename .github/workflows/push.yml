@@ -34,7 +34,7 @@ jobs:
       - name: Check last modified time of Dockerfile
         id: file_modify_date
         run: |
-          echo "value=$(date -d "$(git log -1 --format=%cd --date=iso -- ${{ matrix.docker_image.file_name }})" +%s)" >> $GITHUB_OUTPUT
+          echo "value=$(date -d "$(git log -n 1 --format=%cd --date=iso -- ${{ matrix.docker_image.file_name }})" +%s)" >> $GITHUB_OUTPUT
       - name: Test
         id: test
         run: |

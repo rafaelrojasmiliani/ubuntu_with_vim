@@ -15,7 +15,7 @@ main() {
         echo "Error: Distro \"${ROS_DISTRO}\" does not exists"
         exit 1
     fi
-    if [[ ! "${ROS_DISTRO}" =~ \
+    if [[ "${ROS_DISTRO}" =~ \
         ^(kinetic|melodic|noetic)$ ]]; then
         echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -cs) main" \
             >/etc/apt/sources.list.d/ros1-latest.list

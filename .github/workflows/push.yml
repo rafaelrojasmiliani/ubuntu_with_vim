@@ -27,8 +27,9 @@ jobs:
       - name: Check last modified time of the image of registry
         id: image_modify_date
         run: |
-          docker pull ${{ matrix.docker_image.image_name }}
-          echo "value=$(date -d "$(docker inspect --format='{{.Created}}' ${{ matrix.docker_image.image_name }})" +%s)" >> $GITHUB_OUTPUT
+          if docker pull ${{ matrix.docker_image.image_name }}; then \
+            echo "value=$(date -d "$(docker inspect --format='{{.Created}}' ${{ matrix.docker_image.image_name }})" +%s)" >> $GITHUB_OUTPUT \
+          fi
 
       - name: Check last modified time of Dockerfile
         id: file_modify_date
@@ -89,8 +90,9 @@ jobs:
       - name: Check last modified time of Foo Dockerfile
         id: image_modify_date
         run: |
-          docker pull ${{ matrix.docker_image.image_name }}
-          echo "value=$(date -d "$(docker inspect --format='{{.Created}}' ${{ matrix.docker_image.image_name }})" +%s)" >> $GITHUB_OUTPUT
+          if docker pull ${{ matrix.docker_image.image_name }}; then \
+            echo "value=$(date -d "$(docker inspect --format='{{.Created}}' ${{ matrix.docker_image.image_name }})" +%s)" >> $GITHUB_OUTPUT \
+          fi
 
       - name: Check last modified time of Foo Docker image
         id: file_modify_date
@@ -145,8 +147,9 @@ jobs:
       - name: Check last modified time of Foo Dockerfile
         id: image_modify_date
         run: |
-          docker pull ${{ matrix.docker_image.image_name }}
-          echo "value=$(date -d "$(docker inspect --format='{{.Created}}' ${{ matrix.docker_image.image_name }})" +%s)" >> $GITHUB_OUTPUT
+          if docker pull ${{ matrix.docker_image.image_name }}; then \
+            echo "value=$(date -d "$(docker inspect --format='{{.Created}}' ${{ matrix.docker_image.image_name }})" +%s)" >> $GITHUB_OUTPUT \
+          fi
 
       - name: Check last modified time of Foo Docker image
         id: file_modify_date

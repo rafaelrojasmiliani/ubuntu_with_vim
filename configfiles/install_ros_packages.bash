@@ -69,6 +69,7 @@ main() {
             ros-${ROS_DISTRO}-xacro \
             ros-${ROS_DISTRO}-rqt-logger-level
 
+    echo "source /opt/ros/${ROS_DISTRO}/setup.bash" >>/etc/bash.bashrc
 }
 
 main $@

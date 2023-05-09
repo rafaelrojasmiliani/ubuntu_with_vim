@@ -85,7 +85,7 @@ jobs:
       - name: checkout code
         uses: actions/checkout@master
         with:
-          fetch-depth: 2
+          fetch-depth: "0"
 
       - name: Check last modified time of Foo Dockerfile
         id: image_modify_date
@@ -130,7 +130,7 @@ jobs:
         docker_image:
           - file_name: "cpp_vim.dockerfile"
             base_image: "rafa606/ubuntu:18.04"
-            image_name: "rafa606/cpp-vim:28.04"
+            image_name: "rafa606/cpp-vim:18.04"
           - file_name: "cpp_vim.dockerfile"
             base_image: "rafa606/ubuntu:20.04"
             image_name: "rafa606/cpp-vim:20.04"
@@ -142,7 +142,7 @@ jobs:
       - name: checkout code
         uses: actions/checkout@master
         with:
-          fetch-depth: 2
+          fetch-depth: "0"
 
       - name: Check last modified time of Foo Dockerfile
         id: image_modify_date

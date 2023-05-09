@@ -21,8 +21,6 @@ jobs:
     steps:
       - name: checkout code
         uses: actions/checkout@master
-        with:
-          fetch-depth: 2
 
       - name: Check last modified time of the image of registry
         id: image_modify_date

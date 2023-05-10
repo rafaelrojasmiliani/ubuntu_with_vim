@@ -27,7 +27,7 @@ jobs:
       - name: Check last modified time of the image of registry
         id: image_modify_date
         run: |
-          echo "value=$(date -d "curl -s https://hub.docker.com/v2/repositories/rafa606/"$(echo ${{ matrix.docker_image.image_name }} | sed 's/:/\/tags\//')" | jq -r '.name'" +%s)" >> $GITHUB_OUTPUT; \
+          echo "value=$(date -d "$(curl -s https://hub.docker.com/v2/repositories/rafa606/"$(echo ${{ matrix.docker_image.image_name }} | sed 's/:/\/tags\//'))" | jq -r '.name'" +%s)" >> $GITHUB_OUTPUT; \
 
       - name: Check last modified time of Dockerfile
         id: file_modify_date

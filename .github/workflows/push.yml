@@ -89,6 +89,7 @@ jobs:
         id: image_modify_date
         run: |
           echo "value=$(date -d "$(curl -s https://hub.docker.com/v2/repositories/rafa606/"$(echo ${{ matrix.docker_image.image_name }} | sed 's/:/\/tags\//')" | jq -r '.name')" +%s)" >> $GITHUB_OUTPUT;
+          echo "base_image=$(date -d "$(curl -s https://hub.docker.com/v2/repositories/rafa606/"$(echo ${{ matrix.docker_image.base_image }} | sed 's/:/\/tags\//')" | jq -r '.name')" +%s)" >> $GITHUB_OUTPUT;
 
       - name: Check last modified time of Foo Docker image
         id: file_modify_date
@@ -116,7 +117,8 @@ jobs:
             DISTRO=${{ matrix.docker_image.ros_distro }}
         if: |
           ${{ steps.image_modify_date.outputs.value }} < ${{ steps.file_modify_date.outputs.docker_file }} ||
-          ${{ steps.image_modify_date.outputs.value }} < ${{ steps.file_modify_date.outputs.install_file }}
+          ${{ steps.image_modify_date.outputs.value }} < ${{ steps.file_modify_date.outputs.install_file }} ||
+          ${{ steps.image_modify_date.outputs.value }} < ${{ steps.image_modify_date.outputs.base_image }}
 
   build_cpp:
     needs: base_images
@@ -146,6 +148,7 @@ jobs:
         id: image_modify_date
         run: |
           echo "value=$(date -d "$(curl -s https://hub.docker.com/v2/repositories/rafa606/"$(echo ${{ matrix.docker_image.image_name }} | sed 's/:/\/tags\//')" | jq -r '.name')" +%s)" >> $GITHUB_OUTPUT;
+          echo "base_image=$(date -d "$(curl -s https://hub.docker.com/v2/repositories/rafa606/"$(echo ${{ matrix.docker_image.base_image }} | sed 's/:/\/tags\//')" | jq -r '.name')" +%s)" >> $GITHUB_OUTPUT;
 
       - name: Check last modified time of Foo Docker image
         id: file_modify_date
@@ -175,8 +178,9 @@ jobs:
             BASEIMAGE=${{ matrix.docker_image.base_image }}
             ROSDISTRO=${{ matrix.docker_image.ros }}
         if: |
-          steps.image_modify_date.outputs.value < steps.file_modify_date.outputs.Dockerfile ||
-          steps.image_modify_date.outputs.value < steps.file_modify_date.outputs.vimrc ||
-          steps.image_modify_date.outputs.value < steps.file_modify_date.outputs.ycm ||
-          steps.image_modify_date.outputs.value < steps.file_modify_date.outputs.ctags ||
-          steps.image_modify_date.outputs.value < steps.file_modify_date.outputs.gdbinit
+          ${{ steps.image_modify_date.outputs.value }} < ${{ steps.file_modify_date.outputs.Dockerfile }} ||
+          ${{ steps.image_modify_date.outputs.value }} < ${{ steps.file_modify_date.outputs.vimrc }} ||
+          ${{ steps.image_modify_date.outputs.value }} < ${{ steps.file_modify_date.outputs.ycm }} ||
+          ${{ steps.image_modify_date.outputs.value }} < ${{ steps.file_modify_date.outputs.ctags }} ||
+          ${{ steps.image_modify_date.outputs.value }} < ${{ steps.file_modify_date.outputs.gdbinit }} ||
+          ${{ steps.image_modify_date.outputs.value }} < ${{ steps.image_modify_date.outputs.base_image }}

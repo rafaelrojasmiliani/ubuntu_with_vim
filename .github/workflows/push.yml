@@ -27,7 +27,7 @@ jobs:
       - name: Check last modified time of the image of registry
         id: image_modify_date
         run: |
-          echo "value=$(date -d "$(curl -s https://hub.docker.com/v2/repositories/rafa606/"$(echo ${{ matrix.docker_image.image_name }} | sed 's/:/\/tags\//')" | jq -r '.last_updated')" +%s)" >> $GITHUB_OUTPUT;
+          echo "value=$(date -d "$(curl -s https://hub.docker.com/v2/repositories/"$(echo ${{ matrix.docker_image.image_name }} | sed 's/:/\/tags\//')" | jq -r '.last_updated')" +%s)" >> $GITHUB_OUTPUT;
 
       - name: Check last modified time of Dockerfile
         id: file_modify_date
@@ -88,8 +88,70 @@ jobs:
       - name: Check last modified time of Foo Dockerfile
         id: image_modify_date
         run: |
-          echo "value=$(date -d "$(curl -s https://hub.docker.com/v2/repositories/rafa606/"$(echo ${{ matrix.docker_image.image_name }} | sed 's/:/\/tags\//')" | jq -r '.last_updated')" +%s)" >> $GITHUB_OUTPUT;
-          echo "base_image=$(date -d "$(curl -s https://hub.docker.com/v2/repositories/rafa606/"$(echo ${{ matrix.docker_image.base_image }} | sed 's/:/\/tags\//')" | jq -r '.last_updated')" +%s)" >> $GITHUB_OUTPUT;
+          echo "value=$(date -d "$(curl -s https://hub.docker.com/v2/repositories/"$(echo ${{ matrix.docker_image.image_name }} | sed 's/:/\/tags\//')" | jq -r '.last_updated')" +%s)" >> $GITHUB_OUTPUT;
+          echo "base_image=$(date -d "$(curl -s https://hub.docker.com/v2/repositories/"$(echo ${{ matrix.docker_image.base_image }} | sed 's/:/\/tags\//')" | jq -r '.last_updated')" +%s)" >> $GITHUB_OUTPUT;
+
+      - name: Check last modified time of Foo Docker image
+        id: file_modify_date
+        run: |
+          echo "docker_file=$(date -d "$(git log -1 --format=%cd --date=iso -- ${{ matrix.docker_image.file_name }})" +%s)" >> $GITHUB_OUTPUT
+          echo "install_file=$(date -d "$(git log -1 --format=%cd --date=iso -- ./configfiles/install_ros_packages.bash)" +%s)" >> $GITHUB_OUTPUT
+
+      - name: Login to DockerHub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: build and push ${{ matrix.docker_image.image_name }}
+        uses: docker/build-push-action@v3
+        with:
+          tags: ${{ matrix.docker_image.image_name }}
+          file: ${{ matrix.docker_image.file_name }}
+          push: true
+          build-args: |
+            BASEIMAGE=${{ matrix.docker_image.base_image }}
+            DISTRO=${{ matrix.docker_image.ros_distro }}
+        if: |
+          ${{ steps.image_modify_date.outputs.value }} < ${{ steps.file_modify_date.outputs.docker_file }} ||
+          ${{ steps.image_modify_date.outputs.value }} < ${{ steps.file_modify_date.outputs.install_file }} ||
+          ${{ steps.image_modify_date.outputs.value }} < ${{ steps.image_modify_date.outputs.base_image }}
+
+  moveit_base_images:
+    needs: base_images
+    name: Image ${{ matrix.docker_image.image_name }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        docker_image:
+          - file_name: "moveit.dockerfile"
+            image_name: "rafa606/moveit:melodic"
+            base_image: "rafa606/ros:melodic"
+            ros_distro: "melodic"
+          - file_name: "moveit.dockerfile"
+            image_name: "rafa606/moveit:noetic"
+            base_image: "rafa606/ros:noetic"
+            ros_distro: "noetic"
+          - file_name: "moveit.dockerfile"
+            image_name: "rafa606/moveit:humble"
+            base_image: "rafa606/ros:humble"
+            ros_distro: "humble"
+
+    steps:
+      - name: checkout code
+        uses: actions/checkout@master
+        with:
+          fetch-depth: "0"
+
+      - name: Check last modified time of Foo Dockerfile
+        id: image_modify_date
+        run: |
+          echo "value=$(date -d "$(curl -s https://hub.docker.com/v2/repositories/"$(echo ${{ matrix.docker_image.image_name }} | sed 's/:/\/tags\//')" | jq -r '.last_updated')" +%s)" >> $GITHUB_OUTPUT;
+          echo "base_image=$(date -d "$(curl -s https://hub.docker.com/v2/repositories/"$(echo ${{ matrix.docker_image.base_image }} | sed 's/:/\/tags\//')" | jq -r '.last_updated')" +%s)" >> $GITHUB_OUTPUT;
 
       - name: Check last modified time of Foo Docker image
         id: file_modify_date
@@ -147,8 +209,8 @@ jobs:
       - name: Check last modified time of Foo Dockerfile
         id: image_modify_date
         run: |
-          echo "value=$(date -d "$(curl -s https://hub.docker.com/v2/repositories/rafa606/"$(echo ${{ matrix.docker_image.image_name }} | sed 's/:/\/tags\//')" | jq -r '.last_updated')" +%s)" >> $GITHUB_OUTPUT;
-          echo "base_image=$(date -d "$(curl -s https://hub.docker.com/v2/repositories/rafa606/"$(echo ${{ matrix.docker_image.base_image }} | sed 's/:/\/tags\//')" | jq -r '.last_updated')" +%s)" >> $GITHUB_OUTPUT;
+          echo "value=$(date -d "$(curl -s https://hub.docker.com/v2/repositories/"$(echo ${{ matrix.docker_image.image_name }} | sed 's/:/\/tags\//')" | jq -r '.last_updated')" +%s)" >> $GITHUB_OUTPUT;
+          echo "base_image=$(date -d "$(curl -s https://hub.docker.com/v2/repositories/"$(echo ${{ matrix.docker_image.base_image }} | sed 's/:/\/tags\//')" | jq -r '.last_updated')" +%s)" >> $GITHUB_OUTPUT;
 
       - name: Check last modified time of Foo Docker image
         id: file_modify_date

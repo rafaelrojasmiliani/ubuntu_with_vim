@@ -33,11 +33,12 @@ jobs:
         id: file_modify_date
         run: |
           echo "value=$(date -d "$(git log -n 1 --format=%cd --date=iso -- ${{ matrix.docker_image.file_name }})" +%s)" >> $GITHUB_OUTPUT
+
       - name: Test
         id: test
         run: |
           echo "${{ steps.image_modify_date.outputs.value }} < ${{ steps.file_modify_date.outputs.value }}"
-          [ 1683613342 -lt 1683539974 ] && echo yes || echo no
+
       - name: Login to DockerHub
         uses: docker/login-action@v2
         with:
@@ -49,7 +50,7 @@ jobs:
 
       - name: build and push ${{ matrix.docker_image.image_name }}
         if: |
-          steps.image_modify_date.outputs.value < steps.file_modify_date.outputs.value
+          ${{ steps.image_modify_date.outputs.value }} < ${{ steps.file_modify_date.outputs.value }}
         uses: docker/build-push-action@v3
         with:
           tags: ${{ matrix.docker_image.image_name }}
@@ -96,6 +97,13 @@ jobs:
         run: |
           echo "docker_file=$(date -d "$(git log -1 --format=%cd --date=iso -- ${{ matrix.docker_image.file_name }})" +%s)" >> $GITHUB_OUTPUT
           echo "install_file=$(date -d "$(git log -1 --format=%cd --date=iso -- ./configfiles/install_ros_packages.bash)" +%s)" >> $GITHUB_OUTPUT
+
+      - name: Test
+        id: test
+        run: |
+          echo "${{ steps.image_modify_date.outputs.value }} < ${{ steps.file_modify_date.outputs.docker_file }}"
+          echo "${{ steps.image_modify_date.outputs.value }} < ${{ steps.file_modify_date.outputs.install_file }}"
+          echo "${{ steps.image_modify_date.outputs.value }} < ${{ steps.file_modify_date.outputs.base_image }}"
 
       - name: Login to DockerHub
         uses: docker/login-action@v2

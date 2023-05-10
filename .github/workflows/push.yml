@@ -27,8 +27,8 @@ jobs:
       - name: Check last modified time of the image of registry
         id: image_modify_date
         run: |
-          if docker pull ${{ matrix.docker_image.image_name }}; then \
-            echo "value=$(date -d "$(docker inspect --format='{{.Created}}' ${{ matrix.docker_image.image_name }})" +%s)" >> $GITHUB_OUTPUT; \
+          if [ -z $(curl -s https://hub.docker.com/v2/repositories/rafa606/"$(echo ${{ matrix.docker_image.image_name }} | sed 's/:/\/tags\//')" | jq -r '.name') ]; then \
+            echo "value=$(date -d "curl -s https://hub.docker.com/v2/repositories/rafa606/"$(echo ${{ matrix.docker_image.image_name }} | sed 's/:/\/tags\//')" | jq -r '.name'" +%s)" >> $GITHUB_OUTPUT; \
           fi
 
       - name: Check last modified time of Dockerfile

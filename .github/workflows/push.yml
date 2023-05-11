@@ -248,9 +248,9 @@ jobs:
             BASEIMAGE=${{ matrix.docker_image.base_image }}
             ROSDISTRO=${{ matrix.docker_image.ros }}
         if: |
-          steps.image_modify_date.outputs.value }} < steps.file_modify_date.outputs.Dockerfile ||
-          steps.image_modify_date.outputs.value }} < steps.file_modify_date.outputs.vimrc ||
-          steps.image_modify_date.outputs.value }} < steps.file_modify_date.outputs.ycm ||
-          steps.image_modify_date.outputs.value }} < steps.file_modify_date.outputs.ctags ||
-          steps.image_modify_date.outputs.value }} < steps.file_modify_date.outputs.gdbinit ||
-          steps.image_modify_date.outputs.value }} < steps.image_modify_date.outputs.base_image
+          steps.image_modify_date.outputs.value < steps.file_modify_date.outputs.Dockerfile ||
+          steps.image_modify_date.outputs.value < steps.file_modify_date.outputs.vimrc ||
+          steps.image_modify_date.outputs.value < steps.file_modify_date.outputs.ycm ||
+          steps.image_modify_date.outputs.value < steps.file_modify_date.outputs.ctags ||
+          steps.image_modify_date.outputs.value < steps.file_modify_date.outputs.gdbinit ||
+          steps.image_modify_date.outputs.value < steps.image_modify_date.outputs.base_image

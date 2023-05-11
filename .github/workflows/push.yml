@@ -207,6 +207,30 @@ jobs:
           - file_name: "cpp_vim.dockerfile"
             base_image: "rafa606/ubuntu:22.04"
             image_name: "rafa606/cpp-vim:22.04"
+          #--------------------
+          #--- ROS ------------
+          #--------------------
+          - file_name: "cpp_vim.dockerfile"
+            base_image: "rafa606/ros:melodic"
+            image_name: "rafa606/ros-vim:melodic"
+          - file_name: "cpp_vim.dockerfile"
+            base_image: "rafa606/ros:noetic"
+            image_name: "rafa606/ros-vim:noetic"
+          - file_name: "cpp_vim.dockerfile"
+            base_image: "rafa606/ros:humble"
+            image_name: "rafa606/ros-vim:humble"
+          #-----------------------
+          #--- Moveit ------------
+          #-----------------------
+          - file_name: "cpp_vim.dockerfile"
+            base_image: "rafa606/moveit:melodic"
+            image_name: "rafa606/moveit-vim:melodic"
+          - file_name: "cpp_vim.dockerfile"
+            base_image: "rafa606/moveit:noetic"
+            image_name: "rafa606/moveit-vim:noetic"
+          - file_name: "cpp_vim.dockerfile"
+            base_image: "rafa606/moveit:humble"
+            image_name: "rafa606/moveit-vim:humble"
 
     steps:
       - name: checkout code

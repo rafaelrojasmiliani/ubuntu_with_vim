@@ -191,7 +191,7 @@ jobs:
           steps.image_modify_date.outputs.value < steps.image_modify_date.outputs.base_image
 
   build_cpp:
-    needs: base_images
+    needs: base_images ros_base_images moveit_base_images
     name: Image ${{ matrix.docker_image.image_name }}
     runs-on: ubuntu-latest
     strategy:

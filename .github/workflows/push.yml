@@ -258,7 +258,7 @@ jobs:
         run: |
           echo "dockerfile=$(date -d "$(git log -1 --format=%cd --date=iso -- ${{ matrix.docker_image.file_name }})" +%s)" >> $GITHUB_OUTPUT
           echo "vimrc=$(date -d "$(git log -1 --format=%cd --date=iso -- ./configfiles/vimrc)" +%s)" >> $GITHUB_OUTPUT
-          echo "ycm=$(date -d "$(git log -1 --format=%cd --date=iso -- ./configfiles/ycm_extra_conf.py)" +%s)" >> $GITHUB_OUTPUT
+          echo "ycm=$(date -d "$(git log -1 --format=%cd --date=iso -- ./configfiles/${{ matrix.docker_image.ycm_file }})" +%s)" >> $GITHUB_OUTPUT
           echo "ctags=$(date -d "$(git log -1 --format=%cd --date=iso -- ./configfiles/ctags)" +%s)" >> $GITHUB_OUTPUT
           echo "gdbinit=$(date -d "$(git log -1 --format=%cd --date=iso -- ./configfiles/gdbinit)" +%s)" >> $GITHUB_OUTPUT
 

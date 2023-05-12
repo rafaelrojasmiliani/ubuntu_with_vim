@@ -201,36 +201,45 @@ jobs:
           - file_name: "cpp_vim.dockerfile"
             base_image: "rafa606/ubuntu:18.04"
             image_name: "rafa606/cpp-vim:18.04"
+            ycm_file: "ycm_extra_conf.py"
           - file_name: "cpp_vim.dockerfile"
             base_image: "rafa606/ubuntu:20.04"
             image_name: "rafa606/cpp-vim:20.04"
+            ycm_file: "ycm_extra_conf.py"
           - file_name: "cpp_vim.dockerfile"
             base_image: "rafa606/ubuntu:22.04"
             image_name: "rafa606/cpp-vim:22.04"
+            ycm_file: "ycm_extra_conf.py"
           #--------------------
           #--- ROS ------------
           #--------------------
           - file_name: "cpp_vim.dockerfile"
             base_image: "rafa606/ros:melodic"
             image_name: "rafa606/ros-vim:melodic"
+            ycm_file: "ycm_extra_conf_ros.py"
           - file_name: "cpp_vim.dockerfile"
             base_image: "rafa606/ros:noetic"
             image_name: "rafa606/ros-vim:noetic"
+            ycm_file: "ycm_extra_conf_ros.py"
           - file_name: "cpp_vim.dockerfile"
             base_image: "rafa606/ros:humble"
             image_name: "rafa606/ros-vim:humble"
+            ycm_file: "ycm_extra_conf_ros.py"
           #-----------------------
           #--- Moveit ------------
           #-----------------------
           - file_name: "cpp_vim.dockerfile"
             base_image: "rafa606/moveit:melodic"
             image_name: "rafa606/moveit-vim:melodic"
+            ycm_file: "ycm_extra_conf_ros2.py"
           - file_name: "cpp_vim.dockerfile"
             base_image: "rafa606/moveit:noetic"
             image_name: "rafa606/moveit-vim:noetic"
+            ycm_file: "ycm_extra_conf_ros2.py"
           - file_name: "cpp_vim.dockerfile"
             base_image: "rafa606/moveit:humble"
             image_name: "rafa606/moveit-vim:humble"
+            ycm_file: "ycm_extra_conf_ros2.py"
 
     steps:
       - name: checkout code
@@ -270,7 +279,7 @@ jobs:
           push: true
           build-args: |
             BASEIMAGE=${{ matrix.docker_image.base_image }}
-            ROSDISTRO=${{ matrix.docker_image.ros }}
+            YCM_FILE=${{ matrix.docker_image.ycm_file }}
         if: |
           steps.image_modify_date.outputs.value < steps.file_modify_date.outputs.Dockerfile ||
           steps.image_modify_date.outputs.value < steps.file_modify_date.outputs.vimrc ||

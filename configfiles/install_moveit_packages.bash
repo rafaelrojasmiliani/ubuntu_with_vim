@@ -11,6 +11,7 @@ main() {
         DEBIAN_FRONTEND=noninteractive apt-get remove \
             -y -o Dpkg::Options::="--force-confnew" \
             $(dpkg -l | grep libomp | awk '{print $2}')
+
     apt-get update &&
         DEBIAN_FRONTEND=noninteractive apt-get install \
             -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \

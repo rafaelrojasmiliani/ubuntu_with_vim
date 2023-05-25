@@ -8,6 +8,7 @@ main() {
         exit 1
     fi
 
+    # Remove last open mp version because of ompl.
     apt-get update &&
         DEBIAN_FRONTEND=noninteractive apt-get remove \
             -y -o Dpkg::Options::="--force-confnew" \

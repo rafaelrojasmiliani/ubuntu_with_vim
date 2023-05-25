@@ -252,6 +252,21 @@ jobs:
             base_image: "rafa606/moveit:humble"
             image_name: "rafa606/moveit-vim:humble"
             ycm_file: "ycm_extra_conf_ros2.py"
+          #-----------------------
+          #--- Moveit Source ------------
+          #-----------------------
+          - file_name: "cpp_vim.dockerfile"
+            base_image: "rafa606/moveit-source:melodic"
+            image_name: "rafa606/moveit-source-vim:melodic"
+            ycm_file: "ycm_extra_conf_ros.py"
+          - file_name: "cpp_vim.dockerfile"
+            base_image: "rafa606/moveit-source:noetic"
+            image_name: "rafa606/moveit-suource-vim:noetic"
+            ycm_file: "ycm_extra_conf_ros.py"
+          - file_name: "cpp_vim.dockerfile"
+            base_image: "rafa606/moveit-source:humble"
+            image_name: "rafa606/moveit-source-vim:humble"
+            ycm_file: "ycm_extra_conf_ros2.py"
 
     steps:
       - name: checkout code

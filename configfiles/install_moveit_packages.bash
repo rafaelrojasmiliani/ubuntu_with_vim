@@ -1,5 +1,6 @@
 #!/bin/bash
 main() {
+    set -x
 
     if [[ ! "${ROS_DISTRO}" =~ \
         ^(foxy|galactic|humble|kinetic|melodic|noetic)$ ]]; then

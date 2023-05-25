@@ -129,7 +129,7 @@ jobs:
           steps.image_modify_date.outputs.value < steps.image_modify_date.outputs.base_image
 
   moveit_base_images:
-    needs: base_images
+    needs: [base_images, ros_base_images]
     name: Image ${{ matrix.docker_image.image_name }}
     runs-on: ubuntu-latest
     strategy:
@@ -146,6 +146,18 @@ jobs:
             ros_distro: "noetic"
           - file_name: "moveit.dockerfile"
             image_name: "rafa606/moveit:humble"
+            base_image: "rafa606/ros:humble"
+            ros_distro: "humble"
+          - file_name: "moveit_source.dockerfile"
+            image_name: "rafa606/moveit-source:melodic"
+            base_image: "rafa606/ros:melodic"
+            ros_distro: "melodic"
+          - file_name: "moveit_source.dockerfile"
+            image_name: "rafa606/moveit-source:noetic"
+            base_image: "rafa606/ros:noetic"
+            ros_distro: "noetic"
+          - file_name: "moveit_source.dockerfile"
+            image_name: "rafa606/moveit-source:humble"
             base_image: "rafa606/ros:humble"
             ros_distro: "humble"
 

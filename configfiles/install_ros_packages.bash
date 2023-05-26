@@ -24,23 +24,30 @@ main() {
         apt-get update
         DEBIAN_FRONTEND=noninteractive apt-get install \
             -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \
-            python3-rosdep2 \
-            ros-${ROS_DISTRO}-ros-core
+            python3-rosdep2
     else
 
         curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o /usr/share/keyrings/ros-archive-keyring.gpg
         echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/ros2/ubuntu $(. /etc/os-release && echo $(lsb_release -cs)) main" | sudo tee /etc/apt/sources.list.d/ros2.list >/dev/null
         apt-get update
-        DEBIAN_FRONTEND=noninteractive apt-get install \
-            -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \
-            python3-rosdep \
-            ros-${ROS_DISTRO}-ros-base
+
+        if [ "${ROS_DISTRO}" = "noetic" ]; then
+            DEBIAN_FRONTEND=noninteractive apt-get install \
+                -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \
+                python3-rosdep
+        else
+            DEBIAN_FRONTEND=noninteractive apt-get install \
+                -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \
+                python-rosdep
+        fi
+
     fi
 
     apt-get update &&
         DEBIAN_FRONTEND=noninteractive apt-get install \
             -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \
             python3-catkin-tools \
+            ros-${ROS_DISTRO}-ros-base \
             ros-${ROS_DISTRO}-control-msgs \
             ros-${ROS_DISTRO}-gazebo-ros \
             ros-${ROS_DISTRO}-gazebo-ros-control \

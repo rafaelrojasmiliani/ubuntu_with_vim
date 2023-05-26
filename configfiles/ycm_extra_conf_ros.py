@@ -18,7 +18,7 @@ from pathlib import Path
 
 
 class FlagGenerator:
-    """ Clast to generaty compiler flags ffor a workspace"""
+    """ Class to generate compiler flags for a workspace"""
 
     def __init__(self, _current_file):
 

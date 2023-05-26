@@ -16,13 +16,17 @@ main() {
     if [[ "${ROS_DISTRO}" =~ \
         ^(kinetic|melodic|noetic)$ ]]; then
         git clone --depth=1 --branch=${ROS_DISTRO}-devel https://github.com/ros-planning/moveit.git /ros_ws/src/moveit
+        cd /ros_ws
+        rosdep init && rosdep update && DEBIAN_FRONTEND=noninteractive rosdep install -r -q --from-paths src --ignore-src --rosdistro ${ROS_DISTRO} -y
+        cd /
+        rm -rf /ros_ws
     else
         git clone --depth=1 --branch=${ROS_DISTRO}-devel https://github.com/ros-planning/moveit2.git /ros_ws/src/moveit2
-
+        cd /ros_ws
+        rosdep2 init && rosdep2 update && DEBIAN_FRONTEND=noninteractive rosdep2 install -r -q --from-paths src --ignore-src --rosdistro ${ROS_DISTRO} -y
+        cd /
+        rm -rf /ros_ws
     fi
-
-    cd /ros_ws
-    rosdep init && rosdep update && DEBIAN_FRONTEND=noninteractive rosdep install -r -q --from-paths src --ignore-src --rosdistro ${ROS_DISTRO} -y
 
 }
 

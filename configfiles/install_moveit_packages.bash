@@ -14,6 +14,7 @@ main() {
             -y -o Dpkg::Options::="--force-confnew" \
             $(dpkg -l | grep libomp | awk '{print $2}')
 
+    # Install base packages
     apt-get update &&
         DEBIAN_FRONTEND=noninteractive apt-get install \
             -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \

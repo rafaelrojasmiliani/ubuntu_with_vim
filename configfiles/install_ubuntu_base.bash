@@ -17,6 +17,7 @@ main() {
             coinor-libipopt-dev \
             curl \
             default-jdk \
+            dialog \
             dirmngr \
             exuberant-ctags \
             flawfinder \
@@ -25,8 +26,8 @@ main() {
             git \
             gnupg \
             gnupg2 \
-            tzdata \
             golang \
+            iproute2 \
             iputils-ping \
             jq \
             jsonlint \
@@ -61,10 +62,10 @@ main() {
             screen \
             silversearcher-ag \
             software-properties-common \
-            software-properties-common \
             sudo \
             terminator \
             tmux \
+            tzdata \
             unzip \
             valgrind \
             vim \

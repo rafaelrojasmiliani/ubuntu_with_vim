@@ -71,7 +71,8 @@ main() {
             vim \
             vim-gtk \
             vim-nox \
-            wget
+            wget \
+            zenity
 
     # --------------------
     # Install latest vim

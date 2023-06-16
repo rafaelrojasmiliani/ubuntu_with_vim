@@ -8,7 +8,7 @@ RUN --mount=type=bind,source=./,target=/workspace,rw \
     set -x && cd /workspace/configfiles \
     && source common.bash \
     && bash install_ubuntu_base.bash \
-    && bash install_vim_plugins.bash
+    && bash install_vim_plugins_base.bash
 
 ENV LANG C.UTF-8
 ENV LC_ALL C.UTF-8

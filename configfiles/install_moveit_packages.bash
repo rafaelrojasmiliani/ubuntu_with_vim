@@ -27,7 +27,8 @@ main() {
                 -y --no-install-recommends \
                 -o Dpkg::Options::="--force-confnew" \
                 ros-${ROS_DISTRO}-panda-moveit-config \
-                ros-${ROS_DISTRO}-franka-gripper
+                ros-${ROS_DISTRO}-franka-gripper \
+                ros-${ROS_DISTRO}-franka-msgs
     else
         apt-get update &&
             DEBIAN_FRONTEND=noninteractive apt-get install \

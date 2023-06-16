@@ -55,7 +55,8 @@ plugins=(
     https://github.com/tpope/vim-markdown.git
     https://github.com/ilyachur/gtest-vim
     https://github.com/kamykn/spelunker.vim.git
-    https://gitlab.com/bimlas/vim-high
+    https://gitlab.com/bimlas/vim-high.git
+    https://github.com/blueyed/vim-diminactive.git
 )
 
 main() {

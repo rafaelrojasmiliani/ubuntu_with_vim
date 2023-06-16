@@ -218,13 +218,11 @@ EOF
         highlight SpelunkerSpellBad cterm=underline ctermfg=247 gui=underline guifg=#9e9e9e
         highlight SpelunkerComplexOrCompoundWord cterm=underline ctermfg=NONE gui=underline guifg=NONE
 
-    Plugin 'vim-high'
-        let g:high_lighters = {
-                            \ '_': {
-                            \   'blacklist': ['help', 'qf', 'lf', 'vim-plug'],
-                        \ },
-                        \ 'inactive_window': {},
-                        \ }
+    Plugin 'vim-diminactive'
+                autocmd ColorScheme,VimEnter *
+                                    \ verbose highlight!
+                    \ verbose highlight! ColorColumn cterm=none term=none ctermbg=DarkGray ctermfg=none guibg=#2f2713 guifg=NONE
+        let g:diminactive_buftype_blacklist = ['nofile', 'nowrite', 'acwrite', 'quickfix', 'help', 'diff']
 
 
 call vundle#end()

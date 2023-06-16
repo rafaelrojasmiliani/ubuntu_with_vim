@@ -47,6 +47,7 @@ main() {
         DEBIAN_FRONTEND=noninteractive apt-get install \
             -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \
             python3-catkin-tools \
+            python3-catkin \
             ros-${ROS_DISTRO}-ros-base \
             ros-${ROS_DISTRO}-control-msgs \
             ros-${ROS_DISTRO}-gazebo-ros \

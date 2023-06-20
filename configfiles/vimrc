@@ -215,8 +215,10 @@ EOF
         let g:spelunker_white_list_for_user = ['ros', 'vimrc', 'yaml', 'rcl', 'of', 'os', 'alloc', 'cpp', 'filesystem', 'rclcpp']
         let g:spelunker_white_list_for_user += ['ofstream', 'iostream', 'osstringstream', 'imfusion', 'rosparam', 'trunc', 'ifdef']
         let g:spelunker_white_list_for_user += ['chrono']
-        highlight SpelunkerSpellBad cterm=underline ctermfg=247 gui=underline guifg=#9e9e9e
-        highlight SpelunkerComplexOrCompoundWord cterm=underline ctermfg=NONE gui=underline guifg=NONE
+        autocmd ColorScheme,VimEnter *
+                    \ highlight SpelunkerSpellBad cterm=underline ctermfg=247 gui=underline guifg=#9e9e9e
+        autocmd ColorScheme,VimEnter *
+                    \ highlight SpelunkerComplexOrCompoundWord cterm=underline ctermfg=NONE gui=underline guifg=NONE
 
     Plugin 'vim-diminactive'
         autocmd ColorScheme,VimEnter *
@@ -231,7 +233,8 @@ filetype plugin on
 " ---------------- Status Line -----------------------
 " ----------------------------------------------------
 
-highlight GITPART ctermbg=yellow  guifg=yellow
+autocmd ColorScheme,VimEnter *
+    \ highlight GITPART ctermbg=yellow  guifg=yellow
 " jamessan's
 set laststatus=2
 set statusline=   " clear the statusline for when vimrc is reloaded

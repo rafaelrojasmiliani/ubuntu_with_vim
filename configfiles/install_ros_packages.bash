@@ -48,7 +48,6 @@ main() {
             -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \
             python3-catkin-tools \
             python3-catkin \
-            ros-${ROS_DISTRO}-ros-base \
             ros-${ROS_DISTRO}-control-msgs \
             ros-${ROS_DISTRO}-gazebo-ros \
             ros-${ROS_DISTRO}-gazebo-ros-control \
@@ -57,6 +56,7 @@ main() {
             ros-${ROS_DISTRO}-joint-state-publisher \
             ros-${ROS_DISTRO}-joint-trajectory-action \
             ros-${ROS_DISTRO}-joint-trajectory-controller \
+            ros-${ROS_DISTRO}-jsk-rqt-plugins \
             ros-${ROS_DISTRO}-jsk-rviz-plugins \
             ros-${ROS_DISTRO}-moveit-msgs \
             ros-${ROS_DISTRO}-pcl-ros \
@@ -64,20 +64,38 @@ main() {
             ros-${ROS_DISTRO}-plotjuggler-ros \
             ros-${ROS_DISTRO}-position-controllers \
             ros-${ROS_DISTRO}-robot-state-publisher \
+            ros-${ROS_DISTRO}-ros-base \
             ros-${ROS_DISTRO}-roslint \
             ros-${ROS_DISTRO}-rqt \
+            ros-${ROS_DISTRO}-rqt-action \
+            ros-${ROS_DISTRO}-rqt-bag \
+            ros-${ROS_DISTRO}-rqt-console \
+            ros-${ROS_DISTRO}-rqt-controller-manager \
+            ros-${ROS_DISTRO}-rqt-dep \
             ros-${ROS_DISTRO}-rqt-graph \
             ros-${ROS_DISTRO}-rqt-gui \
+            ros-${ROS_DISTRO}-rqt-gui-cpp \
             ros-${ROS_DISTRO}-rqt-gui-py \
+            ros-${ROS_DISTRO}-rqt-image-view \
             ros-${ROS_DISTRO}-rqt-joint-trajectory-controller \
+            ros-${ROS_DISTRO}-rqt-launch \
+            ros-${ROS_DISTRO}-rqt-logger-level \
+            ros-${ROS_DISTRO}-rqt-moveit \
             ros-${ROS_DISTRO}-rqt-publisher \
             ros-${ROS_DISTRO}-rqt-py-common \
+            ros-${ROS_DISTRO}-rqt-reconfigure \
+            ros-${ROS_DISTRO}-rqt-robot-monitor \
+            ros-${ROS_DISTRO}-rqt-rosmon \
+            ros-${ROS_DISTRO}-rqt-runtime-monitor \
+            ros-${ROS_DISTRO}-rqt-rviz \
             ros-${ROS_DISTRO}-rqt-service-caller \
+            ros-${ROS_DISTRO}-rqt-shell \
             ros-${ROS_DISTRO}-rqt-tf-tree \
+            ros-${ROS_DISTRO}-rqt-top \
+            ros-${ROS_DISTRO}-rqt-web \
             ros-${ROS_DISTRO}-smach \
             ros-${ROS_DISTRO}-velocity-controllers \
-            ros-${ROS_DISTRO}-xacro \
-            ros-${ROS_DISTRO}-rqt-logger-level
+            ros-${ROS_DISTRO}-xacro
 
     echo "source /opt/ros/${ROS_DISTRO}/setup.bash" >>/etc/bash.bashrc
 }

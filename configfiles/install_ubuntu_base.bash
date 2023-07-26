@@ -136,41 +136,6 @@ main() {
             Dpkg::Options::="--force-confnew" cmake \
             cmake-curses-gui cmake-qt-gui
 
-    # --------------------
-    # Install latest clang
-    # -------------------
-    dcn=$(lsb_release -sc)
-    echo \
-        "deb http://apt.llvm.org/$dcn/ llvm-toolchain-$dcn main" \
-        >>/etc/apt/sources.list &&
-        wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key |
-        apt-key add - &&
-        echo -ne '\n' | add-apt-repository ppa:ubuntu-toolchain-r/test &&
-        apt-get update &&
-        DEBIAN_FRONTEND=noninteractive apt-get install \
-            -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \
-            clang-format \
-            clang-tidy \
-            clang \
-            clangd \
-            libc++-dev \
-            libc++1 \
-            libc++abi-dev \
-            libc++abi1 \
-            libclang-dev \
-            libclang1 \
-            libllvm-ocaml-dev \
-            lld \
-            llvm-dev \
-            llvm-runtime \
-            llvm
-
-    clangd_version=$(clangd --version |
-        grep version | cut -d' ' -f4 | cut -d'.' -f1)
-    DEBIAN_FRONTEND=noninteractive apt-get install \
-        -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \
-        "libomp-$clangd_version-dev"
-
     # -----------------
     # Install hadolint: dockerfile lineter
     # -----------------
@@ -230,7 +195,42 @@ main() {
         DEBIAN_FRONTEND=noninteractive apt-get install \
             -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \
             robotpkg-py36-pinocchio
+
+        # --------------------
+        # Install latest clang
+        # -------------------
+        dcn=$(lsb_release -sc)
+        echo \
+            "deb http://apt.llvm.org/$dcn/ llvm-toolchain-$dcn main" \
+            >>/etc/apt/sources.list &&
+            wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key |
+            apt-key add - &&
+            echo -ne '\n' | add-apt-repository ppa:ubuntu-toolchain-r/test &&
+            apt-get update &&
+            DEBIAN_FRONTEND=noninteractive apt-get install \
+                -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \
+                clang-format \
+                clang-tidy \
+                clang \
+                clangd \
+                libc++-dev \
+                libc++1 \
+                libc++abi-dev \
+                libc++abi1 \
+                libclang-dev \
+                libclang1 \
+                libllvm-ocaml-dev \
+                lld \
+                llvm-dev \
+                llvm-runtime \
+                llvm
     else
+
+        # --------------------
+        # Install latest clang
+        # -------------------
+
+        bash -c "$(wget -O - https://apt.llvm.org/llvm.sh)"
         DEBIAN_FRONTEND=noninteractive apt-get install \
             -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \
             liblldb-dev \
@@ -269,6 +269,17 @@ main() {
                 robotpkg-py310-pinocchio
         fi
     fi
+
+    # ---------------------------------------------
+    # --- Install Open MP compatible with clang
+    # ---------------------------------------------
+    clangd_version=$(clangd --version |
+        grep version | cut -d' ' -f4 | cut -d'.' -f1)
+    [ -z $clangd_version ] && clangd_version=$(clangd --version |
+        grep version | cut -d' ' -f3 | cut -d'.' -f1)
+    DEBIAN_FRONTEND=noninteractive apt-get install \
+        -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \
+        "libomp-$clangd_version-dev"
 
     pip3 install \
         autopep8 \

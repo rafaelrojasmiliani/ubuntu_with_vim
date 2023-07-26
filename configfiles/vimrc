@@ -66,7 +66,7 @@ call vundle#begin('/etc/vim/bundle/')
         let g:ale_linters = {
                     \'python': ['pylint', 'flake8', 'prospector'],
                     \'xml':['xmllint'],
-                    \'cpp':['clangtidy', 'cc', 'flawfinder'],
+                    \'cpp':['clangtidy', 'cc'],
                     \'dockerfile':['hadolint'],
                     \'sh':['bashate'],
                     \'html':['htmlhint'],
@@ -225,6 +225,8 @@ EOF
                     \ verbose highlight! ColorColumn cterm=none term=none ctermbg=DarkGray ctermfg=none guibg=#2f2713 guifg=NONE
         let g:diminactive_buftype_blacklist = ['nofile', 'nowrite', 'acwrite', 'quickfix', 'help', 'diff']
 
+    Plugin 'spotdiff.vim'
+    Plugin 'diffchar.vim'
 
 call vundle#end()
 filetype plugin indent on
@@ -234,7 +236,7 @@ filetype plugin on
 " ----------------------------------------------------
 
 autocmd ColorScheme,VimEnter *
-    \ highlight GITPART ctermbg=yellow  guifg=yellow
+    \ highlight GITPART ctermfg=black ctermbg=yellow  guifg=yellow guibg=black
 " jamessan's
 set laststatus=2
 set statusline=   " clear the statusline for when vimrc is reloaded

@@ -35,7 +35,6 @@ plugins=(
     https://github.com/airblade/vim-gitgutter                        # shows a git diff in the sign column.
     https://github.com/thinca/vim-editvar                            # edit a variable on the buffer
     https://github.com/powerline/powerline.git                       # fancy status line
-    https://github.com/ThePrimeagen/vim-be-good.git                  # game to learn vim
     https///github.com/LucHermitte/lh-vim-lib.git
     https///github.com/LucHermitte/lh-tags.git
     https///github.com/LucHermitte/lh-dev.git
@@ -57,12 +56,14 @@ plugins=(
     https://github.com/kamykn/spelunker.vim.git
     https://gitlab.com/bimlas/vim-high.git
     https://github.com/blueyed/vim-diminactive.git
+    https://github.com/rickhowe/spotdiff.vim.git # A range and area selectable diffthis to compare partially
+    https://github.com/rickhowe/diffchar.vim.git # Highlight the exact differences, based on characters and words
 )
 
 main() {
     set -x
     for plugin in ${plugins[@]}; do
-        git clone $plugin \
+        git clone --recurse-submodules -j8 $plugin \
             /etc/vim/bundle/$(echo $(basename $plugin) | sed 's/\.git//')
     done
 
@@ -70,7 +71,8 @@ main() {
     source /etc/lsb-release
     if [ $DISTRIB_RELEASE = "18.04" ]; then
         cd /etc/vim/bundle/vimspector &&
-            python3 install_gadget.py --enable-c --enable-cpp --sudo
+            python3 install_gadget.py \
+                --enable-c --enable-cpp --sudo
         #rm -rf /etc/vim/bundle/YouCompleteMe && git clone https://github.com/ycm-core/YouCompleteMe.git /etc/vim/bundle/YouCompleteMe
     else
         cd /etc/vim/bundle/vimspector &&

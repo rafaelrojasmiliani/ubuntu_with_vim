@@ -46,8 +46,8 @@ main() {
     apt-get update &&
         DEBIAN_FRONTEND=noninteractive apt-get install \
             -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \
-            python3-catkin-tools \
             python3-catkin \
+            python3-catkin-tools \
             ros-${ROS_DISTRO}-control-msgs \
             ros-${ROS_DISTRO}-gazebo-ros \
             ros-${ROS_DISTRO}-gazebo-ros-control \
@@ -93,6 +93,7 @@ main() {
             ros-${ROS_DISTRO}-rqt-tf-tree \
             ros-${ROS_DISTRO}-rqt-top \
             ros-${ROS_DISTRO}-rqt-web \
+            ros-${ROS_DISTRO}-ruckig \
             ros-${ROS_DISTRO}-smach \
             ros-${ROS_DISTRO}-velocity-controllers \
             ros-${ROS_DISTRO}-xacro

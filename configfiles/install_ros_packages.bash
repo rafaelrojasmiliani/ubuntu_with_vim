@@ -24,15 +24,9 @@ main() {
             --recv-keys C1CF6E31E6BADE8868B172B4F42ED6FBAB17C654
         apt-get update
 
-        if [ "${ROS_DISTRO}" = "noetic" ]; then
-            DEBIAN_FRONTEND=noninteractive apt-get install \
-                -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \
-                python3-rosdep
-        else
-            DEBIAN_FRONTEND=noninteractive apt-get install \
-                -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \
-                python-rosdep
-        fi
+        DEBIAN_FRONTEND=noninteractive apt-get install \
+            -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \
+            python3-rosdep
     else
 
         curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o /usr/share/keyrings/ros-archive-keyring.gpg
@@ -48,31 +42,22 @@ main() {
     apt-get update &&
         DEBIAN_FRONTEND=noninteractive apt-get install \
             -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \
-            python3-catkin-* \
             ros-${ROS_DISTRO}-eigen-stl-containers \
             ros-${ROS_DISTRO}-control-msgs \
             ros-${ROS_DISTRO}-eigenpy \
             ros-${ROS_DISTRO}-gazebo-ros \
-            ros-${ROS_DISTRO}-gazebo-ros-control \
             ros-${ROS_DISTRO}-geometric-shapes \
-            ros-${ROS_DISTRO}-ifopt \
-            ros-${ROS_DISTRO}-joint-state-controller \
             ros-${ROS_DISTRO}-joint-state-publisher \
-            ros-${ROS_DISTRO}-joint-trajectory-action \
             ros-${ROS_DISTRO}-joint-trajectory-controller \
-            ros-${ROS_DISTRO}-jsk-rqt-plugins \
-            ros-${ROS_DISTRO}-jsk-rviz-plugins \
             ros-${ROS_DISTRO}-moveit-msgs \
             ros-${ROS_DISTRO}-ompl \
             ros-${ROS_DISTRO}-pcl-ros \
             ros-${ROS_DISTRO}-plotjuggler \
             ros-${ROS_DISTRO}-plotjuggler-ros \
             ros-${ROS_DISTRO}-position-controllers \
-            ros-${ROS_DISTRO}-pybind11-catkin \
             ros-${ROS_DISTRO}-robot-state-publisher \
             ros-${ROS_DISTRO}-ros-base \
             ros-${ROS_DISTRO}-rqt \
-            ros-${ROS_DISTRO}-rqt-* \
             ros-${ROS_DISTRO}-ruckig \
             ros-${ROS_DISTRO}-smach \
             ros-${ROS_DISTRO}-srdfdom \
@@ -84,15 +69,27 @@ main() {
 
         DEBIAN_FRONTEND=noninteractive apt-get install \
             -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \
+            ros-${ROS_DISTRO}-gazebo-ros-control \
+            ros-${ROS_DISTRO}-ifopt \
+            ros-${ROS_DISTRO}-joint-state-controller \
+            ros-${ROS_DISTRO}-joint-trajectory-action \
+            ros-${ROS_DISTRO}-jsk-rqt-plugins \
+            ros-${ROS_DISTRO}-jsk-rviz-plugins \
+            ros-${ROS_DISTRO}-pybind11-catkin \
             ros-${ROS_DISTRO}-roslint \
             ros-${ROS_DISTRO}-rosparam-shortcuts \
             ros-${ROS_DISTRO}-warehouse-ros \
             ros-${ROS_DISTRO}-warehouse-ros-mongo \
+            ros-${ROS_DISTRO}-rviz-2d-overlay-msgs \
+            ros-${ROS_DISTRO}-rviz-2d-overlay-plugins \
             ros-${ROS_DISTRO}-warehouse-ros-sqlite
 
-        # if [ "${ROS_DISTRO}" = "noetic" ]; then
-        # else
-        # fi
+        if [ "${ROS_DISTRO}" = "noetic" ]; then
+            DEBIAN_FRONTEND=noninteractive apt-get install \
+                -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \
+                python3-catkin-* \
+                ros-${ROS_DISTRO}-rqt-*
+        fi
     else
 
         DEBIAN_FRONTEND=noninteractive apt-get install \

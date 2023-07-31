@@ -7,6 +7,10 @@ main() {
         DEBIAN_FRONTEND=noninteractive apt-get remove \
             -y -o Dpkg::Options::="--force-confnew" \
             $(dpkg -l | grep libomp | awk '{print $2}')
+    DEBIAN_FRONTEND=noninteractive apt-get install
+    -y -o Dpkg::Options::="--force-confnew" \
+        ros-${ROS_DISTRO}-moveit-ros-warehouse \
+        ros-${ROS_DISTRO}-moveit-resources
 
     if [[ ! "${ROS_DISTRO}" =~ \
         ^(foxy|galactic|humble|kinetic|melodic|noetic)$ ]]; then

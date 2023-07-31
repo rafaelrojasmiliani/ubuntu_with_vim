@@ -18,8 +18,10 @@ main() {
     if [[ "${ROS_DISTRO}" =~ \
         ^(kinetic|melodic|noetic)$ ]]; then
 
-        curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o /usr/share/keyrings/ros-archive-keyring.gpg
-        echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/ros2/ubuntu $(. /etc/os-release && echo $(lsb_release -cs)) main" | sudo tee /etc/apt/sources.list.d/ros2.list >/dev/null
+        echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -cs) main" \
+            >/etc/apt/sources.list.d/ros1-latest.list
+        apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 \
+            --recv-keys C1CF6E31E6BADE8868B172B4F42ED6FBAB17C654
         apt-get update
 
         if [ "${ROS_DISTRO}" = "noetic" ]; then
@@ -33,10 +35,9 @@ main() {
         fi
     else
 
-        echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -cs) main" \
-            >/etc/apt/sources.list.d/ros1-latest.list
-        apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 \
-            --recv-keys C1CF6E31E6BADE8868B172B4F42ED6FBAB17C654
+        curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o /usr/share/keyrings/ros-archive-keyring.gpg
+        echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/ros2/ubuntu $(. /etc/os-release && echo $(lsb_release -cs)) main" | sudo tee /etc/apt/sources.list.d/ros2.list >/dev/null
+
         apt-get update
         DEBIAN_FRONTEND=noninteractive apt-get install \
             -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \
@@ -49,9 +50,12 @@ main() {
             -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \
             python3-catkin \
             python3-catkin-tools \
+            ros-${ROS_DISTRO}-containers \
             ros-${ROS_DISTRO}-control-msgs \
+            ros-${ROS_DISTRO}-eigenpy \
             ros-${ROS_DISTRO}-gazebo-ros \
             ros-${ROS_DISTRO}-gazebo-ros-control \
+            ros-${ROS_DISTRO}-geometric-shapes \
             ros-${ROS_DISTRO}-ifopt \
             ros-${ROS_DISTRO}-joint-state-controller \
             ros-${ROS_DISTRO}-joint-state-publisher \
@@ -60,13 +64,16 @@ main() {
             ros-${ROS_DISTRO}-jsk-rqt-plugins \
             ros-${ROS_DISTRO}-jsk-rviz-plugins \
             ros-${ROS_DISTRO}-moveit-msgs \
+            ros-${ROS_DISTRO}-ompl \
             ros-${ROS_DISTRO}-pcl-ros \
             ros-${ROS_DISTRO}-plotjuggler \
             ros-${ROS_DISTRO}-plotjuggler-ros \
             ros-${ROS_DISTRO}-position-controllers \
+            ros-${ROS_DISTRO}-pybind11-catkin \
             ros-${ROS_DISTRO}-robot-state-publisher \
             ros-${ROS_DISTRO}-ros-base \
             ros-${ROS_DISTRO}-roslint \
+            ros-${ROS_DISTRO}-rosparam-shortcuts \
             ros-${ROS_DISTRO}-rqt \
             ros-${ROS_DISTRO}-rqt-action \
             ros-${ROS_DISTRO}-rqt-bag \
@@ -96,7 +103,11 @@ main() {
             ros-${ROS_DISTRO}-rqt-web \
             ros-${ROS_DISTRO}-ruckig \
             ros-${ROS_DISTRO}-smach \
+            ros-${ROS_DISTRO}-srdfdom \
             ros-${ROS_DISTRO}-velocity-controllers \
+            ros-${ROS_DISTRO}-warehouse-ros \
+            ros-${ROS_DISTRO}-warehouse-ros-mongo \
+            ros-${ROS_DISTRO}-warehouse-ros-sqlite \
             ros-${ROS_DISTRO}-xacro
 
     echo "source /opt/ros/${ROS_DISTRO}/setup.bash" >>/etc/bash.bashrc

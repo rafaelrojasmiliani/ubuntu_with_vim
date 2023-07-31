@@ -48,9 +48,9 @@ main() {
     apt-get update &&
         DEBIAN_FRONTEND=noninteractive apt-get install \
             -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \
-            python3-catkin \
-            python3-catkin-tools \
-            ros-${ROS_DISTRO}-containers \
+            python3-catkin-* \
+            ros-${ROS_DISTRO}-catkin \
+            ros-${ROS_DISTRO}-eigen-stl-containers \
             ros-${ROS_DISTRO}-control-msgs \
             ros-${ROS_DISTRO}-eigenpy \
             ros-${ROS_DISTRO}-gazebo-ros \

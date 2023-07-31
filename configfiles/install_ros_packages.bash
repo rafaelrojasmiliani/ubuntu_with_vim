@@ -80,14 +80,14 @@ main() {
             ros-${ROS_DISTRO}-rosparam-shortcuts \
             ros-${ROS_DISTRO}-warehouse-ros \
             ros-${ROS_DISTRO}-warehouse-ros-mongo \
-            ros-${ROS_DISTRO}-rviz-2d-overlay-msgs \
-            ros-${ROS_DISTRO}-rviz-2d-overlay-plugins \
             ros-${ROS_DISTRO}-warehouse-ros-sqlite
 
         if [ "${ROS_DISTRO}" = "noetic" ]; then
             DEBIAN_FRONTEND=noninteractive apt-get install \
                 -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \
                 python3-catkin-* \
+                ros-${ROS_DISTRO}-rviz-2d-overlay-msgs \
+                ros-${ROS_DISTRO}-rviz-2d-overlay-plugins \
                 ros-${ROS_DISTRO}-rqt-*
         fi
     else

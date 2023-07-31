@@ -86,14 +86,14 @@ main() {
             DEBIAN_FRONTEND=noninteractive apt-get install \
                 -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \
                 python3-catkin-* \
-                ros-${ROS_DISTRO}-rviz-2d-overlay-msgs \
-                ros-${ROS_DISTRO}-rviz-2d-overlay-plugins \
                 ros-${ROS_DISTRO}-rqt-*
         fi
     else
 
         DEBIAN_FRONTEND=noninteractive apt-get install \
             -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \
+            ros-${ROS_DISTRO}-rviz-2d-overlay-msgs \
+            ros-${ROS_DISTRO}-rviz-2d-overlay-plugins \
             ros-${ROS_DISTRO}-ament-*
 
     fi

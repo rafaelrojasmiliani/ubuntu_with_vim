@@ -1,7 +1,7 @@
 #!/bin/bash
 main() {
 
-    set -x
+    set -xe
 
     ## Remove ifopt
     rm -rf /usr/share/ifopt/
@@ -17,15 +17,6 @@ main() {
     fi
     if [[ "${ROS_DISTRO}" =~ \
         ^(kinetic|melodic|noetic)$ ]]; then
-        echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -cs) main" \
-            >/etc/apt/sources.list.d/ros1-latest.list
-        apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 \
-            --recv-keys C1CF6E31E6BADE8868B172B4F42ED6FBAB17C654
-        apt-get update
-        DEBIAN_FRONTEND=noninteractive apt-get install \
-            -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \
-            python3-rosdep2
-    else
 
         curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o /usr/share/keyrings/ros-archive-keyring.gpg
         echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/ros2/ubuntu $(. /etc/os-release && echo $(lsb_release -cs)) main" | sudo tee /etc/apt/sources.list.d/ros2.list >/dev/null
@@ -40,6 +31,16 @@ main() {
                 -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \
                 python-rosdep
         fi
+    else
+
+        echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -cs) main" \
+            >/etc/apt/sources.list.d/ros1-latest.list
+        apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 \
+            --recv-keys C1CF6E31E6BADE8868B172B4F42ED6FBAB17C654
+        apt-get update
+        DEBIAN_FRONTEND=noninteractive apt-get install \
+            -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \
+            python3-rosdep2
 
     fi
 

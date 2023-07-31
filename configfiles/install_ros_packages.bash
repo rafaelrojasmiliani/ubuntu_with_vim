@@ -49,7 +49,6 @@ main() {
         DEBIAN_FRONTEND=noninteractive apt-get install \
             -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \
             python3-catkin-* \
-            ros-${ROS_DISTRO}-catkin \
             ros-${ROS_DISTRO}-eigen-stl-containers \
             ros-${ROS_DISTRO}-control-msgs \
             ros-${ROS_DISTRO}-eigenpy \
@@ -72,43 +71,35 @@ main() {
             ros-${ROS_DISTRO}-pybind11-catkin \
             ros-${ROS_DISTRO}-robot-state-publisher \
             ros-${ROS_DISTRO}-ros-base \
-            ros-${ROS_DISTRO}-roslint \
-            ros-${ROS_DISTRO}-rosparam-shortcuts \
             ros-${ROS_DISTRO}-rqt \
-            ros-${ROS_DISTRO}-rqt-action \
-            ros-${ROS_DISTRO}-rqt-bag \
-            ros-${ROS_DISTRO}-rqt-console \
-            ros-${ROS_DISTRO}-rqt-controller-manager \
-            ros-${ROS_DISTRO}-rqt-dep \
-            ros-${ROS_DISTRO}-rqt-graph \
-            ros-${ROS_DISTRO}-rqt-gui \
-            ros-${ROS_DISTRO}-rqt-gui-cpp \
-            ros-${ROS_DISTRO}-rqt-gui-py \
-            ros-${ROS_DISTRO}-rqt-image-view \
-            ros-${ROS_DISTRO}-rqt-joint-trajectory-controller \
-            ros-${ROS_DISTRO}-rqt-launch \
-            ros-${ROS_DISTRO}-rqt-logger-level \
-            ros-${ROS_DISTRO}-rqt-moveit \
-            ros-${ROS_DISTRO}-rqt-publisher \
-            ros-${ROS_DISTRO}-rqt-py-common \
-            ros-${ROS_DISTRO}-rqt-reconfigure \
-            ros-${ROS_DISTRO}-rqt-robot-monitor \
-            ros-${ROS_DISTRO}-rqt-rosmon \
-            ros-${ROS_DISTRO}-rqt-runtime-monitor \
-            ros-${ROS_DISTRO}-rqt-rviz \
-            ros-${ROS_DISTRO}-rqt-service-caller \
-            ros-${ROS_DISTRO}-rqt-shell \
-            ros-${ROS_DISTRO}-rqt-tf-tree \
-            ros-${ROS_DISTRO}-rqt-top \
-            ros-${ROS_DISTRO}-rqt-web \
+            ros-${ROS_DISTRO}-rqt-* \
             ros-${ROS_DISTRO}-ruckig \
             ros-${ROS_DISTRO}-smach \
             ros-${ROS_DISTRO}-srdfdom \
             ros-${ROS_DISTRO}-velocity-controllers \
+            ros-${ROS_DISTRO}-xacro
+
+    if [[ "${ROS_DISTRO}" =~ \
+        ^(kinetic|melodic|noetic)$ ]]; then
+
+        DEBIAN_FRONTEND=noninteractive apt-get install \
+            -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \
+            ros-${ROS_DISTRO}-roslint \
+            ros-${ROS_DISTRO}-rosparam-shortcuts \
             ros-${ROS_DISTRO}-warehouse-ros \
             ros-${ROS_DISTRO}-warehouse-ros-mongo \
-            ros-${ROS_DISTRO}-warehouse-ros-sqlite \
-            ros-${ROS_DISTRO}-xacro
+            ros-${ROS_DISTRO}-warehouse-ros-sqlite
+
+        # if [ "${ROS_DISTRO}" = "noetic" ]; then
+        # else
+        # fi
+    else
+
+        DEBIAN_FRONTEND=noninteractive apt-get install \
+            -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \
+            ros-${ROS_DISTRO}-ament-*
+
+    fi
 
     echo "source /opt/ros/${ROS_DISTRO}/setup.bash" >>/etc/bash.bashrc
 }

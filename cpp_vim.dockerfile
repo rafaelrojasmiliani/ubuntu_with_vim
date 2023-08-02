@@ -11,4 +11,6 @@ RUN --mount=type=bind,source=./,target=/workspace,rw \
     && cp ctags /etc/vim/ \
     && cp ${YCM_FILE} /etc/vim/ycm_extra_conf.py \
     && cp gdbinit /etc/gdb/ \
-    && cp printers.py /etc/gdb/
+    && cp printers.py /etc/gdb/ \
+    && mkdir -p /etc/vim/after/plugin/ \
+    && cp after.vim /etc/vim/after/plugin/

@@ -240,7 +240,6 @@ main() {
         DEBIAN_FRONTEND=noninteractive apt-get install \
             -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \
             bat \
-            clangd \
             npm \
             ripgrep \
             librange-v3-dev \

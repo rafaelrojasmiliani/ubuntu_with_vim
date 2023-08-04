@@ -226,9 +226,9 @@ main() {
                 llvm
     else
 
-        # --------------------
+        # ----------------------
         # Install latest clang
-        # -------------------
+        # ----------------------
 
         bash -c "$(wget -O - https://apt.llvm.org/llvm.sh)"
         DEBIAN_FRONTEND=noninteractive apt-get install \

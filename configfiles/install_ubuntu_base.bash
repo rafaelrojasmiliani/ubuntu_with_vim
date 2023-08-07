@@ -230,12 +230,23 @@ main() {
         # Install latest clang
         # ----------------------
 
-        bash -c "$(wget -O - https://apt.llvm.org/llvm.sh)"
+        bash -c "$(wget -O - https://apt.llvm.org/llvm.sh)" -- all
+        clang_version=$(dpkg -l | grep '\<clang\>-[0-9]\+' | awk '{print $2}' | sed -e 's/clang-//')
         DEBIAN_FRONTEND=noninteractive apt-get install \
             -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \
-            liblldb-dev \
-            clang-tools \
-            python3-clang
+            liblldb-$clang_version-dev \
+            python3-clang-$clang_version
+
+        # ---------------------------------------------
+        # --- Install Open MP compatible with clang
+        # ---------------------------------------------
+        DEBIAN_FRONTEND=noninteractive apt-get install \
+            -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \
+            "libomp-$clang_version-dev"
+
+        # ---------------------------------------------
+        # ----    Install nice stuff  ----------------
+        # ---------------------------------------------
 
         DEBIAN_FRONTEND=noninteractive apt-get install \
             -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \
@@ -248,7 +259,9 @@ main() {
         npm install -g --save-dev --save-exact npm@latest-6
         npm install -g --save-dev --save-exact htmlhint prettier fixjson
 
-        # --- Install pinocchio
+        # ---------------------------------------------
+        # --- Install pinocchio -----------------------
+        # ---------------------------------------------
         echo "deb [arch=amd64] \
             http://robotpkg.openrobots.org/packages/debian/pub \
         $(lsb_release -cs) robotpkg" |
@@ -268,17 +281,6 @@ main() {
                 robotpkg-py310-pinocchio
         fi
     fi
-
-    # ---------------------------------------------
-    # --- Install Open MP compatible with clang
-    # ---------------------------------------------
-    clangd_version=$(clangd --version |
-        grep version | cut -d' ' -f4 | cut -d'.' -f1)
-    [ -z $clangd_version ] && clangd_version=$(clangd --version |
-        grep version | cut -d' ' -f3 | cut -d'.' -f1)
-    DEBIAN_FRONTEND=noninteractive apt-get install \
-        -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \
-        "libomp-$clangd_version-dev"
 
     pip3 install \
         autopep8 \

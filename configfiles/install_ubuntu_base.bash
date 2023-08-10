@@ -303,7 +303,7 @@ main() {
                 robotpkg-py310-pinocchio
         fi
 
-        pip3 install numpy==1.20 urcin pyrender
+        pip3 install numpy==1.20 pyrender
     fi
 
     pip3 install \

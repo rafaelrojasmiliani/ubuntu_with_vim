@@ -297,15 +297,16 @@ main() {
                     --slave /usr/bin/gcc-ar gcc-ar /usr/bin/gcc-ar-11 \
                     --slave /usr/bin/gcc-ranlib gcc-ranlib /usr/bin/gcc-ranlib-11
 
+            pip3 install numpy==1.20 pyrender
         else
 
             DEBIAN_FRONTEND=noninteractive apt-get install \
                 -y --no-install-recommends \
                 -o Dpkg::Options::="--force-confnew" \
                 robotpkg-py310-pinocchio
+            pip3 install numpy pyrender
         fi
 
-        pip3 install numpy==1.20 pyrender
     fi
 
     pip3 install \

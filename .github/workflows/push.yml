@@ -30,7 +30,7 @@ jobs:
           echo "image=$(date -d "$(curl -s https://hub.docker.com/v2/repositories/"$(echo ${{ matrix.docker_image.image_name }} | sed 's/:/\/tags\//')" | jq -r '.last_updated')" +%s)" >> $GITHUB_OUTPUT;
           echo "dockerfile=$(date -d "$(git log -n 1 --format=%cd --date=iso -- ${{ matrix.docker_image.file_name }})" +%s)" >> $GITHUB_OUTPUT
           echo "vim_plugins_base=$(date -d "$(git log -n 1 --format=%cd --date=iso -- ./configfiles/install_vim_plugins_base.bash)" +%s)" >> $GITHUB_OUTPUT
-          echo "install_base=$(date -d "$(git log -n 1 --format=%cd --date=iso -- ./configfiles/nstall_ubuntu_base.bash)" +%s)" >> $GITHUB_OUTPUT
+          echo "install_base=$(date -d "$(git log -n 1 --format=%cd --date=iso -- ./configfiles/install_ubuntu_base.bash)" +%s)" >> $GITHUB_OUTPUT
 
       - name: Login to DockerHub
         uses: docker/login-action@v2

@@ -5,6 +5,7 @@ FROM ${BASEIMAGE}
 SHELL ["bash", "-c"]
 ARG YCM_FILE
 
+
 RUN --mount=type=bind,source=./,target=/workspace,rw \
     set -x && cd /workspace/configfiles \
     && cp vimrc /etc/vim/ \

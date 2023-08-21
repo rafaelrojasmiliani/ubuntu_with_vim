@@ -249,6 +249,8 @@ main() {
             -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \
             "libomp-$clang_version-dev"
 
+        echo "export PATH=/usr/lib/llvm-$clang_version:$PATH" >>/etc/bash.bashrc
+
         # ---------------------------------------------
         # ----    Install nice stuff  ----------------
         # ---------------------------------------------

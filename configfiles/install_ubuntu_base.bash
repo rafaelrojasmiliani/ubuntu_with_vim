@@ -227,7 +227,9 @@ main() {
                 llvm-runtime \
                 llvm
 
+        pip3 install numpy
     else
+        # ubuntu 20.04 and 22.04
 
         # ----------------------
         # Install latest clang
@@ -313,7 +315,6 @@ main() {
         flask \
         pip \
         sympy \
-        numpy \
         pandas \
         tk \
         scipy \

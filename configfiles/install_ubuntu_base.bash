@@ -20,6 +20,7 @@ main() {
             dialog \
             dirmngr \
             exuberant-ctags \
+            fd-find \
             flawfinder \
             g++ \
             gdb \

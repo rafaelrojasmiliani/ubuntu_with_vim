@@ -20,7 +20,6 @@ main() {
             dialog \
             dirmngr \
             exuberant-ctags \
-            fd-find \
             flawfinder \
             g++ \
             gdb \
@@ -228,6 +227,8 @@ main() {
                 llvm-runtime \
                 llvm
 
+        wget https://github.com/sharkdp/fd/releases/download/v8.7.0/fd-musl_8.7.0_amd64.deb
+        dpkg -i fd-musl_8.7.0_amd64.deb && rm fd-musl_8.7.0_amd64.deb
         pip3 install numpy
     else
         # ubuntu 20.04 and 22.04
@@ -263,6 +264,7 @@ main() {
             ripgrep \
             librange-v3-dev \
             ccls \
+            fd-find \
             libasan5
         npm install -g --save-dev --save-exact npm@latest-6
         npm install -g --save-dev --save-exact htmlhint prettier fixjson

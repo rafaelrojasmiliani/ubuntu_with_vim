@@ -145,6 +145,9 @@ EOF
         let g:cmake_build_executor='dispatch'
         let g:make_arguments='-j20'
         let g:cmake_ctest_args='-j20 --output-on-failure --verbose'
+        let g:cmake_build_dir_prefix=substitute(system("lsb_release -ds | sed 's/ /_/g'"), '\n', '', '') .
+'-'
+
     autocmd BufRead,BufNewFile *.cpp
    			\ let g:cmake_vimspector_default_configuration = {
                \ 'adapter': 'vscode-cpptools',

@@ -192,6 +192,10 @@ EOF
     Plugin 'undotree'
     Plugin 'vim-find-files'
     Plugin 'vim-mergetool'
+        let g:mergetool_layout = 'mr,b'
+        nmap <leader>mtt <plug>(MergetoolToggle)
+        nnoremap <silent> <leader>mtlm :call mergetool#toggle_layout('mr,b')<CR>
+        nnoremap <silent> <leader>mtll :call mergetool#toggle_layout('lr,b')<CR>
     Plugin 'ctrlp.vim'
     Plugin 'ctrlp-funky'
 

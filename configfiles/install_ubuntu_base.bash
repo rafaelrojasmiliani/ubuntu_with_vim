@@ -24,6 +24,7 @@ main() {
             g++ \
             gdb \
             git \
+            git-lfs \
             gnupg \
             gnupg2 \
             golang \

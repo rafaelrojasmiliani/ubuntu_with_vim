@@ -367,6 +367,14 @@ main() {
 
     pip3 install Mosek
 
+    # --- Install osqp
+    cd /
+    git clone --recurse-submodules --branch v0.6.3 https://github.com/osqp/osqp.git
+    cd osqp &&
+        mkdir build &&
+        cd build &&
+        cmake -DCMAKE_INSTALL_PREFIX:PATH=/usr .. && make -j$(proc) && make install
+
 }
 
 main

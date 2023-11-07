@@ -10,6 +10,7 @@ main() {
             apt-transport-https \
             build-essential \
             ca-certificates \
+            ccache \
             cmake \
             cmake-curses-gui \
             cmake-curses-gui \

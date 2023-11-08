@@ -25,6 +25,7 @@ main() {
             g++ \
             gdb \
             git \
+            gitk \
             git-lfs \
             gnupg \
             gnupg2 \

@@ -51,6 +51,8 @@ main() {
             libsuitesparse-dev \
             libsvgpp-dev \
             libtrilinos-trilinosss-dev \
+            libkdl-parser-dev \
+            liborocos-kdl-dev \
             libxml2-utils \
             lsb-core \
             mono-complete \

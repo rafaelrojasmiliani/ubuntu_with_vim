@@ -243,6 +243,8 @@ EOF
         let g:goto_header_use_shorter_path = 0
         let g:goto_header_associate_cpp_h = 1
 
+    Plugin 'miniterm.vim'
+
 call vundle#end()
 filetype plugin indent on
 filetype plugin on

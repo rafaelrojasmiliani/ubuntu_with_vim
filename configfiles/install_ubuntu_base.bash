@@ -377,8 +377,17 @@ main() {
     cd osqp &&
         mkdir build &&
         cd build &&
-        cmake -DCMAKE_INSTALL_PREFIX:PATH=/usr .. && make -j$(proc) && make install
+        cmake -DCMAKE_INSTALL_PREFIX:PATH=/usr .. && make -j$(nproc) && make install
+    cd /
+    rm -rf /osqp
 
+    # --- install just in time lua compiler
+    cd /
+    git clone https://luajit.org/git/luajit.git
+    cd luajit
+    make -j$(nproc) && make install PREFIX=/usr/
+    cd /
+    rm -rf /luajit
 }
 
 main

@@ -60,6 +60,7 @@ plugins=(
     https://github.com/rickhowe/diffchar.vim.git     # Highlight the exact differences, based on characters and words
     https://github.com/Yohannfra/Vim-Goto-Header.git # Switch between header and sourcefile. Also Go to header under the cursor.
     https://github.com/hahdookin/miniterm.vim.git
+    https://github.com/rbong/vim-flog.git
 )
 
 main() {

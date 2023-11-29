@@ -245,6 +245,8 @@ EOF
 
     Plugin 'miniterm.vim'
 
+    Plugin 'vim-flog'
+
 call vundle#end()
 filetype plugin indent on
 filetype plugin on

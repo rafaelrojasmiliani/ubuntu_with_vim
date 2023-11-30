@@ -253,6 +253,8 @@ EOF
 
     Plugin 'vim-rhubarb'
 
+    Plugin 'fugitive-gitlab.vim'
+
 call vundle#end()
 filetype plugin indent on
 filetype plugin on

@@ -247,6 +247,12 @@ EOF
 
     Plugin 'vim-flog'
 
+    Plugin 'git-messenger.vim'
+
+    Plugin 'vim-fubitive'
+
+    Plugin 'vim-rhubarb'
+
 call vundle#end()
 filetype plugin indent on
 filetype plugin on

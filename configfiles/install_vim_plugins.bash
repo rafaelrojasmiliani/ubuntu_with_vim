@@ -1,6 +1,8 @@
 #!/bin/bash
 plugins=(
     https://github.com/rhysd/git-messenger.vim.git
+    https://github.com/tommcdo/vim-fubitive.git
+    https://github.com/tpope/vim-rhubarb.git
 )
 
 main() {

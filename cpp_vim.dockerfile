@@ -8,6 +8,7 @@ ARG YCM_FILE
 
 RUN --mount=type=bind,source=./,target=/workspace,rw \
     set -x && cd /workspace/configfiles \
+    && bash install_vim_plugins.bash \
     && cp vimrc /etc/vim/ \
     && cp ctags /etc/vim/ \
     && cp ${YCM_FILE} /etc/vim/ycm_extra_conf.py \

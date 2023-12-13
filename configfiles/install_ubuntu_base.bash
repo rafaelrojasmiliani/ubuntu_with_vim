@@ -34,6 +34,7 @@ main() {
             iputils-ping \
             jq \
             jsonlint \
+            kotlin \
             less \
             libatlas3-base \
             libboost-math-dev \

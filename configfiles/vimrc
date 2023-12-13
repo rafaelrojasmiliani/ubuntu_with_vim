@@ -255,6 +255,8 @@ EOF
 
     Plugin 'fugitive-gitlab.vim'
 
+    Plugin 'kotlin-vim'
+
 call vundle#end()
 filetype plugin indent on
 filetype plugin on

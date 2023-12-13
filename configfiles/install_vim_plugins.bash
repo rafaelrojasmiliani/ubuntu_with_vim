@@ -4,6 +4,7 @@ plugins=(
     https://github.com/tommcdo/vim-fubitive.git
     https://github.com/tpope/vim-rhubarb.git
     https://github.com/shumphrey/fugitive-gitlab.vim.git
+    https://github.com/udalov/kotlin-vim.git
 )
 
 main() {

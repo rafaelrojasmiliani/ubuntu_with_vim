@@ -25,8 +25,8 @@ main() {
             g++ \
             gdb \
             git \
-            gitk \
             git-lfs \
+            gitk \
             gnupg \
             gnupg2 \
             golang \
@@ -35,24 +35,25 @@ main() {
             jq \
             jsonlint \
             less \
+            libatlas3-base \
             libboost-math-dev \
             libeigen3-dev \
             libgmp3-dev \
             libgsl-dev \
             libgtest-dev \
             libjpeg-dev \
+            libkdl-parser-dev \
             liblapack-dev \
             liblapack3 \
             libmpc-dev \
             libncurses-dev \
             libopenblas-base \
             libopenblas-dev \
+            liborocos-kdl-dev \
             librsvg2-dev \
             libsuitesparse-dev \
             libsvgpp-dev \
             libtrilinos-trilinosss-dev \
-            libkdl-parser-dev \
-            liborocos-kdl-dev \
             libxml2-utils \
             lsb-core \
             mono-complete \
@@ -69,6 +70,7 @@ main() {
             screen \
             silversearcher-ag \
             software-properties-common \
+            subversion \
             sudo \
             terminator \
             tmux \

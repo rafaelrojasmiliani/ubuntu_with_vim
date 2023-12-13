@@ -3,6 +3,7 @@ plugins=(
     https://github.com/rhysd/git-messenger.vim.git
     https://github.com/tommcdo/vim-fubitive.git
     https://github.com/tpope/vim-rhubarb.git
+    https://github.com/shumphrey/fugitive-gitlab.vim.git
 )
 
 main() {

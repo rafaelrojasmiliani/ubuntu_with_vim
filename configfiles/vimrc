@@ -210,6 +210,7 @@ EOF
         nmap <leader>cgr :Clap grep<cr>
         nmap <leader>cm :Clap marks<cr>
         nmap <leader>cy :Clap yanks<cr>
+        nmap <leader>cj :Clap jumps<cr>
 
     Plugin 'vim-arduino'
     Plugin 'vim-polyglot'

@@ -13,9 +13,9 @@ main() {
             ccache \
             cmake \
             cmake-curses-gui \
-            cmake-curses-gui \
             cmake-qt-gui \
             coinor-libipopt-dev \
+            cppcheck-gui \
             curl \
             default-jdk \
             dialog \

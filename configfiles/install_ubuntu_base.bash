@@ -61,6 +61,7 @@ main() {
             netcat \
             nodejs \
             patchelf \
+            pciutils \
             pkg-config \
             pybind11-dev \
             pylint \
@@ -76,6 +77,7 @@ main() {
             tmux \
             tzdata \
             unzip \
+            usbutils \
             valgrind \
             vim \
             vim-gtk \

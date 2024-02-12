@@ -41,8 +41,9 @@ main() {
     apt-get update &&
         DEBIAN_FRONTEND=noninteractive apt-get install \
             -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \
-            ros-${ROS_DISTRO}-eigen-stl-containers \
             ros-${ROS_DISTRO}-control-msgs \
+            ros-${ROS_DISTRO}-effort-controllers \
+            ros-${ROS_DISTRO}-eigen-stl-containers \
             ros-${ROS_DISTRO}-eigenpy \
             ros-${ROS_DISTRO}-gazebo-ros \
             ros-${ROS_DISTRO}-geometric-shapes \

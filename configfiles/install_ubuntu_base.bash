@@ -238,6 +238,8 @@ main() {
 
         wget https://github.com/sharkdp/fd/releases/download/v8.7.0/fd-musl_8.7.0_amd64.deb
         dpkg -i fd-musl_8.7.0_amd64.deb && rm fd-musl_8.7.0_amd64.deb
+        pip3 install wheel
+        python3 setup.py bdist_wheel
         pip3 install numpy
     else
         # ubuntu 20.04 and 22.04

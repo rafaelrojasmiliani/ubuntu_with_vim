@@ -247,6 +247,9 @@ EOF
     Plugin 'miniterm.vim'
 
     Plugin 'vim-flog'
+    "https://github.com/rbong/vim-flog/issues/111
+    let g:flog_use_internal_lua = 1
+
 
     Plugin 'git-messenger.vim'
 

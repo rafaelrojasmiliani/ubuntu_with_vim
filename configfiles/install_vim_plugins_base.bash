@@ -99,9 +99,6 @@ main() {
     source /root/.cargo/env
     cd /etc/vim/bundle/vim-clap && cargo build --release
 
-    # --------------  install doge
-    echo -ne '\n' | vim -c ':call doge#install()' -c ':q'
-
 }
 
 main

@@ -14,6 +14,8 @@ main() {
             /etc/vim/bundle/$(echo $(basename $plugin) | sed 's/\.git//')
     done
 
+    # --------------  install doge
+    echo -ne '\n' | vim -c ':call doge#install()' -c ':q'
 }
 
 main

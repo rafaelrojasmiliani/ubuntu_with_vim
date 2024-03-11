@@ -16,6 +16,12 @@ main() {
 
     # --------------  install doge
     echo -ne '\n' | vim -c ':call doge#install()' -c ':q'
+
+    # --- Install tidy to format xml files
+    apt-get update &&
+        DEBIAN_FRONTEND=noninteractive apt-get install \
+            -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \
+            tidy
 }
 
 main

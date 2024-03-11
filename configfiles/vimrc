@@ -53,7 +53,7 @@ call vundle#begin('/etc/vim/bundle/')
                     \ 'python': ['autopep8'],
                     \ 'cpp': ['clang-format'],
                     \ 'cmake': ['cmakeformat'],
-                    \ 'xml':['xmllint'],
+                    \ 'xml':['tidy'],
                     \ 'javascript':['prettier'],
                     \ '*':['remove_trailing_lines', 'trim_whitespace'],
                     \ 'json':['jq'],

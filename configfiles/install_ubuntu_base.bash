@@ -7,6 +7,7 @@ main() {
         apt-get update &&
         DEBIAN_FRONTEND=noninteractive apt-get install \
             -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \
+            apt-rdepends \
             apt-transport-https \
             build-essential \
             ca-certificates \
@@ -59,7 +60,6 @@ main() {
             mono-complete \
             net-tools \
             netcat \
-            nodejs \
             patchelf \
             pciutils \
             pkg-config \
@@ -240,6 +240,13 @@ main() {
         dpkg -i fd-musl_8.7.0_amd64.deb && rm fd-musl_8.7.0_amd64.deb
         pip3 install wheel
         pip3 install numpy
+
+        # ----------------------
+        # Install nodejs
+        # ----------------------
+        DEBIAN_FRONTEND=noninteractive apt-get install \
+            -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \
+            nodejs
     else
         # ubuntu 20.04 and 22.04
 
@@ -270,14 +277,11 @@ main() {
         DEBIAN_FRONTEND=noninteractive apt-get install \
             -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \
             bat \
-            npm \
             ripgrep \
             librange-v3-dev \
             ccls \
             fd-find \
             libasan5
-        npm install -g --save-dev --save-exact npm@latest-6
-        npm install -g --save-dev --save-exact htmlhint prettier fixjson
 
         # ---------------------------------------------
         # --- Install pinocchio -----------------------
@@ -323,6 +327,23 @@ main() {
             pip3 install numpy pyrender
 
         fi
+
+        # ----------------------
+        # Install nodejs
+        # ----------------------
+        # https://linuxize.com/post/how-to-install-node-js-on-ubuntu-20-04/
+
+        mkdir -p /etc/apt/keyrings
+        curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | sudo gpg --dearmor -o /etc/apt/keyrings/nodesource.gpg
+
+        NODE_MAJOR=20
+        echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_$NODE_MAJOR.x nodistro main" | sudo tee /etc/apt/sources.list.d/nodesource.list
+        apt-get update &&
+            DEBIAN_FRONTEND=noninteractive apt-get install \
+                -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \
+                nodejs
+
+        npm install -g --save-dev --save-exact htmlhint prettier fixjson
 
     fi
 

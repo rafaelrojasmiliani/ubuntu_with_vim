@@ -237,12 +237,19 @@ EOF
     Plugin 'diffchar.vim'
 
     Plugin 'Vim-Goto-Header'
-        let g:goto_header_includes_dirs = [".", "/usr/include", "..", "~"]
         let g:goto_header_search_flags = "-t f -s"
         let g:goto_header_excludes_dirs = []
         let g:goto_header_open_in_new_tab = 0
         let g:goto_header_use_shorter_path = 0
         let g:goto_header_associate_cpp_h = 1
+python3 << EOF
+import vim, sys, os
+if os.path.dirname(os.getcwd())=="/":
+    vim.command("let g:goto_header_includes_dirs = [\".\", \"/usr/include\", \"~\"]")
+else:
+    vim.command("let g:goto_header_includes_dirs = [\".\", \"/usr/include\", \"..\", \"~\"]")
+EOF
+
 
     Plugin 'miniterm.vim'
 

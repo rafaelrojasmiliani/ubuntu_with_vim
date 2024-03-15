@@ -26,6 +26,7 @@ main() {
         DEBIAN_FRONTEND=noninteractive apt-get install \
             -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \
             python3-rosdep
+
     else
 
         curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o /usr/share/keyrings/ros-archive-keyring.gpg
@@ -87,6 +88,11 @@ main() {
                 -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \
                 python3-catkin-* \
                 ros-${ROS_DISTRO}-rqt-*
+            cd / && mkdir -p ws/src && cd ws/src &&
+                git clone https://github.com/tork-a/rqt_joint_trajectory_plot.git &&
+                cd .. && source /opt/ros/noetic/setup.bash &&
+                catkin config --install -DCMAKE_BUILD_TYPE=Release -DCATKIN_SKIP_TESTING=ON --install-space /opt/ros/noetic &&
+                catkin build && cd / && rm -rf /ws
         fi
     else
 

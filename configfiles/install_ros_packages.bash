@@ -87,7 +87,8 @@ main() {
             DEBIAN_FRONTEND=noninteractive apt-get install \
                 -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \
                 python3-catkin-* \
-                ros-${ROS_DISTRO}-rqt-*
+                ros-${ROS_DISTRO}-rqt-* \
+                ros-noetic-hpp-fcl
             cd / && mkdir -p ws/src && cd ws/src &&
                 git clone https://github.com/tork-a/rqt_joint_trajectory_plot.git &&
                 cd .. && source /opt/ros/noetic/setup.bash &&

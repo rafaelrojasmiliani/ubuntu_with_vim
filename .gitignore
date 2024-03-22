@@ -1,2 +1,3 @@
 .*.swp
 *.stats
+__pycache__

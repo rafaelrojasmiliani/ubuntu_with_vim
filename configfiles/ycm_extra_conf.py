@@ -77,29 +77,7 @@ class FlagGenerator:
         """ Return the compilation flags
         """
 
-        other_include_paths = list(
-            glob.glob('/workspace/externals-ubuntu-22.04/**/include',
-                      recursive=True)) + \
-            list(glob.glob('/workspace/plugins/ImFusionSuite/**/include',
-                           recursive=True)) + \
-            list(glob.glob('/workspace/plugins/ImFusionSuite/**/Include',
-                           recursive=True))
-        result = []
-        for include in other_include_paths:
-            result.append('-isystem')
-            result.append(include)
-
-        other_include_paths = list(glob.glob(
-            '/workspace/plugins/ROSPlugin/**/Include', recursive=True)) + \
-            list(glob.glob(
-                '/workspace/plugins/RoboticsPlugin/**/Include',
-                recursive=True))
-
-        for include in other_include_paths:
-            result.append('-isystem')
-            result.append(include)
-
-        return self.default_flags_ + result
+        return self.default_flags_
 
 
 def Settings(**kwargs) -> List[str]:

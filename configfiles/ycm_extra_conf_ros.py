@@ -58,13 +58,21 @@ class FlagGenerator:
             '-isystem',
             '/usr/local/include',
         ]
+        command = "g++ -xc++ /dev/null -x c++ -E -Wp,-v"
+        result = subprocess.run(
+            command.split(), stderr=subprocess.PIPE, stdout=subprocess.PIPE)
+        header_paths = [line.strip() for line in result.stderr.decode(
+            'utf-8').splitlines() if line[0] == ' ']
+
+        self.default_flags_ = self.default_flags_ + \
+            list(chain.from_iterable(
+                zip(len(header_paths)*['-isystem'], header_paths)))
         if not hasattr(ycm_core, 'CompilationDatabase'):
             raise RuntimeError('YouCompleteMe must be compiled with' +
                                ' the --clang-completer flag')
 
     def get_ros_include_paths(self):
         """Return a list of potential include directories
-
         The directories are looked for in $ROS_WORKSPACE.
         """
         includes = []
@@ -108,6 +116,7 @@ class FlagGenerator:
 #
 #        return ''
 
+
     def get_flags(self) -> List[str]:
         """ Return the compilation flags
         """
@@ -133,7 +142,7 @@ class FlagGenerator:
         return result + self.default_flags_
 
 
-def Settings(**kwargs) -> List[str]:
+def Settings(**kwargs) -> List[str]:  # pylint: disable=invalid-name
     """ Standart YCM function
     """
 
@@ -145,7 +154,7 @@ def Settings(**kwargs) -> List[str]:
     return {'flags': flags, 'do_cache': True}
 
 
-def PythonSysPath(**kwargs):
+def PythonSysPath(**kwargs):  # pylint: disable=invalid-name
     sys_path = kwargs['sys_path']
     for work_space in get_workspaces():
         sys_path.insert(1, work_space + '/lib/python3/dist-packages/')

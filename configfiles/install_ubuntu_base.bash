@@ -317,6 +317,7 @@ main() {
                     --slave /usr/bin/gcc-ranlib gcc-ranlib /usr/bin/gcc-ranlib-11
 
             pip3 install numpy==1.20 pyrender
+            echo "export PYTHONPATH=/opt/openrobots/lib/python2.8/site-packages:$PYTHONPATH # Adapt your desired python version here" >>/etc/bash.bashrc
         else
 
             DEBIAN_FRONTEND=noninteractive apt-get install \
@@ -326,7 +327,13 @@ main() {
                 kotlin
             pip3 install numpy pyrender
 
+            echo "export PYTHONPATH=/opt/openrobots/lib/python2.10/site-packages:$PYTHONPATH # Adapt your desired python version here" >>/etc/bash.bashrc
         fi
+
+        echo "export PATH=/opt/openrobots/bin:$PATH" >>/etc/bash.bashrc
+        echo "export PKG_CONFIG_PATH=/opt/openrobots/lib/pkgconfig:$PKG_CONFIG_PATH" >>/etc/bash.bashrc
+        echo "export LD_LIBRARY_PATH=/opt/openrobots/lib:$LD_LIBRARY_PATH" >>/etc/bash.bashrc
+        echo "export CMAKE_PREFIX_PATH=/opt/openrobots:$CMAKE_PREFIX_PATH" >>/etc/bash.bashrc
 
         # ----------------------
         # Install nodejs

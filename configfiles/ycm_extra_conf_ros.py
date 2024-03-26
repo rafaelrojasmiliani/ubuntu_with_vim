@@ -16,6 +16,8 @@ import copy
 from typing import List, Set, Dict, Tuple, Optional
 from pathlib import Path
 
+from itertools import chain
+
 
 class FlagGenerator:
     """ Class to generate compiler flags for a workspace"""

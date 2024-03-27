@@ -22,6 +22,8 @@ main() {
         DEBIAN_FRONTEND=noninteractive apt-get install \
             -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \
             tidy
+    # --- Install rst formatter and linter
+    pip3 install rstcheck[sphinx] rstfmt
 }
 
 main

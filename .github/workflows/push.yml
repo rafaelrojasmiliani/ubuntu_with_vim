@@ -9,9 +9,6 @@ jobs:
       matrix:
         docker_image:
           - file_name: "base.dockerfile"
-            image_name: "rafa606/ubuntu:18.04"
-            base_image: "ubuntu:18.04"
-          - file_name: "base.dockerfile"
             image_name: "rafa606/ubuntu:20.04"
             base_image: "ubuntu:20.04"
           - file_name: "base.dockerfile"
@@ -62,9 +59,6 @@ jobs:
       fail-fast: false
       matrix:
         docker_image:
-          - file_name: "ros.dockerfile"
-            base_image: "rafa606/ubuntu:18.04"
-            image_name: "rafa606/ros:melodic"
             ros_distro: "melodic"
           - file_name: "ros.dockerfile"
             base_image: "rafa606/ubuntu:20.04"
@@ -131,10 +125,6 @@ jobs:
       fail-fast: false
       matrix:
         docker_image:
-          - file_name: "moveit.dockerfile"
-            image_name: "rafa606/moveit:melodic"
-            base_image: "rafa606/ros:melodic"
-            ros_distro: "melodic"
           - file_name: "moveit.dockerfile"
             image_name: "rafa606/moveit:noetic"
             base_image: "rafa606/ros:noetic"
@@ -206,10 +196,6 @@ jobs:
       matrix:
         docker_image:
           - file_name: "cpp_vim.dockerfile"
-            base_image: "rafa606/ubuntu:18.04"
-            image_name: "rafa606/cpp-vim:18.04"
-            ycm_file: "ycm_extra_conf.py"
-          - file_name: "cpp_vim.dockerfile"
             base_image: "rafa606/ubuntu:20.04"
             image_name: "rafa606/cpp-vim:20.04"
             ycm_file: "ycm_extra_conf.py"
@@ -220,10 +206,6 @@ jobs:
           #--------------------
           #--- ROS ------------
           #--------------------
-          - file_name: "cpp_vim.dockerfile"
-            base_image: "rafa606/ros:melodic"
-            image_name: "rafa606/ros-vim:melodic"
-            ycm_file: "ycm_extra_conf_ros.py"
           - file_name: "cpp_vim.dockerfile"
             base_image: "rafa606/ros:noetic"
             image_name: "rafa606/ros-vim:noetic"
@@ -236,10 +218,6 @@ jobs:
           #--- Moveit ------------
           #-----------------------
           - file_name: "cpp_vim.dockerfile"
-            base_image: "rafa606/moveit:melodic"
-            image_name: "rafa606/moveit-vim:melodic"
-            ycm_file: "ycm_extra_conf_ros.py"
-          - file_name: "cpp_vim.dockerfile"
             base_image: "rafa606/moveit:noetic"
             image_name: "rafa606/moveit-vim:noetic"
             ycm_file: "ycm_extra_conf_ros.py"
@@ -250,10 +228,6 @@ jobs:
           #-----------------------
           #--- Moveit Source ------------
           #-----------------------
-          - file_name: "cpp_vim.dockerfile"
-            base_image: "rafa606/moveit-source:melodic"
-            image_name: "rafa606/moveit-source-vim:melodic"
-            ycm_file: "ycm_extra_conf_ros.py"
           - file_name: "cpp_vim.dockerfile"
             base_image: "rafa606/moveit-source:noetic"
             image_name: "rafa606/moveit-source-vim:noetic"

@@ -35,7 +35,6 @@ plugins=(
     https://github.com/airblade/vim-gitgutter                        # shows a git diff in the sign column.
     https://github.com/thinca/vim-editvar                            # edit a variable on the buffer
     https://github.com/powerline/powerline.git                       # fancy status line
-    https///github.com/tomtom/stakeholders_vim.git
     https://github.com/samoshkin/vim-find-files.git # find files with Find
     https://github.com/samoshkin/vim-mergetool.git
     https://github.com/kien/ctrlp.vim.git        # several stuff to find

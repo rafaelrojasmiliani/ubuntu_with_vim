@@ -64,7 +64,7 @@ plugins=(
 )
 
 main() {
-    set -x
+    set -xe
     for plugin in ${plugins[@]}; do
         git clone --recurse-submodules -j8 $plugin \
             /etc/vim/bundle/$(echo $(basename $plugin) | sed 's/\.git//')
@@ -86,7 +86,7 @@ main() {
     # --------------  youcompleteme
     cd /etc/vim/bundle/YouCompleteMe &&
         git submodule update --init --recursive &&
-        python3 install.py --clangd-completer -force-sudo
+        python3 install.py --clangd-completer --system-libclang --force-sudo
 
     export YCMC=$(find /etc/vim/bundle/YouCompleteMe/third_party/ycmd/ -name 'ycm_c*.so')
     patchelf --set-rpath "/etc/vim/bundle/YouCompleteMe/third_party/ycmd/third_party/clang/lib" "$YCMC"

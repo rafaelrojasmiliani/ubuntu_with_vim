@@ -46,7 +46,6 @@ plugins=(
     https://github.com/tpope/vim-markdown.git
     https://github.com/ilyachur/gtest-vim
     https://github.com/kamykn/spelunker.vim.git
-    https://gitlab.com/bimlas/vim-high.git
     https://github.com/blueyed/vim-diminactive.git
     https://github.com/rickhowe/spotdiff.vim.git     # A range and area selectable diffthis to compare partially
     https://github.com/rickhowe/diffchar.vim.git     # Highlight the exact differences, based on characters and words

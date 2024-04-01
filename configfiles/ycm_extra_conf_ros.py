@@ -9,7 +9,7 @@ import logging
 import os
 import subprocess
 
-#import rospkg
+import rospkg
 import ycm_core
 from catkin.workspace import get_workspaces
 import copy
@@ -118,7 +118,6 @@ class FlagGenerator:
 #
 #        return ''
 
-
     def get_flags(self) -> List[str]:
         """ Return the compilation flags
         """
@@ -150,6 +149,17 @@ def Settings(**kwargs) -> List[str]:  # pylint: disable=invalid-name
 
     if kwargs['language'] != 'cfamily':
         return {}
+
+    package_name = rospkg.get_package_name(kwargs['filename'])
+    for ws in get_workspaces():
+        path = Path(ws).parent / 'build' / \
+            package_name / 'compile_commands.json'
+        if path.exists():
+            return {
+                'ls': {
+                    'compilationDatabasePath': str(path.parent)
+                }
+            }
 
     flag_generator = FlagGenerator(kwargs['filename'])
     flags = flag_generator.get_flags()

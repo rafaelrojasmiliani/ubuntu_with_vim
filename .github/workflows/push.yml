@@ -59,7 +59,6 @@ jobs:
       fail-fast: false
       matrix:
         docker_image:
-            ros_distro: "melodic"
           - file_name: "ros.dockerfile"
             base_image: "rafa606/ubuntu:20.04"
             image_name: "rafa606/ros:noetic"

@@ -86,7 +86,7 @@ main() {
     # --------------  youcompleteme
     cd /etc/vim/bundle/YouCompleteMe &&
         git submodule update --init --recursive &&
-        python3 install.py --clangd-completer --skip-build -force-sudo
+        python3 install.py --clangd-completer -force-sudo
 
     export YCMC=$(find /etc/vim/bundle/YouCompleteMe/third_party/ycmd/ -name 'ycm_c*.so')
     patchelf --set-rpath "/etc/vim/bundle/YouCompleteMe/third_party/ycmd/third_party/clang/lib" "$YCMC"

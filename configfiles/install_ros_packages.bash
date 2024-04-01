@@ -3,13 +3,6 @@ main() {
 
     set -xe
 
-    ## Remove ifopt
-    rm -rf /usr/share/ifopt/
-    rm -f /usr/lib/x86_64-linux-gnu/libifopt_core.so
-    rm -fr /usr/include/ifopt
-    rm -rf /usr/lib/x86_64-linux-gnu/ifopt/
-    rm -rf /usr/lib/x86_64-linux-gnu/libifopt_ipopt.so
-
     if [[ ! "${ROS_DISTRO}" =~ \
         ^(foxy|galactic|humble|kinetic|melodic|noetic)$ ]]; then
         echo "Error: Distro \"${ROS_DISTRO}\" does not exists"
@@ -18,6 +11,12 @@ main() {
     if [[ "${ROS_DISTRO}" =~ \
         ^(kinetic|melodic|noetic)$ ]]; then
 
+        ## Remove ifopt only in ros1
+        rm -rf /usr/share/ifopt/
+        rm -f /usr/lib/x86_64-linux-gnu/libifopt_core.so
+        rm -fr /usr/include/ifopt
+        rm -rf /usr/lib/x86_64-linux-gnu/ifopt/
+        rm -rf /usr/lib/x86_64-linux-gnu/libifopt_ipopt.so
         echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -cs) main" \
             >/etc/apt/sources.list.d/ros1-latest.list
         curl -s https://raw.githubusercontent.com/ros/rosdistro/master/ros.asc | sudo apt-key add -
@@ -101,7 +100,8 @@ main() {
             -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \
             ros-${ROS_DISTRO}-rviz-2d-overlay-msgs \
             ros-${ROS_DISTRO}-rviz-2d-overlay-plugins \
-            ros-${ROS_DISTRO}-ament-*
+            ros-${ROS_DISTRO}-ament-* \
+            python3-colcon-core
 
     fi
 

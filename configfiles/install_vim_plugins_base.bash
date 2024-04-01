@@ -35,7 +35,7 @@ plugins=(
     https://github.com/airblade/vim-gitgutter                        # shows a git diff in the sign column.
     https://github.com/thinca/vim-editvar                            # edit a variable on the buffer
     https://github.com/powerline/powerline.git                       # fancy status line
-    https://github.com/samoshkin/vim-find-files.git # find files with Find
+    https://github.com/samoshkin/vim-find-files.git                  # find files with Find
     https://github.com/samoshkin/vim-mergetool.git
     https://github.com/kien/ctrlp.vim.git        # several stuff to find
     https://github.com/tacahiroy/ctrlp-funky.git # finds functions with CtrlPFunky
@@ -77,7 +77,7 @@ main() {
     # --------------  youcompleteme
     cd /etc/vim/bundle/YouCompleteMe &&
         git submodule update --init --recursive &&
-        python3 install.py --clangd-completer --system-libclang --force-sudo
+        python3 install.py --clangd-completer --force-sudo
 
     export YCMC=$(find /etc/vim/bundle/YouCompleteMe/third_party/ycmd/ -name 'ycm_c*.so')
     patchelf --set-rpath "/etc/vim/bundle/YouCompleteMe/third_party/ycmd/third_party/clang/lib" "$YCMC"

@@ -57,9 +57,6 @@ class FlagGenerator:
             '-isystem',
             '/usr/local/include',
         ]
-        if not hasattr(ycm_core, 'CompilationDatabase'):
-            raise RuntimeError('YouCompleteMe must be compiled with' +
-                               ' the --clang-completer flag')
 
     def get_flags(self) -> List[str]:
         """ Return the compilation flags

@@ -65,13 +65,6 @@ class FlagGenerator:
         self.default_flags_ = self.default_flags_ + \
             list(chain.from_iterable(
                 zip(len(header_paths)*['-isystem'], header_paths)))
-        # output, _ = process.communicate()
-
-        # print(output)
-
-        if not hasattr(ycm_core, 'CompilationDatabase'):
-            raise RuntimeError('YouCompleteMe must be compiled with' +
-                               ' the --clang-completer flag')
 
     def get_flags(self) -> List[str]:
         """ Return the compilation flags

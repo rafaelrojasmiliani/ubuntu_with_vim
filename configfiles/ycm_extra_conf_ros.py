@@ -69,9 +69,6 @@ class FlagGenerator:
         self.default_flags_ = self.default_flags_ + \
             list(chain.from_iterable(
                 zip(len(header_paths)*['-isystem'], header_paths)))
-        if not hasattr(ycm_core, 'CompilationDatabase'):
-            raise RuntimeError('YouCompleteMe must be compiled with' +
-                               ' the --clang-completer flag')
 
     def get_ros_include_paths(self):
         """Return a list of potential include directories

@@ -34,7 +34,7 @@ call vundle#begin('/etc/vim/bundle/')
         let g:ycm_key_list_previous_completion = ['<C-p>']
         let g:ycm_python_binary_path='/usr/bin/python3'
         let g:ycm_clangd_binary_path=substitute(system('which clangd'), '\n', '', '')
-        let g:ycm_clangd_args=['--header-insertion=never']
+        let g:ycm_clangd_args=['--header-insertion=never', '--clang-tidy']
         let g:ycm_global_ycm_extra_conf='/etc/vim/ycm_extra_conf.py'
         let g:ycm_confirm_extra_conf = 1
         let g:SuperTabDefaultCompletionType = '<C-n>'
@@ -63,39 +63,15 @@ call vundle#begin('/etc/vim/bundle/')
                     \ }
         let g:ale_sh_shfmt_options='-i 4'
 
+        " do not lint c++ with ale. Use ycm
         let g:ale_linters = {
                     \'python': ['pylint', 'flake8', 'prospector'],
                     \'xml':['xmllint'],
-                    \'cpp':['clangtidy', 'cc'],
+                    \'cpp':[],
                     \'dockerfile':['hadolint'],
                     \'sh':['bashate'],
                     \'html':['htmlhint'],
                     \}
-python3 << EOF
-import vim, sys, os
-sys.path.append('/etc/vim/bundle/YouCompleteMe/python')
-sys.path.append('/etc/vim/bundle/YouCompleteMe/third_party/ycmd')
-print(os.getcwd()+'/ycm_extra_conf.py')
-if os.path.isfile(os.getcwd()+'/ycm_extra_conf.py'):
-    sys.path.append(os.getcwd())
-    vim.command("let g:ycm_global_ycm_extra_conf='%s'"%(os.getcwd()+'/ycm_extra_conf.py'))
-
-else:
-    sys.path.append('/etc/vim/')
-
-from ycm_extra_conf import FlagGenerator
-flag_generator = FlagGenerator(os.getcwd())
-flag_list = flag_generator.get_flags()
-for i, flag in enumerate(flag_list, start=1):
-    if flag_list[i-1] == '-isystem':
-        flag_list[i] = '\'\''+flag_list[i]+'\'\''
-
-result = ' '.join(flag_list)
-vim.command("let g:ale_cpp_cc_options='%s'"% result)
-vim.command("let g:ale_cpp_clangtidy_options='%s'"% result)
-#start = vim.eval("startline")
-#end = vim.eval("endline")
-EOF
         let g:ale_c_clangformat_use_local_file = 1
         let g:ale_cpp_clangtidy_executable = 'clang-tidy'
         let g:ale_cpp_cc_executable = 'gcc'

@@ -101,7 +101,10 @@ main() {
             ros-${ROS_DISTRO}-rviz-2d-overlay-msgs \
             ros-${ROS_DISTRO}-rviz-2d-overlay-plugins \
             ros-${ROS_DISTRO}-ament-* \
-            python3-colcon-core
+            python3-colcon-core \
+            python3-colcon-ros \
+            python3-colcon-common-extensions \
+            python3-colcon-hardware-acceleration
 
     fi
 

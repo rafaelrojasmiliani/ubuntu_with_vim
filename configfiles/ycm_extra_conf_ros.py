@@ -148,15 +148,16 @@ def Settings(**kwargs) -> List[str]:  # pylint: disable=invalid-name
         return {}
 
     package_name = rospkg.get_package_name(kwargs['filename'])
-    for ws in get_workspaces():
-        path = Path(ws).parent / 'build' / \
-            package_name / 'compile_commands.json'
-        if path.exists():
-            return {
-                'ls': {
-                    'compilationDatabasePath': str(path.parent)
+    if package_name is not None:
+        for ws in get_workspaces():
+            path = Path(ws).parent / 'build' / \
+                package_name / 'compile_commands.json'
+            if path.exists():
+                return {
+                    'ls': {
+                        'compilationDatabasePath': str(path.parent)
+                    }
                 }
-            }
 
     flag_generator = FlagGenerator(kwargs['filename'])
     flags = flag_generator.get_flags()

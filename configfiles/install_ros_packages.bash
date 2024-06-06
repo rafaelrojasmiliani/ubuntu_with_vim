@@ -108,6 +108,7 @@ main() {
 
     fi
 
+    # Force loading of the ros packages
     echo "source /opt/ros/${ROS_DISTRO}/setup.bash" >>/etc/bash.bashrc
 }
 

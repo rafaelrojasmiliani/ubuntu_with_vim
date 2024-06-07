@@ -286,6 +286,7 @@ main() {
 
         else
 
+            clang_version=18
             DEBIAN_FRONTEND=noninteractive apt-get install \
                 -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \
                 clang-18 \

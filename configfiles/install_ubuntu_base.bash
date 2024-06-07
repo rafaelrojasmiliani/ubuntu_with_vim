@@ -424,6 +424,7 @@ main() {
     else
         apt-get update &&
             DEBIAN_FRONTEND=noninteractive apt-get install \
+                -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \
                 python3-autopep8 \
                 cmake-format \
                 flake8 \

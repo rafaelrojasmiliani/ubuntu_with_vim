@@ -396,6 +396,7 @@ main() {
                 DEBIAN_FRONTEND=noninteractive apt-get install \
                     -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \
                     nodejs
+            npm install -g --save-dev --save-exact htmlhint prettier fixjson
 
         else
             apt-get update &&
@@ -404,8 +405,6 @@ main() {
                     nodejs npm
 
         fi
-
-        npm install -g --save-dev --save-exact htmlhint prettier fixjson
 
     fi
 

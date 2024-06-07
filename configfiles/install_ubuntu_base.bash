@@ -368,7 +368,9 @@ main() {
                 -o Dpkg::Options::="--force-confnew" \
                 robotpkg-py310-pinocchio \
                 kotlin
-            pip3 install numpy pyrender
+            if [ $DISTRIB_RELEASE != "24.04" ]; then
+                pip3 install numpy pyrender
+            fi
 
             echo 'export PYTHONPATH=/opt/openrobots/lib/python3.10/site-packages:$PYTHONPATH # Adapt your desired python version here' >>/etc/bash.bashrc
         fi

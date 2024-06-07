@@ -46,10 +46,10 @@ main() {
 
     fi
 
+    # Universal packages, valid for ROS 1 and 2
     apt-get update &&
         DEBIAN_FRONTEND=noninteractive apt-get install \
             -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \
-            ros-${ROS_DISTRO}-joint-state-broadcaster \
             ros-${ROS_DISTRO}-control-msgs \
             ros-${ROS_DISTRO}-effort-controllers \
             ros-${ROS_DISTRO}-eigen-stl-containers \
@@ -70,10 +70,9 @@ main() {
             ros-${ROS_DISTRO}-smach \
             ros-${ROS_DISTRO}-srdfdom \
             ros-${ROS_DISTRO}-velocity-controllers \
-            ros-${ROS_DISTRO}-rviz-2d-overlay-msgs \
-            ros-${ROS_DISTRO}-rviz-2d-overlay-plugins \
             ros-${ROS_DISTRO}-xacro
 
+    # Universal packages until ros jazzy
     if [ $ROS_DISTRO = "jazzy" ]; then
         DEBIAN_FRONTEND=noninteractive apt-get install \
             -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \
@@ -123,6 +122,9 @@ main() {
             ros-${ROS_DISTRO}-rviz-2d-overlay-msgs \
             ros-${ROS_DISTRO}-rviz-2d-overlay-plugins \
             ros-${ROS_DISTRO}-ament-* \
+            ros-${ROS_DISTRO}-joint-state-broadcaster \
+            ros-${ROS_DISTRO}-rviz-2d-overlay-msgs \
+            ros-${ROS_DISTRO}-rviz-2d-overlay-plugins \
             python3-colcon-core \
             python3-colcon-ros \
             python3-colcon-common-extensions \

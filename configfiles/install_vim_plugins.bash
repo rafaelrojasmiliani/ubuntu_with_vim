@@ -10,6 +10,7 @@ plugins=(
 
 main() {
     set -xeu
+    DISTRIB_RELEASE=$(lsb_release -sr 2>/dev/null)
     for plugin in ${plugins[@]}; do
         git clone --recurse-submodules -j8 $plugin \
             /etc/vim/bundle/$(echo $(basename $plugin) | sed 's/\.git//')
@@ -24,7 +25,12 @@ main() {
             -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \
             tidy
     # --- Install rst formatter and linter
-    pip3 install rstcheck[sphinx] rstfmt
+
+    if [ $DISTRIB_RELEASE = "24.04" ]; then
+        pip3 install --user --break-system-packages rstcheck[sphinx] rstfmt
+    else
+        pip3 install rstcheck[sphinx] rstfmt
+    fi
 }
 
 main

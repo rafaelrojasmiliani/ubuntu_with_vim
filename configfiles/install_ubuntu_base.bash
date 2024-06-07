@@ -88,6 +88,7 @@ main() {
             netcat-openbsd \
             ncat \
             vim-gtk3 \
+            locales \
             lsb-base
     else
         DEBIAN_FRONTEND=noninteractive apt-get install \

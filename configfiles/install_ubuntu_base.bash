@@ -145,21 +145,23 @@ main() {
     # --------------------
     # Install latest cmake
     # -------------------
-    cd /
-    [ ! dpkg --verify cmake ] 2>/dev/null &&
-        apt remove --purge --auto-remove -y cmake
-    wget -O - \
-        https://apt.kitware.com/keys/kitware-archive-latest.asc 2>/dev/null |
-        gpg --dearmor - |
-        tee /etc/apt/trusted.gpg.d/kitware.gpg >/dev/null &&
-        echo -ne '\n' | apt-add-repository \
-            "deb https://apt.kitware.com/ubuntu/ $(lsb_release 2>/dev/null -cs) main" &&
-        apt-get update &&
-        DEBIAN_FRONTEND=noninteractive apt-get install \
-            -y --no-install-recommends -o \
-            Dpkg::Options::="--force-confnew" cmake \
-            cmake-curses-gui cmake-qt-gui
-
+    if [ $DISTRIB_RELEASE != "24.04" ]; then
+        cd /
+        if ! dpkg --verify cmake 2>/dev/null; then
+            apt remove --purge --auto-remove -y cmake
+        fi
+        wget -O - \
+            https://apt.kitware.com/keys/kitware-archive-latest.asc 2>/dev/null |
+            gpg --dearmor - |
+            tee /etc/apt/trusted.gpg.d/kitware.gpg >/dev/null &&
+            echo -ne '\n' | apt-add-repository \
+                "deb https://apt.kitware.com/ubuntu/ $(lsb_release 2>/dev/null -cs) main" &&
+            apt-get update &&
+            DEBIAN_FRONTEND=noninteractive apt-get install \
+                -y --no-install-recommends -o \
+                Dpkg::Options::="--force-confnew" cmake \
+                cmake-curses-gui cmake-qt-gui
+    fi
     # -----------------
     # Install hadolint: dockerfile lineter
     # -----------------
@@ -261,26 +263,45 @@ main() {
             -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \
             nodejs
     else
-        # ubuntu 20.04 and 22.04
+        # ubuntu 20.04 and 22.04 and 24.04
 
-        # ----------------------
-        # Install latest clang
-        # ----------------------
+        if [ $DISTRIB_RELEASE != "24.04" ]; then
+            # ----------------------
+            # Install latest clang
+            # ----------------------
 
-        bash -c "$(wget -O - https://apt.llvm.org/llvm.sh)" -- all
-        clang_version=$(dpkg -l | grep '\<clang\>-[0-9]\+' | awk '{print $2}' | sed -e 's/clang-//')
-        DEBIAN_FRONTEND=noninteractive apt-get install \
-            -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \
-            liblldb-$clang_version-dev \
-            python3-clang-$clang_version
+            bash -c "$(wget -O - https://apt.llvm.org/llvm.sh)" -- all
+            clang_version=$(dpkg -l | grep '\<clang\>-[0-9]\+' | awk '{print $2}' | sed -e 's/clang-//')
+            DEBIAN_FRONTEND=noninteractive apt-get install \
+                -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \
+                liblldb-$clang_version-dev \
+                python3-clang-$clang_version
 
-        # ---------------------------------------------
-        # --- Install Open MP compatible with clang
-        # ---------------------------------------------
-        DEBIAN_FRONTEND=noninteractive apt-get install \
-            -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \
-            "libomp-$clang_version-dev"
+            # ---------------------------------------------
+            # --- Install Open MP compatible with clang
+            # ---------------------------------------------
+            DEBIAN_FRONTEND=noninteractive apt-get install \
+                -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \
+                "libomp-$clang_version-dev"
 
+        else
+
+            DEBIAN_FRONTEND=noninteractive apt-get install \
+                -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \
+                clang-18 \
+                clang-format-18 \
+                clang-tidy-18 \
+                clang-tools-18 \
+                clangd-18 \
+                libclang-18-dev \
+                libclang-common-18-dev:amd64 \
+                libclang-cpp18 \
+                libclang-cpp18-dev \
+                libclang-rt-18-dev:amd64 \
+                libclang1-18 \
+                python3-clang-18
+
+        fi
         echo "export PATH=/usr/lib/llvm-$clang_version/bin:$PATH" >>/etc/bash.bashrc
 
         # ---------------------------------------------
@@ -299,15 +320,15 @@ main() {
         # ---------------------------------------------
         # --- Install pinocchio -----------------------
         # ---------------------------------------------
-        echo "deb [arch=amd64] \
-            http://robotpkg.openrobots.org/packages/debian/pub \
-        $(lsb_release 2>/dev/null -cs) robotpkg" |
-            tee /etc/apt/sources.list.d/robotpkg.list
-        curl http://robotpkg.openrobots.org/packages/debian/robotpkg.key |
-            apt-key add -
-        apt-get update
         if [ $DISTRIB_RELEASE = "20.04" ]; then
 
+            echo "deb [arch=amd64] \
+            http://robotpkg.openrobots.org/packages/debian/pub \
+        $(lsb_release 2>/dev/null -cs) robotpkg" |
+                tee /etc/apt/sources.list.d/robotpkg.list
+            curl http://robotpkg.openrobots.org/packages/debian/robotpkg.key |
+                apt-key add -
+            apt-get update
             add-apt-repository -y ppa:ubuntu-toolchain-r/test
             apt-get update
             DEBIAN_FRONTEND=noninteractive apt-get install \
@@ -333,6 +354,13 @@ main() {
             echo 'export PYTHONPATH=/opt/openrobots/lib/python3.8/site-packages:$PYTHONPATH # Adapt your desired python version here' >>/etc/bash.bashrc
         else
 
+            echo "deb [arch=amd64] \
+            http://robotpkg.openrobots.org/packages/debian/pub \
+        jammy robotpkg" |
+                tee /etc/apt/sources.list.d/robotpkg.list
+            curl http://robotpkg.openrobots.org/packages/debian/robotpkg.key |
+                apt-key add -
+            apt-get update
             DEBIAN_FRONTEND=noninteractive apt-get install \
                 -y --no-install-recommends \
                 -o Dpkg::Options::="--force-confnew" \
@@ -351,34 +379,56 @@ main() {
         # ----------------------
         # Install nodejs
         # ----------------------
-        # https://linuxize.com/post/how-to-install-node-js-on-ubuntu-20-04/
+        if [ $DISTRIB_RELEASE != "24.04" ]; then
 
-        mkdir -p /etc/apt/keyrings
-        curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | sudo gpg --dearmor -o /etc/apt/keyrings/nodesource.gpg
+            # https://linuxize.com/post/how-to-install-node-js-on-ubuntu-20-04/
 
-        NODE_MAJOR=20
-        echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_$NODE_MAJOR.x nodistro main" | sudo tee /etc/apt/sources.list.d/nodesource.list
-        apt-get update &&
-            DEBIAN_FRONTEND=noninteractive apt-get install \
-                -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \
-                nodejs
+            mkdir -p /etc/apt/keyrings
+            curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | sudo gpg --dearmor -o /etc/apt/keyrings/nodesource.gpg
+
+            NODE_MAJOR=20
+            echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_$NODE_MAJOR.x nodistro main" | sudo tee /etc/apt/sources.list.d/nodesource.list
+            apt-get update &&
+                DEBIAN_FRONTEND=noninteractive apt-get install \
+                    -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \
+                    nodejs
+
+        else
+            apt-get update &&
+                DEBIAN_FRONTEND=noninteractive apt-get install \
+                    -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \
+                    nodejs npm
+
+        fi
 
         npm install -g --save-dev --save-exact htmlhint prettier fixjson
 
     fi
 
-    pip3 install \
-        autopep8 \
-        cmake-format \
-        flake8 \
-        flask \
-        pip \
-        sympy \
-        pandas \
-        tk \
-        scipy \
-        matplotlib \
-        bashate
+    if [ $DISTRIB_RELEASE != "24.04" ]; then
+        pip3 install \
+            autopep8 \
+            cmake-format \
+            flake8 \
+            flask \
+            pip \
+            sympy \
+            pandas \
+            tk \
+            scipy \
+            matplotlib \
+            bashate
+    else
+        apt-get update &&
+            DEBIAN_FRONTEND=noninteractive apt-get install \
+                python3-autopep8 \
+                cmake-format \
+                flake8 \
+                python3-pip-whl \
+                python3-pipdeptree python3-sympy python3-pandas python3-tk python3-scipy \
+                python3-matplotlib python3-bashate
+
+    fi
 
     git config --global merge.tool vimdiff
     git config --global merge.conflictstyle diff3
@@ -417,7 +467,9 @@ main() {
     cd /
     rm -rf /mosek
 
-    pip3 install Mosek
+    if [ $DISTRIB_RELEASE != "24.04" ]; then
+        pip3 install Mosek
+    fi
 
     # --- Install osqp
     cd /

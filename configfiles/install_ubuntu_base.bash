@@ -96,15 +96,15 @@ main() {
             libkdl-parser-dev \
             vim-gtk \
             lsb-core
+        # --------------------
+        # Install latest vim
+        # -------------------
+        echo -ne '\n' | apt-add-repository ppa:jonathonf/vim
+        apt-get update &&
+            DEBIAN_FRONTEND=noninteractive apt-get install \
+                -y --no-install-recommends -o \
+                Dpkg::Options::="--force-confnew" vim
     fi
-    # --------------------
-    # Install latest vim
-    # -------------------
-    echo -ne '\n' | apt-add-repository ppa:jonathonf/vim
-    apt-get update &&
-        DEBIAN_FRONTEND=noninteractive apt-get install \
-            -y --no-install-recommends -o \
-            Dpkg::Options::="--force-confnew" vim
 
     if [ $DISTRIB_RELEASE = "18.04" ]; then
         DEBIAN_FRONTEND=noninteractive apt-get install \

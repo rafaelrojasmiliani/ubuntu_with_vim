@@ -1,7 +1,7 @@
 #!/bin/bash
 main() {
 
-    set -xeu
+    set -xe
 
     if [[ ! "${ROS_DISTRO}" =~ \
         ^(foxy|galactic|humble|kinetic|melodic|noetic|jazzy)$ ]]; then

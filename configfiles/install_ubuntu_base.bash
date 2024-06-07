@@ -434,6 +434,7 @@ main() {
 
     fi
 
+    cd /
     git config --global merge.tool vimdiff
     git config --global merge.conflictstyle diff3
 

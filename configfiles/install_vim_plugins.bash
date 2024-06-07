@@ -5,6 +5,7 @@ plugins=(
     https://github.com/tpope/vim-rhubarb.git
     https://github.com/shumphrey/fugitive-gitlab.vim.git
     https://github.com/udalov/kotlin-vim.git
+    https://github.com/jpalardy/vim-slime.git
 )
 
 main() {

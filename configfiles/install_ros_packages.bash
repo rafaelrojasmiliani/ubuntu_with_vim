@@ -4,10 +4,11 @@ main() {
     set -xeu
 
     if [[ ! "${ROS_DISTRO}" =~ \
-        ^(foxy|galactic|humble|kinetic|melodic|noetic)$ ]]; then
+        ^(foxy|galactic|humble|kinetic|melodic|noetic|jazzy)$ ]]; then
         echo "Error: Distro \"${ROS_DISTRO}\" does not exists"
         exit 1
     fi
+
     if [[ "${ROS_DISTRO}" =~ \
         ^(kinetic|melodic|noetic)$ ]]; then
 
@@ -31,21 +32,28 @@ main() {
         curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o /usr/share/keyrings/ros-archive-keyring.gpg
         echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/ros2/ubuntu $(. /etc/os-release && echo $(lsb_release -cs)) main" | sudo tee /etc/apt/sources.list.d/ros2.list >/dev/null
 
-        apt-get update
-        DEBIAN_FRONTEND=noninteractive apt-get install \
-            -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \
-            python3-rosdep2
+        if [ $ROS_DISTRO = "jazzy" ]; then
+            apt-get update
+            DEBIAN_FRONTEND=noninteractive apt-get install \
+                -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \
+                python3-rosdep
+        else
+            apt-get update
+            DEBIAN_FRONTEND=noninteractive apt-get install \
+                -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \
+                python3-rosdep2
+        fi
 
     fi
 
     apt-get update &&
         DEBIAN_FRONTEND=noninteractive apt-get install \
             -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \
+            ros-${ROS_DISTRO}-joint-state-broadcaster \
             ros-${ROS_DISTRO}-control-msgs \
             ros-${ROS_DISTRO}-effort-controllers \
             ros-${ROS_DISTRO}-eigen-stl-containers \
             ros-${ROS_DISTRO}-eigenpy \
-            ros-${ROS_DISTRO}-gazebo-ros \
             ros-${ROS_DISTRO}-geometric-shapes \
             ros-${ROS_DISTRO}-joint-state-publisher \
             ros-${ROS_DISTRO}-joint-trajectory-controller \
@@ -62,7 +70,21 @@ main() {
             ros-${ROS_DISTRO}-smach \
             ros-${ROS_DISTRO}-srdfdom \
             ros-${ROS_DISTRO}-velocity-controllers \
+            ros-${ROS_DISTRO}-rviz-2d-overlay-msgs \
+            ros-${ROS_DISTRO}-rviz-2d-overlay-plugins \
             ros-${ROS_DISTRO}-xacro
+
+    if [ $ROS_DISTRO = "jazzy" ]; then
+        DEBIAN_FRONTEND=noninteractive apt-get install \
+            -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \
+            ros-${ROS_DISTRO}-ros-gz \
+            ros-${ROS_DISTRO}-gz-ros2-control \
+            robotpkg-ros-lint
+    else
+        DEBIAN_FRONTEND=noninteractive apt-get install \
+            -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \
+            ros-${ROS_DISTRO}-gazebo-ros
+    fi
 
     if [[ "${ROS_DISTRO}" =~ \
         ^(kinetic|melodic|noetic)$ ]]; then

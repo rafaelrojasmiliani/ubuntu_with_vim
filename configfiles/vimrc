@@ -244,6 +244,8 @@ EOF
 
     Plugin 'kotlin-vim'
 
+    Plugin 'vim-slime'
+
 call vundle#end()
 filetype plugin indent on
 filetype plugin on

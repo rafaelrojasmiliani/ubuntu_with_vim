@@ -299,6 +299,7 @@ main() {
                 libclang-cpp18-dev \
                 libclang-rt-18-dev:amd64 \
                 libclang1-18 \
+                libomp-18-dev \
                 python3-clang-18
 
         fi

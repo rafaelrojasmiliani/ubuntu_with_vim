@@ -13,7 +13,7 @@ main() {
         ros-${ROS_DISTRO}-moveit-resources
 
     if [[ ! "${ROS_DISTRO}" =~ \
-        ^(foxy|galactic|humble|kinetic|melodic|noetic)$ ]]; then
+        ^(foxy|galactic|humble|kinetic|melodic|noetic|jazzy)$ ]]; then
         echo "Error: Distro \"${ROS_DISTRO}\" does not exists"
         exit 1
     fi

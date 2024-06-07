@@ -3,7 +3,7 @@ main() {
     set -xeu
 
     if [[ ! "${ROS_DISTRO}" =~ \
-        ^(foxy|galactic|humble|kinetic|melodic|noetic)$ ]]; then
+        ^(foxy|galactic|humble|kinetic|melodic|noetic|jazzy)$ ]]; then
         echo "Error: Distro \"${ROS_DISTRO}\" does not exists"
         exit 1
     fi
@@ -22,6 +22,7 @@ main() {
 
     if [[ "${ROS_DISTRO}" =~ \
         ^(kinetic|melodic|noetic)$ ]]; then
+        # ROS1 case
         apt-get update &&
             DEBIAN_FRONTEND=noninteractive apt-get install \
                 -y --no-install-recommends \

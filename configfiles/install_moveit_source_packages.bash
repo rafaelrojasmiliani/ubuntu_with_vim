@@ -25,11 +25,13 @@ main() {
         cd /
         rm -rf /ros_ws
     else
-        git clone --depth=1 --branch=${ROS_DISTRO}-devel https://github.com/ros-planning/moveit2.git /ros_ws/src/moveit2
-        cd /ros_ws
-        rosdep2 init && rosdep2 update && DEBIAN_FRONTEND=noninteractive rosdep2 install -r -q --from-paths src --ignore-src --rosdistro ${ROS_DISTRO} -y
-        cd /
-        rm -rf /ros_ws
+        if [ $ROS_DISTRO != "jazzy" ]; then
+            git clone --depth=1 --branch=${ROS_DISTRO}-devel https://github.com/ros-planning/moveit2.git /ros_ws/src/moveit2
+            cd /ros_ws
+            rosdep2 init && rosdep2 update && DEBIAN_FRONTEND=noninteractive rosdep2 install -r -q --from-paths src --ignore-src --rosdistro ${ROS_DISTRO} -y
+            cd /
+            rm -rf /ros_ws
+        fi
     fi
 
 }

@@ -55,7 +55,7 @@ plugins=(
 )
 
 main() {
-    set -xe
+    set -xeu
     for plugin in ${plugins[@]}; do
         git clone --recurse-submodules -j8 $plugin \
             /etc/vim/bundle/$(echo $(basename $plugin) | sed 's/\.git//')

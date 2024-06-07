@@ -1,7 +1,7 @@
 #!/bin/bash
 
 main() {
-    set -xe
+    set -xeu
     echo 'Etc/UTC' >/etc/timezone &&
         ln -s /usr/share/zoneinfo/Etc/UTC /etc/localtime &&
         apt-get update &&
@@ -43,12 +43,10 @@ main() {
             libgsl-dev \
             libgtest-dev \
             libjpeg-dev \
-            libkdl-parser-dev \
             liblapack-dev \
             liblapack3 \
             libmpc-dev \
             libncurses-dev \
-            libopenblas-base \
             libopenblas-dev \
             liborocos-kdl-dev \
             librsvg2-dev \
@@ -56,10 +54,8 @@ main() {
             libsvgpp-dev \
             libtrilinos-trilinosss-dev \
             libxml2-utils \
-            lsb-core \
             mono-complete \
             net-tools \
-            netcat \
             patchelf \
             pciutils \
             pkg-config \
@@ -80,11 +76,27 @@ main() {
             usbutils \
             valgrind \
             vim \
-            vim-gtk \
             vim-nox \
             wget \
             zenity
 
+    DISTRIB_RELEASE=$(lsb_release -sr 2>/dev/null)
+
+    if [ $DISTRIB_RELEASE = "24.04" ]; then
+        DEBIAN_FRONTEND=noninteractive apt-get install \
+            -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \
+            netcat-openbsd \
+            ncat \
+            vim-gtk3 \
+            lsb-base
+    else
+        DEBIAN_FRONTEND=noninteractive apt-get install \
+            -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \
+            netcat \
+            libkdl-parser-dev \
+            vim-gtk \
+            lsb-core
+    fi
     # --------------------
     # Install latest vim
     # -------------------
@@ -128,6 +140,7 @@ main() {
         ./configure --prefix=/usr &&
         make &&
         make install # may require extra privileges depending on where to install
+    rm -rf /ctags
 
     # --------------------
     # Install latest cmake
@@ -140,7 +153,7 @@ main() {
         gpg --dearmor - |
         tee /etc/apt/trusted.gpg.d/kitware.gpg >/dev/null &&
         echo -ne '\n' | apt-add-repository \
-            "deb https://apt.kitware.com/ubuntu/ $(lsb_release -cs) main" &&
+            "deb https://apt.kitware.com/ubuntu/ $(lsb_release 2>/dev/null -cs) main" &&
         apt-get update &&
         DEBIAN_FRONTEND=noninteractive apt-get install \
             -y --no-install-recommends -o \
@@ -198,7 +211,7 @@ main() {
         # --- Install pinocchio
         # echo "deb [arch=amd64] \
         #     http://robotpkg.openrobots.org/packages/debian/pub \
-        # $(lsb_release -cs) robotpkg" |
+        # $(lsb_release 2>/dev/null -cs) robotpkg" |
         #     tee /etc/apt/sources.list.d/robotpkg.list
         # curl http://robotpkg.openrobots.org/packages/debian/robotpkg.key |
         #     apt-key add -
@@ -210,7 +223,7 @@ main() {
         # --------------------
         # Install latest clang
         # -------------------
-        dcn=$(lsb_release -sc)
+        dcn=$(lsb_release 2>/dev/null -sc)
         echo \
             "deb http://apt.llvm.org/$dcn/ llvm-toolchain-$dcn main" \
             >>/etc/apt/sources.list &&
@@ -288,7 +301,7 @@ main() {
         # ---------------------------------------------
         echo "deb [arch=amd64] \
             http://robotpkg.openrobots.org/packages/debian/pub \
-        $(lsb_release -cs) robotpkg" |
+        $(lsb_release 2>/dev/null -cs) robotpkg" |
             tee /etc/apt/sources.list.d/robotpkg.list
         curl http://robotpkg.openrobots.org/packages/debian/robotpkg.key |
             apt-key add -

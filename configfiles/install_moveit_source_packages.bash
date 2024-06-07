@@ -1,6 +1,6 @@
 #!/bin/bash
 main() {
-    set -x
+    set -xeu
 
     # Remove last omp
     apt-get update &&

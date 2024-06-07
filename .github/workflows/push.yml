@@ -14,6 +14,9 @@ jobs:
           - file_name: "base.dockerfile"
             image_name: "rafa606/ubuntu:22.04"
             base_image: "ubuntu:22.04"
+          - file_name: "base.dockerfile"
+            image_name: "rafa606/ubuntu:24.04"
+            base_image: "ubuntu:24.04"
 
     steps:
       - name: checkout code
@@ -67,6 +70,10 @@ jobs:
             base_image: "rafa606/ubuntu:22.04"
             image_name: "rafa606/ros:humble"
             ros_distro: "humble"
+          - file_name: "ros.dockerfile"
+            base_image: "rafa606/ubuntu:24.04"
+            image_name: "rafa606/ros:jazzy"
+            ros_distro: "jazzy"
 
     steps:
       - name: checkout code
@@ -132,6 +139,10 @@ jobs:
             image_name: "rafa606/moveit:humble"
             base_image: "rafa606/ros:humble"
             ros_distro: "humble"
+          - file_name: "moveit.dockerfile"
+            image_name: "rafa606/moveit:jazzy"
+            base_image: "rafa606/ros:jazzy"
+            ros_distro: "jazzy"
           - file_name: "moveit_source.dockerfile"
             image_name: "rafa606/moveit-source:melodic"
             base_image: "rafa606/ros:melodic"
@@ -144,6 +155,10 @@ jobs:
             image_name: "rafa606/moveit-source:humble"
             base_image: "rafa606/ros:humble"
             ros_distro: "humble"
+          - file_name: "moveit_source.dockerfile"
+            image_name: "rafa606/moveit-source:jazzy"
+            base_image: "rafa606/ros:jazzy"
+            ros_distro: "jazzy"
 
     steps:
       - name: checkout code
@@ -202,6 +217,10 @@ jobs:
             base_image: "rafa606/ubuntu:22.04"
             image_name: "rafa606/cpp-vim:22.04"
             ycm_file: "ycm_extra_conf.py"
+          - file_name: "cpp_vim.dockerfile"
+            base_image: "rafa606/ubuntu:24.04"
+            image_name: "rafa606/cpp-vim:24.04"
+            ycm_file: "ycm_extra_conf.py"
           #--------------------
           #--- ROS ------------
           #--------------------
@@ -212,6 +231,10 @@ jobs:
           - file_name: "cpp_vim.dockerfile"
             base_image: "rafa606/ros:humble"
             image_name: "rafa606/ros-vim:humble"
+            ycm_file: "ycm_extra_conf_ros2.py"
+          - file_name: "cpp_vim.dockerfile"
+            base_image: "rafa606/ros:jazzy"
+            image_name: "rafa606/ros-vim:jazzy"
             ycm_file: "ycm_extra_conf_ros2.py"
           #-----------------------
           #--- Moveit ------------
@@ -224,6 +247,10 @@ jobs:
             base_image: "rafa606/moveit:humble"
             image_name: "rafa606/moveit-vim:humble"
             ycm_file: "ycm_extra_conf_ros2.py"
+          - file_name: "cpp_vim.dockerfile"
+            base_image: "rafa606/moveit:jazzy"
+            image_name: "rafa606/moveit-vim:jazzy"
+            ycm_file: "ycm_extra_conf_ros2.py"
           #-----------------------
           #--- Moveit Source ------------
           #-----------------------
@@ -234,6 +261,10 @@ jobs:
           - file_name: "cpp_vim.dockerfile"
             base_image: "rafa606/moveit-source:humble"
             image_name: "rafa606/moveit-source-vim:humble"
+            ycm_file: "ycm_extra_conf_ros2.py"
+          - file_name: "cpp_vim.dockerfile"
+            base_image: "rafa606/moveit-source:jazzy"
+            image_name: "rafa606/moveit-source-vim:jazzy"
             ycm_file: "ycm_extra_conf_ros2.py"
 
     steps:

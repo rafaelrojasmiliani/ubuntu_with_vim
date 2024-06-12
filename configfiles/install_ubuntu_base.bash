@@ -25,6 +25,7 @@ main() {
             flawfinder \
             g++ \
             gdb \
+            gfortran \
             git \
             git-lfs \
             gitk \

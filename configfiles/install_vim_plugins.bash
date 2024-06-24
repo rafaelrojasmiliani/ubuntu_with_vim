@@ -6,6 +6,8 @@ plugins=(
     https://github.com/shumphrey/fugitive-gitlab.vim.git
     https://github.com/udalov/kotlin-vim.git
     https://github.com/jpalardy/vim-slime.git
+    https://github.com/ludovicchabant/vim-gutentags.git
+    https://github.com/skywind3000/gutentags_plus.git
 )
 
 main() {

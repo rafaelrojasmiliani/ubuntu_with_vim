@@ -246,6 +246,10 @@ EOF
 
     Plugin 'vim-slime'
 
+    Plugin 'vim-gutentags'
+
+    Plugin 'gutentags_plus'
+
 call vundle#end()
 filetype plugin indent on
 filetype plugin on

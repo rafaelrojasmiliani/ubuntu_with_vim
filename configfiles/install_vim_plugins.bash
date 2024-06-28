@@ -25,7 +25,10 @@ main() {
     apt-get update &&
         DEBIAN_FRONTEND=noninteractive apt-get install \
             -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \
-            tidy
+            tidy \
+            cscope \
+            universal-ctags
+
     # --- Install rst formatter and linter
 
     if [ $DISTRIB_RELEASE = "24.04" ]; then

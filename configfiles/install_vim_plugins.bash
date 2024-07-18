@@ -39,7 +39,7 @@ main() {
 
     cd /
     wget https://ftp.gnu.org/pub/gnu/global/global-6.6.13.tar.gz
-    tar xz global-6.6.13.tar.gz
+    tar xzf global-6.6.13.tar.gz
     cd global-6.6.13
     ./configure --prefix=/usr
     make -j$(nproc)

@@ -45,6 +45,36 @@ call vundle#begin('/etc/vim/bundle/')
         let g:tagbar_type_xml = {
                     \ 'kinds' : ['j:joints', 'l:links', 'p:properties', 'm:macros', 'i:includes', 'n:nodes']
                     \}
+        " Define the custom function to handle Tagbar positioning and toggling
+        function! ToggleTagbarWithPosition()
+
+            " Get the width of each window
+            let l:cursor_col = screencol()
+
+            " Get the total width of the Vim window
+            let l:total_width = &columns
+
+            " Calculate the middle column
+            let l:middle_col = l:total_width / 2
+
+            " Get the total width of the Vim window
+            let l:total_width = &columns
+
+            if l:cursor_col > l:middle_col
+                " Focus is on the right window
+                let g:tagbar_position = 'botright vertical'
+            else
+                " Focus is on the left window
+                let g:tagbar_position = 'topleft vertical'
+            endif
+
+            :TagbarToggle
+            " Toggle Tagbar
+        endfunction
+
+        " Map <leader>tb to call the custom function
+        nnoremap <silent> <leader>tb :call ToggleTagbarWithPosition()<CR>
+
     Plugin 'bufexplorer'
         " ------- ale -------
     Plugin 'ale'

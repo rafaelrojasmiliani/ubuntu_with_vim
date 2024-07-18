@@ -280,22 +280,20 @@ EOF
 
     Plugin 'gutentags_plus'
         " enable gtags module
-        let g:gutentags_modules = ['ctags']
+        let g:gutentags_modules = ['ctags', 'gtags_cscope']
 
-        " config project root markers.
-        let g:gutentags_project_root = ['.git']
-
-        " generate datebases in my cache directory, prevent gtags files polluting my project
-        let g:gutentags_cache_dir = expand('~/.cache/tags')
-
-        " change focus to quickfix window after search (optional).
+        let g:gutentags_project_root = ['.svn', '.git', '.hg', 'package.json', 'CMakeLists.txt', 'pom.xml', '.idea', '.vscode']
+        if executable('rg')
+            let g:gutentags_file_list_command = 'rg --files'
+        endif
 
         let g:gutentags_plus_switch = 1
         let g:gutentags_generate_on_new = 1
         let g:gutentags_generate_on_missing = 1
         let g:gutentags_generate_on_write = 1
-        let g:gutentags_ctags_exclude = {
+        let g:gutentags_ctags_exclude = [
           \ '*.git',
+          \ '.git',
           \ '*.svg',
           \ '*.hg',
           \ '*/tests/*',
@@ -358,7 +356,7 @@ EOF
           \ '*.pdf',
           \ '*.doc',
           \ '*.docx',
-          \ '*.ppt'}
+          \ '*.ppt']
 
 
 call vundle#end()

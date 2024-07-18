@@ -36,6 +36,16 @@ main() {
     else
         pip3 install rstcheck[sphinx] rstfmt
     fi
+
+    cd /
+    wget https://ftp.gnu.org/pub/gnu/global/global-6.6.13.tar.gz
+    tar xz global-6.6.13.tar.gz
+    cd global-6.6.13
+    ./configure --prefix=/usr
+    make -j$(nproc)
+    make install
+    cd /
+    rm -rf global-6.6.13
 }
 
 main

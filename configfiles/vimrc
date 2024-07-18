@@ -287,6 +287,13 @@ EOF
             let g:gutentags_file_list_command = 'rg --files'
         endif
 
+        command! -nargs=0 GutentagsClearCache call system('rm ' . g:gutentags_cache_dir . '/*')
+
+        let g:gutentags_ctags_extra_args = [
+          \ '--tag-relative=yes',
+          \ '--fields=+ailmnS',
+          \ ]
+
         let g:gutentags_plus_switch = 1
         let g:gutentags_generate_on_new = 1
         let g:gutentags_generate_on_missing = 1

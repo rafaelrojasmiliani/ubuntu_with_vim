@@ -38,6 +38,10 @@ call vundle#begin('/etc/vim/bundle/')
         let g:ycm_global_ycm_extra_conf='/etc/vim/ycm_extra_conf.py'
         let g:ycm_confirm_extra_conf = 1
         let g:SuperTabDefaultCompletionType = '<C-n>'
+        let g:ycm_semantic_triggers =  {
+                    \   'VimspectorPrompt': [ '.', '->', ':', '<' ] }
+        set completeopt-=preview
+}
     Plugin 'vim-latex'
     " ------- tagbar -------
     Plugin 'tagbar'
@@ -176,6 +180,8 @@ call vundle#begin('/etc/vim/bundle/')
     Plugin 'vim-commentary'
     Plugin 'vim-repeat'
     Plugin 'vim-surround'
+        let b:surround_{char2nr('i')} = "\n#ifdef \1ifdef condition: \1 \r #endif\n"
+
     "Plugin 'vim-unimpaired'  not sufficiently useful
     Plugin 'vim-cutclass'
     Plugin 'vim-yoink'

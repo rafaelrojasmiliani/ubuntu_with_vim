@@ -40,7 +40,13 @@ call vundle#begin('/etc/vim/bundle/')
         let g:SuperTabDefaultCompletionType = '<C-n>'
         let g:ycm_semantic_triggers =  {
                     \   'VimspectorPrompt': [ '.', '->', ':', '<' ] }
+        let g:ycm_always_populate_location_list = 1
         set completeopt-=preview
+
+        nmap <leader>yfw <Plug>(YCMFindSymbolInWorkspace)
+        nmap <leader>yfd <Plug>(YCMFindSymbolInDocument)
+        nmap <leader>yth <Plug>(YCMTypeHierarchy)
+        nmap <leader>ych <Plug>(YCMCallHierarchy)
 }
     Plugin 'vim-latex'
     " ------- tagbar -------

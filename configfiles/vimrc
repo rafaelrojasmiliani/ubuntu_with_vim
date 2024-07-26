@@ -149,6 +149,34 @@ call vundle#begin('/etc/vim/bundle/')
 
     Plugin 'nerdtree'
         let NERDTreeShowHidden=1
+        function! ToggleNERDTreeWithPosition()
+
+            " Get the width of each window
+            let l:cursor_col = screencol()
+
+            " Get the total width of the Vim window
+            let l:total_width = &columns
+
+            " Calculate the middle column
+            let l:middle_col = l:total_width / 2
+
+            " Get the total width of the Vim window
+            let l:total_width = &columns
+
+            if l:cursor_col > l:middle_col
+                " Focus is on the right window
+                let g:NERDTreeWinPos = 'right'
+            else
+                " Focus is on the left window
+                let g:NERDTreeWinPos = 'left'
+            endif
+
+            :NERDTreeToggle
+        endfunction
+
+        nnoremap <silent> <leader>nt :call ToggleNERDTreeWithPosition()<CR>
+    Plugin 'nerdtree-git-plugin'
+
 
     Plugin 'cmake4vim'
         let g:cmake_vimspector_support=1
@@ -172,7 +200,6 @@ call vundle#begin('/etc/vim/bundle/')
 
     Plugin 'lualine-cmake4vim'
 
-    Plugin 'nerdtree-git-plugin'
     Plugin 'vim-interestingwords'
     Plugin 'vim-doge'
     Plugin 'Vim-Jinja2-Syntax'

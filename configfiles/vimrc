@@ -47,7 +47,7 @@ call vundle#begin('/etc/vim/bundle/')
         nmap <leader>yfd <Plug>(YCMFindSymbolInDocument)
         nmap <leader>yth <Plug>(YCMTypeHierarchy)
         nmap <leader>ych <Plug>(YCMCallHierarchy)
-}
+
     Plugin 'vim-latex'
     " ------- tagbar -------
     Plugin 'tagbar'

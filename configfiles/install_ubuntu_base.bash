@@ -500,10 +500,9 @@ main() {
     cd /
     git clone https://github.com/pantor/ruckig.git
     cd ruckig
-    git checkout v0.12.2
     mkdir build
     cd build
-    cmake .. -DCMAKE_INSTALL_PREFIX=/usr
+    make .. -DBUILD_CLOUD_CLIENT=OFF -DBUILD_EXAMPLES=OFF -DBUILD_TESTS=OFF -DCMAKE_INSTALL_PREFIX=/usr
     make -j$(nproc) && make install
     cd /
     rm -rf ruckig

@@ -495,6 +495,19 @@ main() {
     make -j$(nproc) && make install PREFIX=/usr/
     cd /
     rm -rf /luajit
+
+    # --- install ruckig
+    cd /
+    git clone https://github.com/pantor/ruckig.git
+    cd ruckig
+    git checkout v0.12.2
+    mkdir build
+    cd build
+    cmake .. -DCMAKE_INSTALL_PREFIX=/usr
+    make -j$(nproc) && make install
+    cd /
+    rm -rf ruckig
+
 }
 
 main

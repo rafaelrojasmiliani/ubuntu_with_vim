@@ -502,7 +502,7 @@ main() {
     cd ruckig
     mkdir build
     cd build
-    make .. -DBUILD_CLOUD_CLIENT=OFF -DBUILD_EXAMPLES=OFF -DBUILD_TESTS=OFF -DCMAKE_INSTALL_PREFIX=/usr
+    cmake .. -DBUILD_CLOUD_CLIENT=OFF -DBUILD_EXAMPLES=OFF -DBUILD_TESTS=OFF -DCMAKE_INSTALL_PREFIX=/usr
     make -j$(nproc) && make install
     cd /
     rm -rf ruckig

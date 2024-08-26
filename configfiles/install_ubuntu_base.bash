@@ -507,6 +507,31 @@ main() {
     cd /
     rm -rf ruckig
 
+    # --- Install tidy to format xml files
+    apt-get update &&
+        DEBIAN_FRONTEND=noninteractive apt-get install \
+            -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \
+            tidy \
+            cscope \
+            universal-ctags
+
+    # --- Install rst formatter and linter
+
+    if [ $DISTRIB_RELEASE = "24.04" ]; then
+        pip3 install --user --break-system-packages rstcheck[sphinx] rstfmt
+    else
+        pip3 install rstcheck[sphinx] rstfmt
+    fi
+
+    cd /
+    wget https://ftp.gnu.org/pub/gnu/global/global-6.6.13.tar.gz
+    tar xzf global-6.6.13.tar.gz
+    cd global-6.6.13
+    ./configure --prefix=/usr
+    make -j$(nproc)
+    make install
+    cd /
+    rm -rf global-6.6.13
 }
 
 main

@@ -78,6 +78,7 @@ main() {
             -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \
             ros-${ROS_DISTRO}-ros-gz \
             ros-${ROS_DISTRO}-gz-ros2-control \
+            ros-${ROS_DISTRO}-image-publisher \
             robotpkg-ros-lint
     else
         DEBIAN_FRONTEND=noninteractive apt-get install \

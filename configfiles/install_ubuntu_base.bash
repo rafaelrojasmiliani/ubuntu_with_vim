@@ -65,6 +65,8 @@ main() {
             python3-argcomplete \
             python3-dev \
             python3-pip \
+            python3-venv \
+            python3-virtualenv \
             screen \
             silversearcher-ag \
             software-properties-common \
@@ -523,6 +525,7 @@ main() {
         pip3 install rstcheck[sphinx] rstfmt
     fi
 
+    # --- Install glogal tag finder
     cd /
     wget https://ftp.gnu.org/pub/gnu/global/global-6.6.13.tar.gz
     tar xzf global-6.6.13.tar.gz

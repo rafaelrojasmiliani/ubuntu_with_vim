@@ -72,7 +72,7 @@ main() {
             ros-${ROS_DISTRO}-velocity-controllers \
             ros-${ROS_DISTRO}-xacro
 
-    # Universal packages until ros jazzy
+    # Handle gazebo that has changed in ROS jazzy
     if [ $ROS_DISTRO = "jazzy" ]; then
         DEBIAN_FRONTEND=noninteractive apt-get install \
             -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \
@@ -86,8 +86,11 @@ main() {
             ros-${ROS_DISTRO}-gazebo-ros
     fi
 
+    # Install packages that are only present on either ROS1 or ROS2
     if [[ "${ROS_DISTRO}" =~ \
         ^(kinetic|melodic|noetic)$ ]]; then
+
+        # Install packages that are only in ROS1, in all distros
 
         DEBIAN_FRONTEND=noninteractive apt-get install \
             -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \
@@ -99,12 +102,16 @@ main() {
             ros-${ROS_DISTRO}-jsk-rviz-plugins \
             ros-${ROS_DISTRO}-pybind11-catkin \
             ros-${ROS_DISTRO}-roslint \
+            ros-${ROS_DISTRO}-rospy-message-converter \
             ros-${ROS_DISTRO}-rosparam-shortcuts \
             ros-${ROS_DISTRO}-warehouse-ros \
             ros-${ROS_DISTRO}-warehouse-ros-mongo \
             ros-${ROS_DISTRO}-warehouse-ros-sqlite
 
         if [ "${ROS_DISTRO}" = "noetic" ]; then
+
+            # Install packages that are only in noetic
+
             DEBIAN_FRONTEND=noninteractive apt-get install \
                 -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \
                 python3-catkin-* \
@@ -117,6 +124,7 @@ main() {
                 catkin build && cd / && rm -rf /ws
         fi
     else
+        # Install packages that are only in ROS2, in all distros
 
         DEBIAN_FRONTEND=noninteractive apt-get install \
             -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \
@@ -126,6 +134,7 @@ main() {
             ros-${ROS_DISTRO}-joint-state-broadcaster \
             ros-${ROS_DISTRO}-rviz-2d-overlay-msgs \
             ros-${ROS_DISTRO}-rviz-2d-overlay-plugins \
+            ros-${ROS_DISTRO}-rclpy-message-converter \
             python3-colcon-core \
             python3-colcon-ros \
             python3-colcon-common-extensions \

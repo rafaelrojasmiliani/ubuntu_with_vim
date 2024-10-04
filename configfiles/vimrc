@@ -10,6 +10,7 @@ set smarttab
 set backspace=2
 set hidden
 set guioptions=i
+set go+=!
 au BufRead,BufNewFile *.tex syntax spell toplevel " enable spelling without sections
 colorscheme desert
 nnoremap <silent><Up> gk

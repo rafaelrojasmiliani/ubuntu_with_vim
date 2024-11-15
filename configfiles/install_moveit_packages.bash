@@ -20,6 +20,7 @@ main() {
             -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \
             ros-${ROS_DISTRO}-moveit-*
 
+
     if [[ "${ROS_DISTRO}" =~ \
         ^(kinetic|melodic|noetic)$ ]]; then
         # ROS1 case

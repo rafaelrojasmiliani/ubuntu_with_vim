@@ -19,8 +19,14 @@ vnoremap <silent><Up> gk
 vnoremap <silent><Down> gj
 inoremap <silent><Up> <C-o>gk
 inoremap <silent><Down> <C-o>gj
+nnoremap <C-J> jzz
+nnoremap <C-K> kzz
 nnoremap <silent> yr :call setreg(v:register, getreg(nr2char(getchar())))<cr>
 set display+=lastline "prevent @ when a line doesn't fit on screen
+"disable this keys in normal mode
+nnoremap <CR> <Nop>
+nnoremap + <Nop>
+nnoremap - <Nop>
 " ---------------------------------------
 set nocompatible
 set number
@@ -408,6 +414,7 @@ EOF
           \ '*.ppt']
 
 
+
 call vundle#end()
 filetype plugin indent on
 filetype plugin on
@@ -449,3 +456,11 @@ endfunction
 set formatexpr=MyFormatExpr(v:lnum,v:lnum+v:count-1)
 
 set conceallevel=0
+au BufRead,BufNewFile *.tex set wildignore+=*.log
+set wildignore+=*.git\\*,*.tgz,*.zip,*.url,*.pyc,*.class,*.aux
+set wildignore+=*.svg,cmake-*,*.exe,*.dll,*.mp3,*.ogg,*.flac
+set wildignore+=*.swp,*.swo,*.bmp,*.gif,*.ico,*.jpg,*.png
+set wildignore+=*.rar,*.tar,*.tar.gz,*.tar.xz,*.tar.bz2
+set wildignore+=*.pdf,*.aux,*.log,*.nav,*.out,*.pytxcode
+set wildignore+=*.snm,*.toc,*.vrb
+set wildignore+=*.pptx

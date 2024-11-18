@@ -112,7 +112,7 @@ call vundle#begin('/etc/vim/bundle/')
 
         " do not lint c++ with ale. Use ycm
         let g:ale_linters = {
-                    \'python': ['pylint', 'flake8', 'prospector'],
+                    \'python': ['pylint', 'flake8'],
                     \'xml':['xmllint'],
                     \'cpp':[],
                     \'dockerfile':['hadolint'],

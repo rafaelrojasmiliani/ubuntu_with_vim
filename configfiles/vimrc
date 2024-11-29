@@ -161,7 +161,7 @@ call vundle#begin('/etc/vim/bundle/')
     Plugin 'fzf.vim'
 
     Plugin 'nerdtree'
-        set wildignore+=*.pyc,*.o,*.obj,*.svn,*.swp,*.class,*.hg,*.DS_Store,*.min.*,*.pdf,*.nav,*.swo
+        set wildignore+=*.pyc,*.o,*.obj,*.svn,*.swn,*.swp,*.swo,*.class,*.hg,*.DS_Store,*.min.*,*.pdf,*.nav
         let NERDTreeRespectWildIgnore=1
         let NERDTreeShowHidden=1
         function! ToggleNERDTreeWithPosition()

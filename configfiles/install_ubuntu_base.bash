@@ -40,6 +40,7 @@ main() {
             libatlas3-base \
             libboost-math-dev \
             libeigen3-dev \
+            libfmt-dev \
             libgmp3-dev \
             libgsl-dev \
             libgtest-dev \

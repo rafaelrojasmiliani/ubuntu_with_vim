@@ -74,14 +74,18 @@ main() {
                 --enable-c --enable-cpp --enable-python --sudo
     fi
 
-    # --------------  youcompleteme
-    cd /etc/vim/bundle/YouCompleteMe &&
-        git submodule update --init --recursive &&
-        python3 install.py --clangd-completer --force-sudo
+    DISTRIB_RELEASE=$(lsb_release -sr 2>/dev/null)
 
-    export YCMC=$(find /etc/vim/bundle/YouCompleteMe/third_party/ycmd/ -name 'ycm_c*.so')
-    patchelf --set-rpath "/etc/vim/bundle/YouCompleteMe/third_party/ycmd/third_party/clang/lib" "$YCMC"
+    if [ $DISTRIB_RELEASE != "20.04" ]; then
+        # --------------  youcompleteme
+        cd /etc/vim/bundle/YouCompleteMe &&
+            git submodule update --init --recursive &&
+            python3 install.py --clangd-completer --force-sudo
+
+        export YCMC=$(find /etc/vim/bundle/YouCompleteMe/third_party/ycmd/ -name 'ycm_c*.so')
+        patchelf --set-rpath "/etc/vim/bundle/YouCompleteMe/third_party/ycmd/third_party/clang/lib" "$YCMC"
     #chmod 777 /etc/vim/bundle/YouCompleteMe/third_party/ycmd/third_party/tabnine
+    fi
 
     # --------------  fzf
     cd /etc/vim/bundle/fzf && ./install --all

@@ -216,7 +216,10 @@ call vundle#begin('/etc/vim/bundle/')
     Plugin 'lualine-cmake4vim'
 
     Plugin 'vim-interestingwords'
+
     Plugin 'vim-doge'
+        let g:doge_doc_standard_cpp='doxygen_cpp_comment_slash'
+
     Plugin 'Vim-Jinja2-Syntax'
     Plugin 'indentLine'
     Plugin 'vim-commentary'

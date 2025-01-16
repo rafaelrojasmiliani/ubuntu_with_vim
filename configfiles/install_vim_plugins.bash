@@ -19,7 +19,8 @@ main() {
     done
 
     # --------------  install doge
-    echo -ne '\n' | vim -c ':call doge#install()' -c ':q'
+    vim -c ':call doge#install()' -c ':q'
+    sudo chmod -R 777 /etc/vim/
 
 }
 

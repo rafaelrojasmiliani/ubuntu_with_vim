@@ -25,3 +25,5 @@ main() {
     rm -rf /msvc-wine
 
 }
+
+main

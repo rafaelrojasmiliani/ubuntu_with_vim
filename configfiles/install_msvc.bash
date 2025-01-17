@@ -17,7 +17,7 @@ main() {
 
     umask 0000
     mkdir -p /opt/msvc
-    ./vsdownload.py --dest /opt/msvc
+    ./vsdownload.py --dest /opt/msvc <<< "yes"
     ./install.sh /opt/msvc
 
     umask ${original_umask}

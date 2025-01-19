@@ -526,6 +526,14 @@ main() {
         pip3 install rstcheck[sphinx] rstfmt
     fi
 
+    # --- Install rst formatter and linter
+
+    if [ $DISTRIB_RELEASE = "24.04" ]; then
+        pip3 install --user --break-system-packages pygments
+    else
+        pip3 install pygments
+    fi
+
     # --- Install glogal tag finder
     cd /
     wget https://ftp.gnu.org/pub/gnu/global/global-6.6.13.tar.gz

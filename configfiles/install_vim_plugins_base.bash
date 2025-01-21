@@ -60,6 +60,7 @@ main() {
         git clone --recurse-submodules -j8 $plugin \
             /etc/vim/bundle/$(echo $(basename $plugin) | sed 's/\.git//')
     done
+    DISTRIB_RELEASE=$(lsb_release -sr 2>/dev/null)
 
     # --------------  vimspector
     source /etc/lsb-release
@@ -74,7 +75,6 @@ main() {
                 --enable-c --enable-cpp --enable-python --sudo
     fi
 
-    DISTRIB_RELEASE=$(lsb_release -sr 2>/dev/null)
 
     if [ $DISTRIB_RELEASE != "20.04" ]; then
         # --------------  youcompleteme

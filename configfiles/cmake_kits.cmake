@@ -4,5 +4,5 @@
       "CXX": "/usr/bin/g++"
 } } ,
 "msvc": {
-  "toolchain_file" : "/opt/mscv/toolchain.cmake" } 
+  "toolchain_file" : "/opt/msvc/toolchain.cmake" } 
 }

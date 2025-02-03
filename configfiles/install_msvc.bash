@@ -19,14 +19,13 @@ main() {
     mkdir -p /opt/msvc
     ./vsdownload.py --dest /opt/msvc <<<"yes"
     ./install.sh /opt/msvc
-
+    cd ..
     rm -rf /msvc-wine
 
     # set wine prefix where Wine simulates the Windows environment
     mkdir /opt/wine
     export WINEPREFIX=/opt/wine
     export WINEARCH=win64
-    wineboot --init
     cat <<EOF >/opt/msvc/toolchain.cmake
 set(CMAKE_SYSTEM_NAME "Windows")
 set(CMAKE_HOST_WIN32 true)
@@ -47,7 +46,7 @@ set(CMAKE_SHARED_LINKER_FLAGS /MANIFEST:NO)
 EOF
 
     umask ${original_umask}
-    echo "export PATH=/opt/msvc/bin/x64/:$PATH" >>/etc/bash.bashrc
+    echo 'export PATH=/opt/msvc/bin/x64/:$PATH' >>/etc/bash.bashrc
     echo "export WINEPREFIX=/opt/wine" >>/etc/bash.bashrc
     echo "export WINEARCH=win32" >>/etc/bash.bashrc
 

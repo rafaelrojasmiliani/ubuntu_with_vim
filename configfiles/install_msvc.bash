@@ -33,9 +33,8 @@ set(CMAKE_HOST_WIN32 true)
 
 set(PYTHON_EXE "/usr/bin/python3")
 
-set(MSVC_WINE_PATH "/opt/msvc") # set the path here
-set(CMAKE_C_COMPILER ${MSVC_WINE_PATH}/bin/x64/cl)
-set(CMAKE_CXX_COMPILER ${MSVC_WINE_PATH}/bin/x64/cl)
+set(CMAKE_C_COMPILER /opt/msvc/bin/x64/cl)
+set(CMAKE_CXX_COMPILER /opt/msvc/bin/x64/cl)
 
 set(CMAKE_NINJA_FORCE_RESPONSE_FILE
     1

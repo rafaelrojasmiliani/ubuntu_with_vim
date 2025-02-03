@@ -11,6 +11,7 @@ RUN --mount=type=bind,source=./,target=/workspace,rw \
     && bash install_vim_plugins.bash \
     && cp vimrc /etc/vim/ \
     && cp ctags /etc/vim/ \
+    && cp make_kits.cmake /etc/vim/ \
     && cp ${YCM_FILE} /etc/vim/ycm_extra_conf.py \
     && cp gdbinit /etc/gdb/ \
     && cp printers.py /etc/gdb/ \

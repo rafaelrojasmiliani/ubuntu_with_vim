@@ -346,6 +346,7 @@ jobs:
           echo "ycm=$(date -d "$(git log -1 --format=%cd --date=iso -- ./configfiles/${{ matrix.docker_image.ycm_file }})" +%s)" >> $GITHUB_OUTPUT
           echo "ctags=$(date -d "$(git log -1 --format=%cd --date=iso -- ./configfiles/ctags)" +%s)" >> $GITHUB_OUTPUT
           echo "gdbinit=$(date -d "$(git log -1 --format=%cd --date=iso -- ./configfiles/gdbinit)" +%s)" >> $GITHUB_OUTPUT
+          echo "cmake_kits=$(date -d "$(git log -1 --format=%cd --date=iso -- ./configfiles/cmake_kits.cmake)" +%s)" >> $GITHUB_OUTPUT
           echo "vim_plugins=$(date -d "$(git log -n 1 --format=%cd --date=iso -- ./configfiles/install_vim_plugins.bash)" +%s)" >> $GITHUB_OUTPUT
 
       - name: Login to DockerHub
@@ -372,5 +373,6 @@ jobs:
           steps.image_modify_date.outputs.value < steps.file_modify_date.outputs.ycm ||
           steps.image_modify_date.outputs.value < steps.file_modify_date.outputs.ctags ||
           steps.image_modify_date.outputs.value < steps.file_modify_date.outputs.gdbinit ||
+          steps.image_modify_date.outputs.value < steps.file_modify_date.outputs.cmake_kits ||
           steps.image_modify_date.outputs.value < steps.file_modify_date.outputs.vim_plugins||
           steps.image_modify_date.outputs.value < steps.image_modify_date.outputs.base_image

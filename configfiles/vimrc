@@ -200,6 +200,7 @@ call vundle#begin('/etc/vim/bundle/')
         let g:cmake_usr_args='-DCMAKE_C_COMPILER_LAUNCHER=ccache -DCMAKE_CXX_COMPILER_LAUNCHER=ccache -DCMAKE_EXPORT_COMPILE_COMMANDS=ON'
         let g:cmake_ctest_args='-j20 --output-on-failure --verbose'
         let g:cmake_build_dir_prefix='cmake-' . substitute(system("lsb_release -ds | sed 's/ /_/g'"), '\n', '', '') . '-'
+        let g:cmake_kits_global_path='/etc/vim/cmake_kits.cmake'
 
     autocmd BufRead,BufNewFile *.cpp
    			\ let g:cmake_vimspector_default_configuration = {

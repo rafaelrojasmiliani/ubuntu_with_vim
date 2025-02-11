@@ -423,6 +423,6 @@ jobs:
           build-args: |
             LLAMA_GIT_TAG=b4686
           push: true
-          tags: ${{ steps.name_definitions.image_name }}
+          tags: ${{ steps.name_definitions.outputs.image_name }}
         if: |
           steps.image_modify_date.outputs.value < steps.file_modify_date.outputs.dockerfile

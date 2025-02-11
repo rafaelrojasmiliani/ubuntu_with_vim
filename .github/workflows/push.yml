@@ -427,7 +427,7 @@ jobs:
         if: |
           steps.image_modify_date.outputs.value < steps.file_modify_date.outputs.dockerfile
   build_ubuntu_llama_cpp_cuda:
-    name: Image for llama cpp
+    name: Image for llama cpp with cuda 12.5 in ubuntu
     runs-on: ubuntu-latest
     steps:
       - name: checkout code

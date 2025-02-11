@@ -45,7 +45,7 @@ RUN mkdir -p /app/full \
 FROM ${BASE_CUDA_RUN_CONTAINER} AS base
 
 RUN apt-get update \
-    && set -ex && \
+    && set -ex \
     && apt-get install -y libgomp1 curl \
     && apt autoremove -y \
     && apt clean -y \
@@ -63,7 +63,7 @@ COPY --from=build /app/full /app
 WORKDIR /app
 
 RUN apt-get update \
-    && set -ex && \
+    && set -ex \
     && apt-get install -y \
     git \
     python3 \

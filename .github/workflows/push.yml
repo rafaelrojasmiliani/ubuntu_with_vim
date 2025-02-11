@@ -418,7 +418,6 @@ jobs:
       - name: Build and push to Docker Hub
         uses: docker/build-push-action@v6
         with:
-          tags: llama_cpp
           file: alpine_llama_cpp.dockerfile
           platforms: linux/amd64,linux/arm64
           build-args: |

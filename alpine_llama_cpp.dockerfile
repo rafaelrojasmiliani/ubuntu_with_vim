@@ -14,6 +14,7 @@ WORKDIR /opt/llama.cpp
 
 # Compile the official LLaMA.cpp HTTP Server.
 RUN \
+    set -xe;\
     # Since my GitHub Action uses QEMU for the ARM64 build, I need to disable the native build.
     # Otherwise, the build will fail. See: https://github.com/ggerganov/llama.cpp/issues/10933
     # The CPU architecture is set to "armv8-a" because it's the one used by the Raspberry Pi 3+.
@@ -21,6 +22,8 @@ RUN \
         export GGML_NATIVE=OFF; \
         export GGML_CPU_ARM_ARCH="armv8-a"; \
     else \
+        echo -e "\n...................\n..........-Compiling for amd -";\
+        echo -e "...................\n";\
         export GGML_NATIVE=ON; \
         export GGML_CPU_ARM_ARCH=""; \
     fi && \
@@ -28,12 +31,13 @@ RUN \
     # Using --no-cache to avoid caching the Alpine packages index
     # and --virtual to group build dependencies for easier cleanup.
     apk add --no-cache --virtual .build-deps \
-    git=~2.45 \
-    g++=~13.2 \
-    make=~4.4 \
-    cmake=~3.29 \
-    linux-headers=~6.6 \
-    curl-dev=~8.11 && \
+    git \
+    g++ \
+    make \
+    cmake \
+    coreutils \
+    linux-headers \
+    curl-dev && \
     # Checkout the llama.cpp repository to the wanted version (git tag).
     # A shallow clone (--depth 1) is used to minimize the data transfer.
     git clone -b ${LLAMA_GIT_TAG} --depth 1 https://github.com/ggerganov/llama.cpp . && \
@@ -53,7 +57,7 @@ RUN \
     # Include the GGML lib inside this executable to ease deployment...
     -DBUILD_SHARED_LIBS=OFF && \
     # Compile the llama-server target in Release mode for a production use.
-    cmake --build build --target llama-server --config Release && \
+    cmake --build build --target llama-server --config Release -- -j$(nproc) && \
     # Remove non-essential symbols from this executable to save some space.
     strip build/bin/llama-server && \
     # Copy this executable in a safe place...

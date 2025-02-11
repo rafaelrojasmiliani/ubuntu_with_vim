@@ -426,3 +426,44 @@ jobs:
           tags: ${{ steps.name_definitions.outputs.image_name }}
         if: |
           steps.image_modify_date.outputs.value < steps.file_modify_date.outputs.dockerfile
+  build_ubuntu_llama_cpp_cuda:
+    name: Image for llama cpp
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout code
+        uses: actions/checkout@master
+        with:
+          fetch-depth: "0"
+      - name: Set and use variable
+        id: name_definitions
+        run: |
+          echo "image_name=rafa606/llama_cpp:22.04_cuda_12.5" >> $GITHUB_OUTPUT
+          echo "file_name=ubuntu_llama_cpp_cuda.dockerfile" >> $GITHUB_OUTPUT
+
+      - name: Check last modified time of Foo Dockerfile
+        id: image_modify_date
+        run: |
+          echo "value=$(date -d "$(curl -s https://hub.docker.com/v2/repositories/"$(echo ${{ steps.name_definitions.outputs.image_name }} | sed 's/:/\/tags\//')" | jq -r '.last_updated')" +%s)" >> $GITHUB_OUTPUT;
+
+      - name: Check last modified time of Foo Docker image
+        id: file_modify_date
+        run: |
+          echo "dockerfile=$(date -d "$(git log -1 --format=%cd --date=iso -- ${{ steps.name_definitions.outputs.file_name }})" +%s)" >> $GITHUB_OUTPUT
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Build and push to Docker Hub
+        uses: docker/build-push-action@v6
+        with:
+          file: ${{ steps.name_definitions.outputs.file_name }}
+          target: server
+          build-args: |
+            LLAMA_GIT_TAG=b4686
+          push: true
+          tags: ${{ steps.name_definitions.outputs.image_name }}
+        if: |
+          steps.image_modify_date.outputs.value < steps.file_modify_date.outputs.dockerfile

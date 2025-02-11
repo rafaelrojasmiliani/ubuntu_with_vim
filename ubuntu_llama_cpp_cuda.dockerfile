@@ -33,7 +33,7 @@ RUN mkdir -p /app/lib && \
     find build -name "*.so" -exec cp {} /app/lib \;
 
 RUN mkdir -p /app/full \
-    set -ex && \
+    && set -ex && \
     && cp build/bin/* /app/full \
     && cp *.py /app/full \
     && cp -r gguf-py /app/full \
@@ -45,7 +45,7 @@ RUN mkdir -p /app/full \
 FROM ${BASE_CUDA_RUN_CONTAINER} AS base
 
 RUN apt-get update \
-    set -ex && \
+    && set -ex && \
     && apt-get install -y libgomp1 curl \
     && apt autoremove -y \
     && apt clean -y \
@@ -63,7 +63,7 @@ COPY --from=build /app/full /app
 WORKDIR /app
 
 RUN apt-get update \
-    set -ex && \
+    && set -ex && \
     && apt-get install -y \
     git \
     python3 \

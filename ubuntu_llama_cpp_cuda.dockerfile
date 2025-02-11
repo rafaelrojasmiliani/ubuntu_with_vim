@@ -21,7 +21,7 @@ WORKDIR /app
 RUN \
     set -ex && \
     git clone -b ${LLAMA_GIT_TAG} --depth 1 https://github.com/ggerganov/llama.cpp . && \
-    cd llama.cpp \
+    cd llama.cpp && \
     if [ "${CUDA_DOCKER_ARCH}" != "default" ]; then \
     export CMAKE_ARGS="-DCMAKE_CUDA_ARCHITECTURES=${CUDA_DOCKER_ARCH}"; \
     fi && \

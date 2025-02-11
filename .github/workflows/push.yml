@@ -388,8 +388,8 @@ jobs:
       - name: Set and use variable
         id: name_definitions
         run: |
-          echo "image_name=rafa606/llama_cpp:alpine" >> $GITHUB_ENV
-          echo "file_name=alpine_llama_cpp.dockerfile" >> $GITHUB_ENV
+          echo "image_name=rafa606/llama_cpp:alpine" >> $GITHUB_OUTPUT
+          echo "file_name=alpine_llama_cpp.dockerfile" >> $GITHUB_OUTPUT
 
       - name: Check last modified time of Foo Dockerfile
         id: image_modify_date

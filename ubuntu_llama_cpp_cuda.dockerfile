@@ -10,7 +10,7 @@ FROM ${BASE_CUDA_DEV_CONTAINER} AS build
 
 # CUDA architecture to build for (defaults to all supported archs)
 ARG CUDA_DOCKER_ARCH=default
-ARG LLAMA_GIT_TAG
+ARG LLAMA_GIT_TAG=b4686
 
 RUN apt-get update && \
     apt-get install -y build-essential cmake python3 python3-pip git libcurl4-openssl-dev libgomp1
@@ -33,8 +33,8 @@ RUN mkdir -p /app/lib && \
 
 RUN mkdir -p /app/full \
     && set -ex \
-    && cp build/bin/* /app/full \
-    && cp *.py /app/full \
+    && cp -- build/bin/* /app/full \
+    && cp -- *.py /app/full \
     && cp -r gguf-py /app/full \
     && cp -r requirements /app/full \
     && cp requirements.txt /app/full \
@@ -48,7 +48,7 @@ RUN apt-get update \
     && apt-get install -y libgomp1 curl \
     && apt autoremove -y \
     && apt clean -y \
-    && rm -rf /tmp/* /var/tmp/* \
+    && rm -rf -- /tmp/* /var/tmp/* \
     && find /var/cache/apt/archives /var/lib/apt/lists -not -name lock -type f -delete \
     && find /var/cache -type f -delete
 

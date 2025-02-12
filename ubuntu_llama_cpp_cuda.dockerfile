@@ -20,8 +20,7 @@ WORKDIR /app
 
 RUN \
     set -ex && \
-    git clone -b ${LLAMA_GIT_TAG} --depth 1 https://github.com/ggerganov/llama.cpp && \
-    cd llama.cpp && \
+    git clone -b ${LLAMA_GIT_TAG} --depth 1 https://github.com/ggerganov/llama.cpp . && \
     if [ "${CUDA_DOCKER_ARCH}" != "default" ]; then \
     export CMAKE_ARGS="-DCMAKE_CUDA_ARCHITECTURES=${CUDA_DOCKER_ARCH}"; \
     fi && \
@@ -33,7 +32,7 @@ RUN mkdir -p /app/lib && \
     find build -name "*.so" -exec cp {} /app/lib \;
 
 RUN mkdir -p /app/full \
-    && set -ex && \
+    && set -ex \
     && cp build/bin/* /app/full \
     && cp *.py /app/full \
     && cp -r gguf-py /app/full \

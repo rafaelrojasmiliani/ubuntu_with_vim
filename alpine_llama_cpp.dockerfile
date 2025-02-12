@@ -78,6 +78,8 @@ WORKDIR /opt/llama.cpp
 RUN apk add --no-cache \
     libstdc++=~13.2 \
     libcurl=~8.11 \
+    bash \
+    sudo \
     libgomp=~13.2
 
 # Copy the compiled llama-server executable from the build stage to the current working directory.

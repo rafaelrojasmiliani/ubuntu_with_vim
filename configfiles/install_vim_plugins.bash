@@ -8,6 +8,7 @@ plugins=(
     https://github.com/jpalardy/vim-slime.git
     https://github.com/ludovicchabant/vim-gutentags.git
     https://github.com/skywind3000/gutentags_plus.git
+    https://github.com/ggml-org/llama.vim.git
 )
 
 main() {

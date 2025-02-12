@@ -48,7 +48,7 @@ EOF
     umask ${original_umask}
     echo 'export PATH=/opt/msvc/bin/x64/:$PATH' >>/etc/bash.bashrc
     echo "export WINEPREFIX=/opt/wine" >>/etc/bash.bashrc
-    echo "export WINEARCH=win32" >>/etc/bash.bashrc
+    echo "export WINEARCH=win64" >>/etc/bash.bashrc
 
 }
 

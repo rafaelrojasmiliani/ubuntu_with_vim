@@ -1,0 +1,23 @@
+ARG BASEIMAGE
+FROM ${BASEIMAGE}
+SHELL ["bash", "-c"]
+
+RUN \
+    echo apt-get update && \
+        DEBIAN_FRONTEND=noninteractive apt-get install \
+            -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \
+    lutris \
+    wine \
+    winbind \
+    xvfb \
+    x11-utils \
+    x11-xserver-utils \
+    pulseaudio \
+    dbus-x11 \
+    wget \
+    git \
+    libgl1-mesa-dri \
+    mesa-utils \
+    libvulkan1 \
+    vulkan-utils \
+    nvidia-utils-525

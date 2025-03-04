@@ -3,7 +3,7 @@ FROM ${BASEIMAGE}
 SHELL ["bash", "-c"]
 
 RUN set -ex\
-    echo apt-get update && \
+    apt-get update && \
         DEBIAN_FRONTEND=noninteractive apt-get install \
             -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \
     lutris \

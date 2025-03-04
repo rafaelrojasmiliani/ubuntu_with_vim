@@ -19,5 +19,4 @@ RUN set -ex && \
     libgl1-mesa-dri \
     mesa-utils \
     libvulkan1 \
-    vulkan-utils \
-    nvidia-utils-525
+    nvidia-utils-555

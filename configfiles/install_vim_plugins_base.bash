@@ -6,7 +6,6 @@ plugins=(
     https://github.com/vim-latex/vim-latex.git                       # latex tools
     https://github.com/include-what-you-use/include-what-you-use.git # include what you use
     https://github.com/preservim/tagbar.git                          # tag bar
-    https://github.com/jlanzarotta/bufexplorer.git                   # Change between buffers
     https://github.com/dense-analysis/ale.git                        # linter
     https://github.com/aklt/vim-substitute.git                       # substitute with ;;
     https://github.com/SirVer/ultisnips.git                          # snipets 1

@@ -440,6 +440,7 @@ EOF
          \ 'ring_scope':       1024,
          \ 'ring_update_ms':   1000,
          \ }
+    Plugin 'copilot.vim'
 
 call vundle#end()
 filetype plugin indent on

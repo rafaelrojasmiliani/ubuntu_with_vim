@@ -159,6 +159,9 @@ call vundle#begin('/etc/vim/bundle/')
     Plugin 'vim-dispatch'
     Plugin 'fzf'
     Plugin 'fzf.vim'
+        nnoremap <leader>fe :Files<CR>
+        nnoremap <leader>ge :GFiles<CR>
+        nnoremap <leader>bbe :Buffers<CR>
 
     Plugin 'nerdtree'
         set wildignore+=*.pyc,*.o,*.obj,*.svn,*.swn,*.swp,*.swo,*.class,*.hg,*.DS_Store,*.min.*,*.pdf,*.nav

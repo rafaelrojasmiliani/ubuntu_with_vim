@@ -92,6 +92,7 @@ call vundle#begin('/etc/vim/bundle/')
         " Map <leader>tb to call the custom function
         nnoremap <silent> <leader>tb :call ToggleTagbarWithPosition()<CR>
 
+    Plugin 'bufexplorer'
         " ------- ale -------
     Plugin 'ale'
         let g:ale_completion_enabled = 0
@@ -158,9 +159,6 @@ call vundle#begin('/etc/vim/bundle/')
     Plugin 'vim-dispatch'
     Plugin 'fzf'
     Plugin 'fzf.vim'
-        nnoremap <leader>fe :Files<CR>
-        nnoremap <leader>ge :GFiles<CR>
-        nnoremap <leader>be :Buffers<CR>
 
     Plugin 'nerdtree'
         set wildignore+=*.pyc,*.o,*.obj,*.svn,*.swn,*.swp,*.swo,*.class,*.hg,*.DS_Store,*.min.*,*.pdf,*.nav

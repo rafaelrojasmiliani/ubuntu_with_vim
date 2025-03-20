@@ -26,8 +26,9 @@ main() {
 
     # --------------  install doge
     vim -c ':call doge#install()' -c 'sleep 300' -c 'qa!'
-    sudo chmod -R 777 /etc/vim/
-    sudo chmod -R 777 /etc/vim/vimrc
+    sudo chmod 777 /etc/vim/
+    sudo chmod 777 /etc/vim/vimrc
+    sudo chmod 777 /etc/vim/vimrc/bundle/
 
 }
 

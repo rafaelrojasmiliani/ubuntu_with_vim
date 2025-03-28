@@ -80,6 +80,14 @@ main() {
             ros-${ROS_DISTRO}-gz-ros2-control \
             ros-${ROS_DISTRO}-image-publisher \
             ros-${ROS_DISTRO}-behaviortree-cpp \
+            ros-${ROS_DISTRO}-rqt-tf-tree \
+            ros-${ROS_DISTRO}-rqt-bag-plugins \
+            ros-${ROS_DISTRO}-rqt-controller-manager \
+            ros-${ROS_DISTRO}-rqt-plot \
+            ros-${ROS_DISTRO}-rqt-py-console \
+            ros-${ROS_DISTRO}-rqt-py-common \
+            ros-${ROS_DISTRO}-rqt-publisher \
+            ros-${ROS_DISTRO}-rqt-service-caller \
             robotpkg-ros-lint
     else
         DEBIAN_FRONTEND=noninteractive apt-get install \

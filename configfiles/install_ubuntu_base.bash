@@ -8,7 +8,8 @@ main() {
         DEBIAN_FRONTEND=noninteractive apt-get install \
             -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \
             apt-rdepends \
-            apt-transport-https \  build-essential \
+            apt-transport-https \
+            build-essential \
             ca-certificates \
             ccache \
             cmake \

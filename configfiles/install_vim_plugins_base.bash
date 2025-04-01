@@ -94,6 +94,12 @@ main() {
     source /root/.cargo/env
     cd /etc/vim/bundle/vim-clap && cargo build --release
 
+    # ---------- install ycm lsp
+    cd /etc/vim
+    git clone https://github.com/ycm-core/lsp-examples.git
+    cd lsp-examples
+    python3 ./install.py --enable-kotlin --enable-bash --enable-cmake --enable-docker
+
 }
 
 main

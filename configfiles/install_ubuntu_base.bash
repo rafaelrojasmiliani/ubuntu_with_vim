@@ -8,8 +8,7 @@ main() {
         DEBIAN_FRONTEND=noninteractive apt-get install \
             -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \
             apt-rdepends \
-            apt-transport-https \
-            build-essential \
+            apt-transport-https \  build-essential \
             ca-certificates \
             ccache \
             cmake \
@@ -58,6 +57,7 @@ main() {
             libxml2-utils \
             mono-complete \
             net-tools \
+            openjdk-11-jdk \
             patchelf \
             pciutils \
             pkg-config \
@@ -180,6 +180,11 @@ main() {
 
     chmod +x /usr/bin/shfmt
 
+    if [ $DISTRIB_RELEASE = "20.04" ]; then
+        DEBIAN_FRONTEND=noninteractive apt-get install \
+            -y --no-install-recommends -o \
+            Dpkg::Options::="--force-confnew" python3.8-venv
+    fi
     if [ $DISTRIB_RELEASE = "18.04" ]; then
         # 1. Install ripgrep and bat from github releases
         # 3. update gcc to one compatible with c++17

@@ -219,7 +219,7 @@ main() {
             cd / &&
             rm -rf /usr/src/gtest/build
 
-        pip3 install setuptools
+        pip3 install --no-cache-dir setuptools
 
         # --- Install pinocchio
         # echo "deb [arch=amd64] \
@@ -264,8 +264,8 @@ main() {
 
         wget https://github.com/sharkdp/fd/releases/download/v8.7.0/fd-musl_8.7.0_amd64.deb
         dpkg -i fd-musl_8.7.0_amd64.deb && rm fd-musl_8.7.0_amd64.deb
-        pip3 install wheel
-        pip3 install numpy
+        pip3 install --no-cache-dir wheel
+        pip3 install --no-cache-dir numpy
 
         # ----------------------
         # Install nodejs
@@ -363,7 +363,7 @@ main() {
                     --slave /usr/bin/gcc-ar gcc-ar /usr/bin/gcc-ar-11 \
                     --slave /usr/bin/gcc-ranlib gcc-ranlib /usr/bin/gcc-ranlib-11
 
-            pip3 install numpy==1.20 pyrender
+            pip3 install --no-cache-dir numpy==1.20 pyrender
             echo 'export PYTHONPATH=/opt/openrobots/lib/python3.8/site-packages:$PYTHONPATH # Adapt your desired python version here' >>/etc/bash.bashrc
         else
 
@@ -380,7 +380,7 @@ main() {
                 robotpkg-py310-pinocchio \
                 kotlin
             if [ $DISTRIB_RELEASE != "24.04" ]; then
-                pip3 install numpy pyrender
+                pip3 install --no-cache-dir numpy pyrender
             fi
 
             echo 'export PYTHONPATH=/opt/openrobots/lib/python3.10/site-packages:$PYTHONPATH # Adapt your desired python version here' >>/etc/bash.bashrc
@@ -420,7 +420,7 @@ main() {
     fi
 
     if [ $DISTRIB_RELEASE != "24.04" ]; then
-        pip3 install \
+        pip3 install --no-cache-dir \
             autopep8 \
             cmake-format \
             flake8 \
@@ -484,7 +484,7 @@ main() {
     rm -rf /mosek
 
     if [ $DISTRIB_RELEASE != "24.04" ]; then
-        pip3 install Mosek
+        pip3 install --no-cache-dir Mosek
     fi
 
     # --- Install osqp
@@ -527,17 +527,17 @@ main() {
     # --- Install rst formatter and linter
 
     if [ $DISTRIB_RELEASE = "24.04" ]; then
-        pip3 install --user --break-system-packages rstcheck[sphinx] rstfmt
+        pip3 install --no-cache-dir --user --break-system-packages rstcheck[sphinx] rstfmt
     else
-        pip3 install rstcheck[sphinx] rstfmt
+        pip3 install --no-cache-dir rstcheck[sphinx] rstfmt
     fi
 
     # --- Install rst formatter and linter
 
     if [ $DISTRIB_RELEASE = "24.04" ]; then
-        pip3 install --user --break-system-packages pygments
+        pip3 install --no-cache-dir --user --break-system-packages pygments
     else
-        pip3 install pygments
+        pip3 install --no-cache-dir pygments
     fi
 
     # --- Install glogal tag finder
@@ -550,6 +550,12 @@ main() {
     make install
     cd /
     rm -rf global-6.6.13
+
+    rm -rf /usr/share/man/*
+    rm -rf /usr/share/doc/*
+    rm -rf /usr/share/local/*
+    apt-get clean
+    rm -rf /var/lib/apt/lists/*
 }
 
 main

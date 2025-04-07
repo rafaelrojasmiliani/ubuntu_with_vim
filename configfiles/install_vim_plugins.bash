@@ -29,6 +29,8 @@ main() {
     sudo chmod 777 /etc/vim/
     sudo chmod 777 /etc/vim/vimrc
     sudo chmod 777 /etc/vim/bundle/
+    rm -rf $(find /etc/vim/bundle -type f \( -name "*.a" -o -name "*.o" \))
+    rm -rf $(find /etc/vim/bundle -type d -name ".git")
 
 }
 

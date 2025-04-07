@@ -100,6 +100,9 @@ main() {
     cd lsp-examples
     python3 ./install.py --enable-kotlin --enable-bash --enable-cmake --enable-docker
 
+    # ---- remove unused stuff
+    rm -rf $(find /etc/vim/bundle -type f \( -name "*.a" -o -name "*.o" \))
+
 }
 
 main

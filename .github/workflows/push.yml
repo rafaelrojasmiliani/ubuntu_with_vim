@@ -202,7 +202,6 @@ jobs:
           steps.image_modify_date.outputs.value < steps.image_modify_date.outputs.base_image
 
   msvc_images:
-    needs: [base_images]
     name: Image ${{ matrix.docker_image.image_name }}
     runs-on: ubuntu-latest
     strategy:
@@ -210,7 +209,7 @@ jobs:
       matrix:
         docker_image:
           - file_name: "msvc.dockerfile"
-            base_image: "rafa606/ubuntu:24.04"
+            base_image: "ubuntu:24.04"
             image_name: "rafa606/ubuntu-msvc:24.04"
 
     steps:

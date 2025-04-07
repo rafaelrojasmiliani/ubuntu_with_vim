@@ -7,7 +7,8 @@ main() {
     apt-get update &&
         DEBIAN_FRONTEND=noninteractive apt-get install \
             -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \
-            msitools winbind wine-binfmt winetricks
+            msitools winbind wine-binfmt winetricks \
+            wine64 python3 msitools ca-certificates winbind
 
     cd /
     git clone https://github.com/mstorsjo/msvc-wine.git

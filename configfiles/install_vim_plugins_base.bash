@@ -103,6 +103,8 @@ main() {
     # ---- remove unused stuff
     rm -rf $(find /etc/vim/bundle -type f \( -name "*.a" -o -name "*.o" \))
 
+    rm -rf $(find /etc/vim/bundle -type d -name ".git")
+
 }
 
 main

@@ -1,6 +1,7 @@
 #!/bin/bash
 
 main() {
+
     set -xeu
 
     apt-get update &&

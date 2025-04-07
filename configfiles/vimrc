@@ -11,6 +11,7 @@ set backspace=2
 set hidden
 set guioptions=i
 set go+=!
+set wildmode=longest:full,full
 au BufRead,BufNewFile *.tex syntax spell toplevel " enable spelling without sections
 colorscheme desert
 nnoremap <silent><Up> gk

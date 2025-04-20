@@ -10,8 +10,8 @@ RUN --mount=type=bind,source=./,target=/workspace,rw \
     set -x && cd /workspace/configfiles \
     && cp vimrc /etc/vim/ \
     && [[ -f /etc/vim/lsp-examples/vimrc.generated ]] \
-    && cat /etc/vim/lsp-examples/vimrc.generated >> /etc/vim/vimrc || \
-    && bash install_vim_plugins.bash \
+    && cat /etc/vim/lsp-examples/vimrc.generated >> /etc/vim/vimrc \
+    || bash install_vim_plugins.bash \
     && cp ctags /etc/vim/ \
     && cp cmake_kits.cmake /etc/vim/ \
     && cp ${YCM_FILE} /etc/vim/ycm_extra_conf.py \

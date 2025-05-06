@@ -32,6 +32,15 @@ main() {
     rm -rf $(find /etc/vim/bundle -type f \( -name "*.a" -o -name "*.o" \))
     rm -rf $(find /etc/vim/bundle -type d -name ".git")
 
+    mkdir /opt/nvm
+    export NVM_DIR=/opt/nvm
+    cd /opt/nvm
+    wget https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh
+    bash install.sh
+    source nvm.sh
+    nvm install 22
+    echo 'source /opt/nvm/nvm.sh' >>/etc/bash.bashrc
+
 }
 
 main

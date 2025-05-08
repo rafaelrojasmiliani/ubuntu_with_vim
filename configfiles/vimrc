@@ -102,6 +102,7 @@ call vundle#begin('/etc/vim/bundle/')
         let g:ale_fixers = {
                     \ 'python': ['autopep8'],
                     \ 'cpp': ['clang-format'],
+                    \ 'java': ['clang-format'],
                     \ 'cmake': ['cmakeformat'],
                     \ 'xml':['tidy'],
                     \ 'javascript':['prettier'],

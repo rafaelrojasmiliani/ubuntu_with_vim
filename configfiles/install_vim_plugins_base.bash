@@ -81,7 +81,7 @@ main() {
         git checkout legacy-vim-8.2
     fi
     git submodule update --init --recursive &&
-        python3 install.py --clangd-completer --force-sudo
+        python3 install.py --java-completer --clangd-completer --force-sudo
 
     export YCMC=$(find /etc/vim/bundle/YouCompleteMe/third_party/ycmd/ -name 'ycm_c*.so')
     patchelf --set-rpath "/etc/vim/bundle/YouCompleteMe/third_party/ycmd/third_party/clang/lib" "$YCMC"

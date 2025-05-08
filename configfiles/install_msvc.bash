@@ -13,6 +13,7 @@ main() {
             cmake \
             vim-gtk3 \
             lsb-release \
+            sudo \
             cmake-curses-gui cmake-qt-gui
 
     cd /

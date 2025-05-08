@@ -25,7 +25,9 @@ main() {
     done
 
     # --------------  install doge
-    vim -c ':call doge#install()' -c 'sleep 300' -c 'qa!'
+    if [ ! -d /opt/msvc ]; then
+        vim -c ':call doge#install()' -c 'sleep 300' -c 'qa!'
+    fi
     sudo chmod 777 /etc/vim/
     sudo chmod 777 /etc/vim/vimrc
     sudo chmod 777 /etc/vim/bundle/

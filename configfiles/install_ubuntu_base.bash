@@ -270,9 +270,14 @@ main() {
         # ----------------------
         # Install nodejs
         # ----------------------
-        DEBIAN_FRONTEND=noninteractive apt-get install \
-            -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \
-            nodejs
+        mkdir /opt/nvm
+        export NVM_DIR=/opt/nvm
+        cd /opt/nvm
+        wget https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh
+        bash install.sh
+        source nvm.sh
+        nvm install 22
+        echo 'source /opt/nvm/nvm.sh' >>/etc/bash.bashrc
     else
         # ubuntu 20.04 and 22.04 and 24.04
 
@@ -297,22 +302,24 @@ main() {
 
         else
 
-            clang_version=18
+            clang_version=19
             DEBIAN_FRONTEND=noninteractive apt-get install \
                 -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \
-                clang-18 \
-                clang-format-18 \
-                clang-tidy-18 \
-                clang-tools-18 \
-                clangd-18 \
-                libclang-18-dev \
-                libclang-common-18-dev:amd64 \
-                libclang-cpp18 \
-                libclang-cpp18-dev \
-                libclang-rt-18-dev:amd64 \
-                libclang1-18 \
-                libomp-18-dev \
-                python3-clang-18
+                clang-$clang_version \
+                clang-format-$clang_version \
+                clang-tidy-$clang_version \
+                clang-tools-$clang_version \
+                clangd-$clang_version \
+                libclang-$clang_version-dev \
+                libclang-common-$clang_version-dev:amd64 \
+                libclang-cpp$clang_version \
+                libclang-cpp$clang_version-dev \
+                libclang-rt-$clang_version-dev:amd64 \
+                libclang1-$clang_version \
+                libomp-$clang_version-dev \
+                lld-$clang_version \
+                llvm-$clang_version \
+                python3-clang-$clang_version
 
         fi
         echo "export PATH=/usr/lib/llvm-$clang_version/bin:$PATH" >>/etc/bash.bashrc
@@ -326,7 +333,6 @@ main() {
             bat \
             ripgrep \
             librange-v3-dev \
-            ccls \
             fd-find \
             libasan5
 
@@ -394,28 +400,15 @@ main() {
         # ----------------------
         # Install nodejs
         # ----------------------
-        if [ $DISTRIB_RELEASE != "24.04" ]; then
-
-            # https://linuxize.com/post/how-to-install-node-js-on-ubuntu-20-04/
-
-            mkdir -p /etc/apt/keyrings
-            curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | sudo gpg --dearmor -o /etc/apt/keyrings/nodesource.gpg
-
-            NODE_MAJOR=20
-            echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_$NODE_MAJOR.x nodistro main" | sudo tee /etc/apt/sources.list.d/nodesource.list
-            apt-get update &&
-                DEBIAN_FRONTEND=noninteractive apt-get install \
-                    -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \
-                    nodejs
-            npm install -g --save-dev --save-exact htmlhint prettier fixjson
-
-        else
-            apt-get update &&
-                DEBIAN_FRONTEND=noninteractive apt-get install \
-                    -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \
-                    nodejs npm
-
-        fi
+        mkdir /opt/nvm
+        export NVM_DIR=/opt/nvm
+        cd /opt/nvm
+        wget https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh
+        bash install.sh
+        source nvm.sh
+        nvm install 22
+        echo 'source /opt/nvm/nvm.sh' >>/etc/bash.bashrc
+        npm install -g --save-dev --save-exact htmlhint prettier fixjson
 
     fi
 
@@ -556,6 +549,7 @@ main() {
     rm -rf /usr/share/local/*
     apt-get clean
     rm -rf /var/lib/apt/lists/*
+
 }
 
 main

@@ -1,146 +1,293 @@
 name: deploy
 on: push
 jobs:
+  # ------------------ #
+  # ------------------ #
+  # Build ubuntu 20.04 #
+  # ------------------ #
+  # ------------------ #
   base_ubuntu_2004:
     uses: ./.github/workflows/build_image.yml
     with:
+      # based image data
       image_name: "rafa606/ubuntu:20.04"
       file_name: "base.dockerfile"
       base_image: "ubuntu:20.04"
+      file_triggers:
+        [
+          "configfiles/install_ubuntu_base.bash",
+          "configfiles/install_vim_plugins_base.bash",
+        ]
+      # Final image data
+      final_image_name: "rafa606/cpp-vim:20.04"
+      ycm_file: "configfiles/ycm_extra_conf.py"
     secrets:
       DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
       DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
 
+  # ------------------ #
+  # ------------------ #
+  # Build ubuntu 20.04 #
+  # ------------------ #
+  # ------------------ #
   base_ubuntu_2204:
     uses: ./.github/workflows/build_image.yml
     with:
+      # based image data
       image_name: "rafa606/ubuntu:22.04"
       file_name: "base.dockerfile"
       base_image: "ubuntu:22.04"
+      file_triggers:
+        [
+          "configfiles/install_ubuntu_base.bash",
+          "configfiles/install_vim_plugins_base.bash",
+        ]
+      final_image_name: "rafa606/cpp-vim:22.04"
+      ycm_file: "configfiles/ycm_extra_conf.py"
     secrets:
       DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
       DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
 
+  # ------------------ #
+  # ------------------ #
+  # Build ubuntu 24.04 #
+  # ------------------ #
+  # ------------------ #
   base_ubuntu_2404:
     uses: ./.github/workflows/build_image.yml
     with:
+      # based image data
       image_name: "rafa606/ubuntu:24.04"
       file_name: "base.dockerfile"
       base_image: "ubuntu:24.04"
+      file_triggers:
+        [
+          "configfiles/install_ubuntu_base.bash",
+          "configfiles/install_vim_plugins_base.bash",
+        ]
+      # Final image data
+      final_image_name: "rafa606/cpp-vim:20.04"
+      ycm_file: "configfiles/ycm_extra_conf.py"
     secrets:
       DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
       DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
 
+  # ------------------------------------------------------------- #
+  # ------------------------------------------------------------- #
+  # --------              Build ROS Images              --------- #
+  # ------------------------------------------------------------- #
+  # ------------------------------------------------------------- #
+
+  # ------------------ #
+  # ------------------ #
+  # Build ROS noetic - #
+  # ------------------ #
+  # ------------------ #
   ros_noetic:
     needs: base_ubuntu_2004
     uses: ./.github/workflows/build_image.yml
     with:
+      # based image data
       file_name: "ros.dockerfile"
       base_image: "rafa606/ubuntu:20.04"
       image_name: "rafa606/ros:noetic"
       ros_distro: "noetic"
+      file_triggers: ["configfiles/install_ros_packages.bash"]
+      # Final image data
+      final_image_name: "rafa606/ros-vim:noetic"
+      ycm_file: "configfiles/ycm_extra_conf_ros.py"
     secrets:
       DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
       DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
 
+  # ------------------ #
+  # ------------------ #
+  # Build ROS humble - #
+  # ------------------ #
+  # ------------------ #
   ros_humble:
     needs: base_ubuntu_2204
     uses: ./.github/workflows/build_image.yml
     with:
+      # based image data
       file_name: "ros.dockerfile"
       base_image: "rafa606/ubuntu:22.04"
       image_name: "rafa606/ros:humble"
       ros_distro: "humble"
+      file_triggers: ["configfiles/install_ros_packages.bash"]
+      # Final image data
+      final_image_name: "rafa606/ros-vim:humble"
+      ycm_file: "configfiles/ycm_extra_conf_ros2.py"
     secrets:
       DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
       DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
 
+  # ------------------ #
+  # ------------------ #
+  # Build ROS jazzy  - #
+  # ------------------ #
+  # ------------------ #
   ros_jazzy:
     needs: base_ubuntu_2404
     uses: ./.github/workflows/build_image.yml
     with:
+      # based image data
       image_name: "rafa606/ubuntu:24.04"
       file_name: "base.dockerfile"
       base_image: "ubuntu:24.04"
+      file_triggers: ["configfiles/install_ros_packages.bash"]
+      # Final image data
+      final_image_name: "rafa606/ros-vim:jazzy"
+      ycm_file: "configfiles/ycm_extra_conf_ros2.py"
     secrets:
       DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
       DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
 
+  # ------------------------------- #
+  # ------------------------------- #
+  # Build ROS with moveit noetic  - #
+  # ------------------------------- #
+  # ------------------------------- #
   moveit_noetic:
     needs: ros_noetic
     uses: ./.github/workflows/build_image.yml
     with:
+      # based image data
       file_name: "moveit.dockerfile"
       image_name: "rafa606/moveit:noetic"
       base_image: "rafa606/ros:noetic"
       ros_distro: "noetic"
+      file_triggers: ["configfiles/install_moveit_packages.bash"]
+      # Final image data
+      final_image_name: "rafa606/moveit-vim:noetic"
+      ycm_file: "configfiles/ycm_extra_conf_ros.py"
     secrets:
       DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
       DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
 
+  # ------------------------------- #
+  # ------------------------------- #
+  # Build ROS with moveit humble  - #
+  # ------------------------------- #
+  # ------------------------------- #
   moveit_humble:
     needs: ros_humble
     uses: ./.github/workflows/build_image.yml
     with:
+      # based image data
       file_name: "moveit.dockerfile"
       image_name: "rafa606/moveit:humble"
       base_image: "rafa606/ros:humble"
       ros_distro: "humble"
+      file_triggers: ["configfiles/install_moveit_packages.bash"]
+      # Final image data
+      final_image_name: "rafa606/moveit-vim:humble"
+      ycm_file: "configfiles/ycm_extra_conf_ros2.py"
     secrets:
       DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
       DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
 
+  # ------------------------------- #
+  # ------------------------------- #
+  # Build ROS with moveit jazzy   - #
+  # ------------------------------- #
+  # ------------------------------- #
   moveit_jazzy:
     needs: ros_jazzy
     uses: ./.github/workflows/build_image.yml
     with:
+      # based image data
       file_name: "moveit.dockerfile"
       image_name: "rafa606/moveit:jazzy"
       base_image: "rafa606/ros:jazzy"
       ros_distro: "jazzy"
+      file_triggers: ["configfiles/install_moveit_packages.bash"]
+      # Final image data
+      final_image_name: "rafa606/moveit-vim:jazzy"
+      ycm_file: "configfiles/ycm_extra_conf_ros2.py"
     secrets:
       DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
       DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
 
+  # -------------------------------------- #
+  # -------------------------------------- #
+  # Build ROS with moveit source noetic  - #
+  # -------------------------------------- #
+  # -------------------------------------- #
   moveit_source_noetic:
     needs: ros_noetic
     uses: ./.github/workflows/build_image.yml
     with:
+      # based image data
       file_name: "moveit_source.dockerfile"
       image_name: "rafa606/moveit-source:noetic"
       base_image: "rafa606/ros:noetic"
       ros_distro: "noetic"
+      file_triggers: ["configfiles/install_moveit_source_packages.bash"]
+      # Final image data
+      final_image_name: "rafa606/moveit-source-vim:noetic"
+      ycm_file: "configfiles/ycm_extra_conf_ros.py"
     secrets:
       DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
       DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
 
+  # -------------------------------------- #
+  # -------------------------------------- #
+  # Build ROS with moveit source humble  - #
+  # -------------------------------------- #
+  # -------------------------------------- #
   moveit_source_humble:
     needs: ros_humble
     uses: ./.github/workflows/build_image.yml
     with:
+      # based image data
       file_name: "moveit_source.dockerfile"
       image_name: "rafa606/moveit-source:humble"
       base_image: "rafa606/ros:humble"
       ros_distro: "humble"
+      file_triggers: ["configfiles/install_moveit_source_packages.bash"]
+      # Final image data
+      final_image_name: "rafa606/moveit-source-vim:humble"
+      ycm_file: "configfiles/ycm_extra_conf_ros2.py"
     secrets:
       DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
       DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
 
+  # -------------------------------------- #
+  # -------------------------------------- #
+  # Build ROS with moveit source humble  - #
+  # -------------------------------------- #
+  # -------------------------------------- #
   moveit_source_jazzy:
     needs: ros_jazzy
     uses: ./.github/workflows/build_image.yml
     with:
+      # based image data
       file_name: "moveit_source.dockerfile"
       image_name: "rafa606/moveit-source:jazzy"
       base_image: "rafa606/ros:jazzy"
       ros_distro: "jazzy"
+      file_triggers: ["configfiles/install_moveit_source_packages.bash"]
+      # Final image data
+      final_image_name: "rafa606/moveit-source-vim:jazzy"
+      ycm_file: "configfiles/ycm_extra_conf_ros2.py"
     secrets:
       DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
       DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
 
+  # ------------------------------------------------------------------- #
+  # ------------------------------------------------------------------ #
+  # --------------            Other Images              -------------- #
+  # ------------------------------------------------------------------- #
+  # ------------------------------------------------------------------- #
+  # -------------------------------------- #
+  # -------------------------------------- #
+  # ----   MSVC compiler in linux -------- #
+  # -------------------------------------- #
+  # -------------------------------------- #
   msvc_images:
-    name: Image ${{ matrix.docker_image.image_name }}
-    runs-on: ubuntu-latest
+    name: Build msvc
+    uses: ./.github/workflows/build_image.yml
     strategy:
       fail-fast: false
       matrix:
@@ -148,171 +295,21 @@ jobs:
           - file_name: "msvc.dockerfile"
             base_image: "ubuntu:24.04"
             image_name: "rafa606/ubuntu-msvc:24.04"
+    with:
+      # based image data
+      file_name: "msvc.dockerfile"
+      image_name: "rafa606/ubuntu-msvc:24.04"
+      base_image: "ubuntu:24.04"
+      file_triggers: ["configfiles/install_msvc.bash"]
+    secrets:
+      DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+      DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
 
-    steps:
-      - name: checkout code
-        uses: actions/checkout@master
-        with:
-          fetch-depth: "0"
-
-      - name: Check last modified time of Foo Dockerfile
-        id: image_modify_date
-        run: |
-          echo "value=$(date -d "$(curl -s https://hub.docker.com/v2/repositories/"$(echo ${{ matrix.docker_image.image_name }} | sed 's/:/\/tags\//')" | jq -r '.last_updated')" +%s)" >> $GITHUB_OUTPUT;
-          echo "base_image=$(date -d "$(curl -s https://hub.docker.com/v2/repositories/"$(echo ${{ matrix.docker_image.base_image }} | sed 's/:/\/tags\//')" | jq -r '.last_updated')" +%s)" >> $GITHUB_OUTPUT;
-
-      - name: Check last modified time of Foo Docker image
-        id: file_modify_date
-        run: |
-          echo "dockerfile=$(date -d "$(git log -1 --format=%cd --date=iso -- ${{ matrix.docker_image.file_name }})" +%s)" >> $GITHUB_OUTPUT
-          echo "install_msvc=$(date -d "$(git log -n 1 --format=%cd --date=iso -- ./configfiles/install_msvc.bash)" +%s)" >> $GITHUB_OUTPUT
-
-      - name: Login to DockerHub
-        uses: docker/login-action@v3
-        with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
-
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
-
-      - name: build and push ${{ matrix.docker_image.image_name }}
-        uses: docker/build-push-action@v3
-        with:
-          tags: ${{ matrix.docker_image.image_name }}
-          file: ${{ matrix.docker_image.file_name }}
-          push: true
-          build-args: |
-            BASEIMAGE=${{ matrix.docker_image.base_image }}
-        if: |
-          steps.image_modify_date.outputs.value < steps.file_modify_date.outputs.dockerfile ||
-          steps.image_modify_date.outputs.value < steps.file_modify_date.outputs.install_msvc ||
-          steps.image_modify_date.outputs.value < steps.image_modify_date.outputs.base_image
-
-  build_cpp:
-    needs: [base_images, ros_base_images, moveit_base_images, msvc_images]
-    name: Image ${{ matrix.docker_image.image_name }}
-    runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        docker_image:
-          - file_name: "cpp_vim.dockerfile"
-            base_image: "rafa606/ubuntu:20.04"
-            image_name: "rafa606/cpp-vim:20.04"
-            ycm_file: "ycm_extra_conf.py"
-          - file_name: "cpp_vim.dockerfile"
-            base_image: "rafa606/ubuntu:22.04"
-            image_name: "rafa606/cpp-vim:22.04"
-            ycm_file: "ycm_extra_conf.py"
-          - file_name: "cpp_vim.dockerfile"
-            base_image: "rafa606/ubuntu:24.04"
-            image_name: "rafa606/cpp-vim:24.04"
-            ycm_file: "ycm_extra_conf.py"
-          #--------------------
-          #--- MSCV ------------
-          #--------------------
-          - file_name: "cpp_vim.dockerfile"
-            base_image: "rafa606/ubuntu-msvc:24.04"
-            image_name: "rafa606/cpp-msvc-vim:24.04"
-            ycm_file: "ycm_extra_conf.py"
-          #--------------------
-          #--- ROS ------------
-          #--------------------
-          - file_name: "cpp_vim.dockerfile"
-            base_image: "rafa606/ros:noetic"
-            image_name: "rafa606/ros-vim:noetic"
-            ycm_file: "ycm_extra_conf_ros.py"
-          - file_name: "cpp_vim.dockerfile"
-            base_image: "rafa606/ros:humble"
-            image_name: "rafa606/ros-vim:humble"
-            ycm_file: "ycm_extra_conf_ros2.py"
-          - file_name: "cpp_vim.dockerfile"
-            base_image: "rafa606/ros:jazzy"
-            image_name: "rafa606/ros-vim:jazzy"
-            ycm_file: "ycm_extra_conf_ros2.py"
-          #-----------------------
-          #--- Moveit ------------
-          #-----------------------
-          - file_name: "cpp_vim.dockerfile"
-            base_image: "rafa606/moveit:noetic"
-            image_name: "rafa606/moveit-vim:noetic"
-            ycm_file: "ycm_extra_conf_ros.py"
-          - file_name: "cpp_vim.dockerfile"
-            base_image: "rafa606/moveit:humble"
-            image_name: "rafa606/moveit-vim:humble"
-            ycm_file: "ycm_extra_conf_ros2.py"
-          - file_name: "cpp_vim.dockerfile"
-            base_image: "rafa606/moveit:jazzy"
-            image_name: "rafa606/moveit-vim:jazzy"
-            ycm_file: "ycm_extra_conf_ros2.py"
-          #-----------------------
-          #--- Moveit Source ------------
-          #-----------------------
-          - file_name: "cpp_vim.dockerfile"
-            base_image: "rafa606/moveit-source:noetic"
-            image_name: "rafa606/moveit-source-vim:noetic"
-            ycm_file: "ycm_extra_conf_ros.py"
-          - file_name: "cpp_vim.dockerfile"
-            base_image: "rafa606/moveit-source:humble"
-            image_name: "rafa606/moveit-source-vim:humble"
-            ycm_file: "ycm_extra_conf_ros2.py"
-          - file_name: "cpp_vim.dockerfile"
-            base_image: "rafa606/moveit-source:jazzy"
-            image_name: "rafa606/moveit-source-vim:jazzy"
-            ycm_file: "ycm_extra_conf_ros2.py"
-
-    steps:
-      - name: checkout code
-        uses: actions/checkout@master
-        with:
-          fetch-depth: "0"
-
-      - name: Check last modified time of Foo Dockerfile
-        id: image_modify_date
-        run: |
-          echo "value=$(date -d "$(curl -s https://hub.docker.com/v2/repositories/"$(echo ${{ matrix.docker_image.image_name }} | sed 's/:/\/tags\//')" | jq -r '.last_updated')" +%s)" >> $GITHUB_OUTPUT;
-          echo "base_image=$(date -d "$(curl -s https://hub.docker.com/v2/repositories/"$(echo ${{ matrix.docker_image.base_image }} | sed 's/:/\/tags\//')" | jq -r '.last_updated')" +%s)" >> $GITHUB_OUTPUT;
-
-      - name: Check last modified time of Foo Docker image
-        id: file_modify_date
-        run: |
-          echo "dockerfile=$(date -d "$(git log -1 --format=%cd --date=iso -- ${{ matrix.docker_image.file_name }})" +%s)" >> $GITHUB_OUTPUT
-          echo "vimrc=$(date -d "$(git log -1 --format=%cd --date=iso -- ./configfiles/vimrc)" +%s)" >> $GITHUB_OUTPUT
-          echo "ycm=$(date -d "$(git log -1 --format=%cd --date=iso -- ./configfiles/${{ matrix.docker_image.ycm_file }})" +%s)" >> $GITHUB_OUTPUT
-          echo "ctags=$(date -d "$(git log -1 --format=%cd --date=iso -- ./configfiles/ctags)" +%s)" >> $GITHUB_OUTPUT
-          echo "gdbinit=$(date -d "$(git log -1 --format=%cd --date=iso -- ./configfiles/gdbinit)" +%s)" >> $GITHUB_OUTPUT
-          echo "cmake_kits=$(date -d "$(git log -1 --format=%cd --date=iso -- ./configfiles/cmake_kits.cmake)" +%s)" >> $GITHUB_OUTPUT
-          echo "vim_plugins=$(date -d "$(git log -n 1 --format=%cd --date=iso -- ./configfiles/install_vim_plugins.bash)" +%s)" >> $GITHUB_OUTPUT
-
-      - name: Login to DockerHub
-        uses: docker/login-action@v3
-        with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
-
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
-
-      - name: build and push ${{ matrix.docker_image.image_name }}
-        uses: docker/build-push-action@v3
-        with:
-          tags: ${{ matrix.docker_image.image_name }}
-          file: ${{ matrix.docker_image.file_name }}
-          push: true
-          build-args: |
-            BASEIMAGE=${{ matrix.docker_image.base_image }}
-            YCM_FILE=${{ matrix.docker_image.ycm_file }}
-        if: |
-          steps.image_modify_date.outputs.value < steps.file_modify_date.outputs.dockerfile ||
-          steps.image_modify_date.outputs.value < steps.file_modify_date.outputs.vimrc ||
-          steps.image_modify_date.outputs.value < steps.file_modify_date.outputs.ycm ||
-          steps.image_modify_date.outputs.value < steps.file_modify_date.outputs.ctags ||
-          steps.image_modify_date.outputs.value < steps.file_modify_date.outputs.gdbinit ||
-          steps.image_modify_date.outputs.value < steps.file_modify_date.outputs.cmake_kits ||
-          steps.image_modify_date.outputs.value < steps.file_modify_date.outputs.vim_plugins||
-          steps.image_modify_date.outputs.value < steps.image_modify_date.outputs.base_image
-
+  # -------------------------------------- #
+  # -------------------------------------- #
+  # ----   ubuntu with llama cpp  -------- #
+  # -------------------------------------- #
+  # -------------------------------------- #
   build_alpine_llama_cpp:
     name: Image for llama cpp
     runs-on: ubuntu-latest

@@ -278,13 +278,6 @@ jobs:
   msvc_images:
     name: Build msvc
     uses: ./.github/workflows/build_image.yml
-    strategy:
-      fail-fast: false
-      matrix:
-        docker_image:
-          - file_name: "msvc.dockerfile"
-            base_image: "ubuntu:24.04"
-            image_name: "rafa606/ubuntu-msvc:24.04"
     with:
       # based image data
       file_name: "msvc.dockerfile"
@@ -295,6 +288,22 @@ jobs:
       DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
       DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
 
+  # -------------------------------------- #
+  # -------------------------------------- #
+  # ----   ROS2 with feecad daily -------- #
+  # -------------------------------------- #
+  # -------------------------------------- #
+  moveit_source_jazzy:
+    needs: ros_jazzy
+    uses: ./.github/workflows/build_image.yml
+    with:
+      # based image data
+      file_name: "freecad_daily.dockerfile"
+      base_image: "rafa606/moveit-vim:jazzy"
+      image_name: "rafa606/freecad-ros:jazzy"
+    secrets:
+      DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+      DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
   # -------------------------------------- #
   # -------------------------------------- #
   # ----   ubuntu with llama cpp  -------- #

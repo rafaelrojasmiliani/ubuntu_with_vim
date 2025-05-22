@@ -1,3 +1,7 @@
 .*.swp
 *.stats
 __pycache__
+GPATH
+GRTAGS
+GTAGS
+tags

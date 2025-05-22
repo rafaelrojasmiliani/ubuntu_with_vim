@@ -8,7 +8,7 @@ on:
       image_name: # Name of the base image
         required: true
         type: string
-      dockerfile_name: # Name of the docker file used to build the base image
+      file_name: # Name of the docker file used to build the base image
         required: true
         type: string
       base_image: # Name of the base image
@@ -54,7 +54,7 @@ jobs:
         id: modify_date
         run: |
           echo "image=$(date -d \"$(curl -s https://hub.docker.com/v2/repositories/$(echo ${{ inputs.image_name }} | sed 's/:/\/tags\//')\" | jq -r '.last_updated')\" +%s)" >> $GITHUB_OUTPUT
-          echo "dockerfile=$(date -d \"$(git log -n 1 --format=%cd --date=iso -- ${{ inputs.dockerfile_name }})\" +%s)" >> $GITHUB_OUTPUT
+          echo "dockerfile=$(date -d \"$(git log -n 1 --format=%cd --date=iso -- ${{ inputs.file_name }})\" +%s)" >> $GITHUB_OUTPUT
 
       - name: Check modified times of trigger files
         id: trigger_files
@@ -98,7 +98,7 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           tags: ${{ inputs.image_name }}
-          file: ${{ inputs.dockerfile_name }}
+          file: ${{ inputs.file_name }}
           push: true
           build-args: |
             BASEIMAGE=${{ inputs.base_image }}
@@ -176,9 +176,9 @@ jobs:
           steps.image_modify_date.outputs.value < steps.image_modify_date.outputs.base_image
         uses: docker/build-push-action@v3
         with:
-          tags: ${{ inputs.image_name }}
-          file: ${{ inputs.dockerfile_name }}
+          tags: ${{ inputs.final_image_name }}
+          file: cpp_vim.dockerfile
           push: true
           build-args: |
-            BASEIMAGE=${{ inputs.base_image }}
-            ${{ inputs.distro != '' && format('DISTRO={0}', inputs.distro) || '' }}
+            BASEIMAGE=${{ inputs.image_name }}
+            YCM_FILE=${{ matrix.docker_image.ycm_file }}

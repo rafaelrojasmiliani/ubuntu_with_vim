@@ -129,7 +129,7 @@ jobs:
         id: modify_date
         run: |
           echo "image=$(date -d \"$(curl -s https://hub.docker.com/v2/repositories/$(echo ${{ inputs.final_image_name }} | sed 's/:/\/tags\//')\" | jq -r '.last_updated')\" +%s)" >> $GITHUB_OUTPUT
-          echo "dockerfile=$(date -d \"$(git log -n 1 --format=%cd --date=iso -- ${{ cpp_vim.dockerfile }})\" +%s)" >> $GITHUB_OUTPUT
+          echo "dockerfile=$(date -d \"$(git log -n 1 --format=%cd --date=iso -- cpp_vim.dockerfile)\" +%s)" >> $GITHUB_OUTPUT
           echo "vimrc=$(date -d "$(git log -1 --format=%cd --date=iso -- ./configfiles/vimrc)" +%s)" >> $GITHUB_OUTPUT
           echo "ycm=$(date -d "$(git log -1 --format=%cd --date=iso -- ./configfiles/${{ matrix.docker_image.ycm_file }})" +%s)" >> $GITHUB_OUTPUT
           echo "ctags=$(date -d "$(git log -1 --format=%cd --date=iso -- ./configfiles/ctags)" +%s)" >> $GITHUB_OUTPUT

@@ -60,8 +60,6 @@ jobs:
         id: trigger_files
         run: |
           should_rebuild=0
-          image_time=$(date -d "$(curl -s https://hub.docker.com/v2/repositories/$(echo ${{ inputs.image_name }} | sed 's/:/\/tags\//') | jq -r '.last_updated')" +%s)
-          echo "image_time=$image_time"
           trigger_files="${{ join(inputs.file_triggers, ' ') }}" #"
           for file in trigger_files ; do
             # GitHub Actions outputs strings with quotes. Strip them and brackets.

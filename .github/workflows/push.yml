@@ -2,21 +2,21 @@ name: deploy
 on: push
 jobs:
   base_ubuntu_2004:
-    uses: ./.github/workflows/build_base_image.yml
+    uses: ./.github/workflows/build_image.yml
     with:
       image_name: "rafa606/ubuntu:20.04"
       file_name: "base.dockerfile"
       base_image: "ubuntu:20.04"
 
   base_ubuntu_2204:
-    uses: ./.github/workflows/build_base_image.yml
+    uses: ./.github/workflows/build_image.yml
     with:
       image_name: "rafa606/ubuntu:22.04"
       file_name: "base.dockerfile"
       base_image: "ubuntu:22.04"
 
   base_ubuntu_2404:
-    uses: ./.github/workflows/build_base_image.yml
+    uses: ./.github/workflows/build_image.yml
     with:
       image_name: "rafa606/ubuntu:24.04"
       file_name: "base.dockerfile"

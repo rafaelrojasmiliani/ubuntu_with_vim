@@ -61,12 +61,11 @@ jobs:
         run: |
           should_rebuild=0
           image_timee=$(date -d $(curl -s https://hub.docker.com/v2/repositories/$(echo ${{ inputs.image_name }} | sed 's/:/\/tags\//') | jq -r '.last_updated') +%s 2>/dev/null || echo 0)"
-          trigger_files="${{ join(inputs.file_triggers, ' ') }}" #"
-          for file in trigger_files ; do
+          clean_triggers=$(echo '${{ inputs.file_triggers }}' | tr -d '[]"')
+          for file in clean_triggers ; do
             # GitHub Actions outputs strings with quotes. Strip them and brackets.
-            clean_file=$(echo $file | tr -d '[]"')
-            file_time=$(date -d "$(git log -1 --format=%cd --date=iso -- $clean_file)" +%s)
-            echo "File: $clean_file => $file_time"
+            file_time=$(date -d "$(git log -1 --format=%cd --date=iso -- $file)" +%s)
+            echo "File: $file => $file_time"
             if [ "$image_time" -lt "$file_time" ]; then
               should_rebuild=1
               break

@@ -13,11 +13,7 @@ jobs:
       image_name: "rafa606/ubuntu:20.04"
       file_name: "base.dockerfile"
       base_image: "ubuntu:20.04"
-      file_triggers: >-
-        [
-          "configfiles/install_ubuntu_base.bash",
-          "configfiles/install_vim_plugins_base.bash",
-        ]
+      file_triggers: '["configfiles/install_ubuntu_base.bash", "configfiles/install_vim_plugins_base.bash"]'
       # Final image data
       final_image_name: "rafa606/cpp-vim:20.04"
       ycm_file: "configfiles/ycm_extra_conf.py"
@@ -37,11 +33,8 @@ jobs:
       image_name: "rafa606/ubuntu:22.04"
       file_name: "base.dockerfile"
       base_image: "ubuntu:22.04"
-      file_triggers: >-
-        [
-          "configfiles/install_ubuntu_base.bash",
-          "configfiles/install_vim_plugins_base.bash",
-        ]
+      file_triggers: '["configfiles/install_ubuntu_base.bash", "configfiles/install_vim_plugins_base.bash"]'
+      # Final image data
       final_image_name: "rafa606/cpp-vim:22.04"
       ycm_file: "configfiles/ycm_extra_conf.py"
     secrets:
@@ -60,13 +53,9 @@ jobs:
       image_name: "rafa606/ubuntu:24.04"
       file_name: "base.dockerfile"
       base_image: "ubuntu:24.04"
-      file_triggers: >-
-        [
-          "configfiles/install_ubuntu_base.bash",
-          "configfiles/install_vim_plugins_base.bash",
-        ]
+      file_triggers: '["configfiles/install_ubuntu_base.bash", "configfiles/install_vim_plugins_base.bash"]'
       # Final image data
-      final_image_name: "rafa606/cpp-vim:20.04"
+      final_image_name: "rafa606/cpp-vim:24.04"
       ycm_file: "configfiles/ycm_extra_conf.py"
     secrets:
       DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
@@ -132,10 +121,10 @@ jobs:
     uses: ./.github/workflows/build_image.yml
     with:
       # based image data
-      image_name: "rafa606/ubuntu:24.04"
-      file_name: "base.dockerfile"
-      base_image: "ubuntu:24.04"
-      file_triggers: '["configfiles/install_ros_packages.bash"]'
+      file_name: "ros.dockerfile"
+      base_image: "rafa606/ubuntu:24.04"
+      image_name: "rafa606/ros:jazzy"
+      ros_distro: "jazzy"
       # Final image data
       final_image_name: "rafa606/ros-vim:jazzy"
       ycm_file: "configfiles/ycm_extra_conf_ros2.py"
@@ -154,8 +143,8 @@ jobs:
     with:
       # based image data
       file_name: "moveit.dockerfile"
-      image_name: "rafa606/moveit:noetic"
       base_image: "rafa606/ros:noetic"
+      image_name: "rafa606/moveit:noetic"
       ros_distro: "noetic"
       file_triggers: '["configfiles/install_moveit_packages.bash"]'
       # Final image data
@@ -176,8 +165,8 @@ jobs:
     with:
       # based image data
       file_name: "moveit.dockerfile"
-      image_name: "rafa606/moveit:humble"
       base_image: "rafa606/ros:humble"
+      image_name: "rafa606/moveit:humble"
       ros_distro: "humble"
       file_triggers: '["configfiles/install_moveit_packages.bash"]'
       # Final image data
@@ -198,8 +187,8 @@ jobs:
     with:
       # based image data
       file_name: "moveit.dockerfile"
-      image_name: "rafa606/moveit:jazzy"
       base_image: "rafa606/ros:jazzy"
+      image_name: "rafa606/moveit:jazzy"
       ros_distro: "jazzy"
       file_triggers: '["configfiles/install_moveit_packages.bash"]'
       # Final image data
@@ -220,8 +209,8 @@ jobs:
     with:
       # based image data
       file_name: "moveit_source.dockerfile"
-      image_name: "rafa606/moveit-source:noetic"
       base_image: "rafa606/ros:noetic"
+      image_name: "rafa606/moveit-source:noetic"
       ros_distro: "noetic"
       file_triggers: '["configfiles/install_moveit_source_packages.bash"]'
       # Final image data
@@ -242,8 +231,8 @@ jobs:
     with:
       # based image data
       file_name: "moveit_source.dockerfile"
-      image_name: "rafa606/moveit-source:humble"
       base_image: "rafa606/ros:humble"
+      image_name: "rafa606/moveit-source:humble"
       ros_distro: "humble"
       file_triggers: '["configfiles/install_moveit_source_packages.bash"]'
       # Final image data
@@ -264,8 +253,8 @@ jobs:
     with:
       # based image data
       file_name: "moveit_source.dockerfile"
-      image_name: "rafa606/moveit-source:jazzy"
       base_image: "rafa606/ros:jazzy"
+      image_name: "rafa606/moveit-source:jazzy"
       ros_distro: "jazzy"
       file_triggers: '["configfiles/install_moveit_source_packages.bash"]'
       # Final image data

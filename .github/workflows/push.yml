@@ -125,6 +125,7 @@ jobs:
       base_image: "rafa606/ubuntu:24.04"
       image_name: "rafa606/ros:jazzy"
       ros_distro: "jazzy"
+      file_triggers: '["configfiles/install_ros_packages.bash"]'
       # Final image data
       final_image_name: "rafa606/ros-vim:jazzy"
       ycm_file: "configfiles/ycm_extra_conf_ros2.py"

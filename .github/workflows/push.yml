@@ -92,7 +92,7 @@ jobs:
       base_image: "rafa606/ubuntu:20.04"
       image_name: "rafa606/ros:noetic"
       ros_distro: "noetic"
-      file_triggers: ["configfiles/install_ros_packages.bash"]
+      file_triggers: '["configfiles/install_ros_packages.bash"]'
       # Final image data
       final_image_name: "rafa606/ros-vim:noetic"
       ycm_file: "configfiles/ycm_extra_conf_ros.py"
@@ -114,7 +114,7 @@ jobs:
       base_image: "rafa606/ubuntu:22.04"
       image_name: "rafa606/ros:humble"
       ros_distro: "humble"
-      file_triggers: ["configfiles/install_ros_packages.bash"]
+      file_triggers: '["configfiles/install_ros_packages.bash"]'
       # Final image data
       final_image_name: "rafa606/ros-vim:humble"
       ycm_file: "configfiles/ycm_extra_conf_ros2.py"
@@ -135,7 +135,7 @@ jobs:
       image_name: "rafa606/ubuntu:24.04"
       file_name: "base.dockerfile"
       base_image: "ubuntu:24.04"
-      file_triggers: ["configfiles/install_ros_packages.bash"]
+      file_triggers: '["configfiles/install_ros_packages.bash"]'
       # Final image data
       final_image_name: "rafa606/ros-vim:jazzy"
       ycm_file: "configfiles/ycm_extra_conf_ros2.py"
@@ -157,7 +157,7 @@ jobs:
       image_name: "rafa606/moveit:noetic"
       base_image: "rafa606/ros:noetic"
       ros_distro: "noetic"
-      file_triggers: ["configfiles/install_moveit_packages.bash"]
+      file_triggers: '["configfiles/install_moveit_packages.bash"]'
       # Final image data
       final_image_name: "rafa606/moveit-vim:noetic"
       ycm_file: "configfiles/ycm_extra_conf_ros.py"
@@ -179,7 +179,7 @@ jobs:
       image_name: "rafa606/moveit:humble"
       base_image: "rafa606/ros:humble"
       ros_distro: "humble"
-      file_triggers: ["configfiles/install_moveit_packages.bash"]
+      file_triggers: '["configfiles/install_moveit_packages.bash"]'
       # Final image data
       final_image_name: "rafa606/moveit-vim:humble"
       ycm_file: "configfiles/ycm_extra_conf_ros2.py"
@@ -201,7 +201,7 @@ jobs:
       image_name: "rafa606/moveit:jazzy"
       base_image: "rafa606/ros:jazzy"
       ros_distro: "jazzy"
-      file_triggers: ["configfiles/install_moveit_packages.bash"]
+      file_triggers: '["configfiles/install_moveit_packages.bash"]'
       # Final image data
       final_image_name: "rafa606/moveit-vim:jazzy"
       ycm_file: "configfiles/ycm_extra_conf_ros2.py"
@@ -223,7 +223,7 @@ jobs:
       image_name: "rafa606/moveit-source:noetic"
       base_image: "rafa606/ros:noetic"
       ros_distro: "noetic"
-      file_triggers: ["configfiles/install_moveit_source_packages.bash"]
+      file_triggers: '["configfiles/install_moveit_source_packages.bash"]'
       # Final image data
       final_image_name: "rafa606/moveit-source-vim:noetic"
       ycm_file: "configfiles/ycm_extra_conf_ros.py"
@@ -245,7 +245,7 @@ jobs:
       image_name: "rafa606/moveit-source:humble"
       base_image: "rafa606/ros:humble"
       ros_distro: "humble"
-      file_triggers: ["configfiles/install_moveit_source_packages.bash"]
+      file_triggers: '["configfiles/install_moveit_source_packages.bash"]'
       # Final image data
       final_image_name: "rafa606/moveit-source-vim:humble"
       ycm_file: "configfiles/ycm_extra_conf_ros2.py"
@@ -267,7 +267,7 @@ jobs:
       image_name: "rafa606/moveit-source:jazzy"
       base_image: "rafa606/ros:jazzy"
       ros_distro: "jazzy"
-      file_triggers: ["configfiles/install_moveit_source_packages.bash"]
+      file_triggers: '["configfiles/install_moveit_source_packages.bash"]'
       # Final image data
       final_image_name: "rafa606/moveit-source-vim:jazzy"
       ycm_file: "configfiles/ycm_extra_conf_ros2.py"
@@ -300,7 +300,7 @@ jobs:
       file_name: "msvc.dockerfile"
       image_name: "rafa606/ubuntu-msvc:24.04"
       base_image: "ubuntu:24.04"
-      file_triggers: ["configfiles/install_msvc.bash"]
+      file_triggers: '["configfiles/install_msvc.bash"]'
     secrets:
       DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
       DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}

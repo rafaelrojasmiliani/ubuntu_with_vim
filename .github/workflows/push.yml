@@ -1,7 +1,7 @@
 name: deploy
 on: push
 jobs:
-  base_ubuntu_2004:
+  base_images:
     uses: ./.github/workflows/build_image.yml
     with:
       image_name: "rafa606/ubuntu:20.04"

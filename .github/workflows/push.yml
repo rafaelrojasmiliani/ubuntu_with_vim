@@ -7,6 +7,9 @@ jobs:
       image_name: "rafa606/ubuntu:20.04"
       file_name: "base.dockerfile"
       base_image: "ubuntu:20.04"
+    secrets:
+      DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+      DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
 
   base_ubuntu_2204:
     uses: ./.github/workflows/build_image.yml
@@ -14,6 +17,9 @@ jobs:
       image_name: "rafa606/ubuntu:22.04"
       file_name: "base.dockerfile"
       base_image: "ubuntu:22.04"
+    secrets:
+      DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+      DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
 
   base_ubuntu_2404:
     uses: ./.github/workflows/build_image.yml
@@ -21,6 +27,9 @@ jobs:
       image_name: "rafa606/ubuntu:24.04"
       file_name: "base.dockerfile"
       base_image: "ubuntu:24.04"
+    secrets:
+      DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+      DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
 
   ros_base_images:
     needs: base_ubuntu_2404

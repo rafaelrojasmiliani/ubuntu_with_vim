@@ -117,7 +117,7 @@ jobs:
   # --------------------------------------------------------------
   build_final:
     if: ${{ inputs.final_image_name != '' }}
-    needs: build_base
+    needs: build
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code

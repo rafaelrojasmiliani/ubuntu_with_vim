@@ -293,14 +293,15 @@ jobs:
   # ----   ROS2 with feecad daily -------- #
   # -------------------------------------- #
   # -------------------------------------- #
-  moveit_source_jazzy:
-    needs: ros_jazzy
+  freecad_daily:
+    needs: moveit_jazzy
     uses: ./.github/workflows/build_image.yml
     with:
       # based image data
       file_name: "freecad_daily.dockerfile"
       base_image: "rafa606/moveit-vim:jazzy"
       image_name: "rafa606/freecad-ros:jazzy"
+      file_triggers: '["configfiles/install_msvc.bash"]'
     secrets:
       DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
       DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}

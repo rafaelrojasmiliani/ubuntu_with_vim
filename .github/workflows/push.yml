@@ -13,7 +13,7 @@ jobs:
       image_name: "rafa606/ubuntu:20.04"
       file_name: "base.dockerfile"
       base_image: "ubuntu:20.04"
-      file_triggers:
+      file_triggers: >-
         [
           "configfiles/install_ubuntu_base.bash",
           "configfiles/install_vim_plugins_base.bash",
@@ -37,7 +37,7 @@ jobs:
       image_name: "rafa606/ubuntu:22.04"
       file_name: "base.dockerfile"
       base_image: "ubuntu:22.04"
-      file_triggers:
+      file_triggers: >-
         [
           "configfiles/install_ubuntu_base.bash",
           "configfiles/install_vim_plugins_base.bash",
@@ -60,7 +60,7 @@ jobs:
       image_name: "rafa606/ubuntu:24.04"
       file_name: "base.dockerfile"
       base_image: "ubuntu:24.04"
-      file_triggers:
+      file_triggers: >-
         [
           "configfiles/install_ubuntu_base.bash",
           "configfiles/install_vim_plugins_base.bash",

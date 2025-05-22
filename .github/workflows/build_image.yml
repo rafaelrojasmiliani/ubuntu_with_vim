@@ -14,7 +14,7 @@ on:
       base_image: # Name of the base image
         required: true
         type: string
-      distro: # ROS distro in case of building a ROS image
+      ros_distro: # ROS ros_distro in case of building a ROS image
         required: false
         type: string
       file_triggers: # Files that if modified trigger the build of the image
@@ -102,7 +102,7 @@ jobs:
           push: true
           build-args: |
             BASEIMAGE=${{ inputs.base_image }}
-            ${{ inputs.distro != '' && format('DISTRO={0}', inputs.distro) || '' }}
+            ${{ inputs.ros_distro != '' && format('DISTRO={0}', inputs.ros_distro) || '' }}
 
   # --------------------------------------------------------------
   # --------------------------------------------------------------

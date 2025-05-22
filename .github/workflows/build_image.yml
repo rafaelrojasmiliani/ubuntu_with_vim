@@ -60,7 +60,7 @@ jobs:
         id: trigger_files
         run: |
           should_rebuild=0
-          image_timee=$(date -d $(curl -s https://hub.docker.com/v2/repositories/$(echo ${{ inputs.image_name }} | sed 's/:/\/tags\//') | jq -r '.last_updated') +%s 2>/dev/null || echo 0)"
+          image_timee=$(date -d $(curl -s https://hub.docker.com/v2/repositories/$(echo ${{ inputs.image_name }} | sed 's/:/\/tags\//') | jq -r '.last_updated') +%s 2>/dev/null || echo 0)
           clean_triggers=$(echo '${{ inputs.file_triggers }}' | tr -d '[]"')
           for file in clean_triggers ; do
             # GitHub Actions outputs strings with quotes. Strip them and brackets.

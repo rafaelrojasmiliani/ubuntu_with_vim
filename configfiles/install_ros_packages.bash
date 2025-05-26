@@ -61,7 +61,6 @@ main() {
             ros-${ROS_DISTRO}-ompl \
             ros-${ROS_DISTRO}-pcl-ros \
             ros-${ROS_DISTRO}-plotjuggler \
-            ros-${ROS_DISTRO}-plotjuggler-ros \
             ros-${ROS_DISTRO}-position-controllers \
             ros-${ROS_DISTRO}-robot-state-publisher \
             ros-${ROS_DISTRO}-ros-base \

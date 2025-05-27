@@ -94,6 +94,8 @@ main() {
     source /root/.cargo/env
     cd /etc/vim/bundle/vim-clap && cargo build --release
 
+    export NVM_DIR=/opt/nvm
+    source /opt/nvm/nvm.sh
     # ---------- install ycm lsp
     cd /etc/vim
     git clone https://github.com/ycm-core/lsp-examples.git

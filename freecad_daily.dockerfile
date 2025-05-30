@@ -6,10 +6,10 @@ SHELL ["/usr/bin/bash", "-c"]
 # fix - error: externally-managed-environment
 ENV PIP_BREAK_SYSTEM_PACKAGES 1
 
-RUN set -x \
+RUN set -xeu \
     echo -ne '\n' | add-apt-repository ppa:freecad-maintainers/freecad-daily \
     && apt-get update \
-       DEBIAN_FRONTEND=noninteractive apt-get install \
+       && DEBIAN_FRONTEND=noninteractive apt-get install \
        -y --no-install-recommends -o \
        Dpkg::Options::="--force-confnew" freecad-daily \
     && apt-get autoclean && \

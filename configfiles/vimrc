@@ -30,6 +30,7 @@ set display+=lastline "prevent @ when a line doesn't fit on screen
 nnoremap <CR> <Nop>
 nnoremap + <Nop>
 nnoremap - <Nop>
+nnoremap S <Nop>
 nmap <leader>cc :cclose<CR>
 nmap <leader>co :copen<CR>
 " ---------------------------------------

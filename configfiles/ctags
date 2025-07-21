@@ -15,3 +15,7 @@
 --regex-ROSLAUNCH=/<arg[ \t\r]+/\1/n,arg/
 --regex-ROSLAUNCH=/<include[ \t\r]+/\1/n,include/
 --regex-ROSLAUNCH=/<param[ \t\r]+/\1/n,param/
+--langdef=SRDF
+--langmap=SRDF:.srdf
+--regex-SRDF=/<group[ \t\r]+name[ \t\r]*=[ \t\r]*"([^"]*)"/\1/g,group/
+--regex-SRDF=/<group_state[ \t\r]+group[ \t\r]*=[ \t\r]*"([^"]*)".*name="([A-Za-z_][A-Za-z0-9_]*)"/\2 (\1)/s,group_state/

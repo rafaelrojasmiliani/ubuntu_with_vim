@@ -449,7 +449,17 @@ EOF
     "      \ }
     Plugin 'copilot.vim'
 
+    Plugin 'vim-jsonviewer'
+        nmap <leader>jv :call jsonviewer#init()<CR>
+        " Override <leader>tb for JSON files
+        augroup JsonOverride
+          autocmd!
+          autocmd FileType json nnoremap <silent> <leader>tb :call jsonviewer#init()<CR>
+        augroup END
+
 call vundle#end()
+
+
 filetype plugin indent on
 filetype plugin on
 " ----------------------------------------------------

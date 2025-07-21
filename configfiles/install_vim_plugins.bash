@@ -9,6 +9,7 @@ plugins=(
     https://github.com/ludovicchabant/vim-gutentags.git
     https://github.com/skywind3000/gutentags_plus.git
     https://github.com/github/copilot.vim.git
+    https://github.com/bbrtj/vim-jsonviewer.git
 )
 # Check Vim version
 vim_version=$(vim --version | awk 'NR==1 {print $5}')

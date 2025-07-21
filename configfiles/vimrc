@@ -64,6 +64,7 @@ call vundle#begin('/etc/vim/bundle/')
     Plugin 'vim-latex'
     " ------- tagbar -------
     Plugin 'tagbar'
+        let g:tagbar_ctags_bin = "/usr/bin/ctags"
         let g:tagbar_ctags_options = ['/etc/vim/ctags']
         let g:tagbar_type_xml = {
                     \ 'kinds' : ['j:joints', 'l:links', 'p:properties', 'm:macros', 'i:includes', 'n:nodes', 'g:groups', 's:group states']

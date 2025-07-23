@@ -458,6 +458,7 @@ EOF
           autocmd FileType json nnoremap <silent> <leader>tb :call jsonviewer#init()<CR>
         augroup END
 
+    Plugin 'vim-boxdraw'
 call vundle#end()
 
 

@@ -122,3 +122,4 @@ else
     cd /catkinws/common_packages && catkin_make && source ./devel/setup.bash
 fi
 export FZF_DEFAULT_COMMAND="fdfind  --type f"
+export PATH=$PATH:/etc/vim/bundle/fzf/bin/:/usr/lib/cargo/bin

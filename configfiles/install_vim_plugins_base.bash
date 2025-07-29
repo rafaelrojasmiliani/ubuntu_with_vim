@@ -100,7 +100,6 @@ main() {
     cd /etc/vim
     git clone https://github.com/ycm-core/lsp-examples.git
     cd lsp-examples
-    mv jetbrains-kotlin jetbrains_kotlin
     python3 ./install.py --enable-bash --enable-cmake --enable-docker
 
     # ---- remove unused stuff

@@ -67,7 +67,7 @@ jobs:
             # GitHub Actions outputs strings with quotes. Strip them and brackets.
             file_time=$(date -d "$(git log -1 --format=%cd --date=iso -- $file)" +%s)
             echo "File: $file => $file_time"
-            if [ "$image_time" -gt "$file_time" ]; then
+            if [ "$image_time" -lt "$file_time" ]; then
               should_rebuild=1
               break
             fi
@@ -128,6 +128,7 @@ jobs:
       - name: Check last modified time of image in registry
         id: modify_date
         run: |
+          set -xeu
           echo "image=$(date -d \"$(curl -s https://hub.docker.com/v2/repositories/$(echo ${{ inputs.final_image_name }} | sed 's/:/\/tags\//')\" | jq -r '.last_updated')\" +%s 2>/dev/null || echo 0)" >> $GITHUB_OUTPUT
           echo "dockerfile=$(date -d \"$(git log -n 1 --format=%cd --date=iso -- cpp_vim.dockerfile)\" +%s)" >> $GITHUB_OUTPUT
           echo "vimrc=$(date       -d \"$(git log -1 --format=%cd --date=iso -- ./configfiles/vimrc)\" +%s)" >> $GITHUB_OUTPUT

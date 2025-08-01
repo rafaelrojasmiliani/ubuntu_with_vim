@@ -12,6 +12,7 @@ plugins=(
     https://github.com/bbrtj/vim-jsonviewer.git
     https://github.com/gyim/vim-boxdraw.git
 )
+
 # Check Vim version
 vim_version=$(vim --version | awk 'NR==1 {print $5}')
 if awk -v v="$vim_version" 'BEGIN {exit !(v >= 9.1)}'; then

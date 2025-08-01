@@ -54,8 +54,8 @@ jobs:
         id: modify_date
         run: |
           set -xeu
-          echo "image=$(date -d \"$(curl -s https://hub.docker.com/v2/repositories/\"$(echo ${{ inputs.image_name }} | sed 's/:/\/tags\//')\" | jq -r '.last_updated')\" +%s 2>/dev/null || echo 0)" >> $GITHUB_OUTPUT
-          echo "dockerfile=$(date -d \"$(git log  1 --format=%cd --date=iso -- ${{ inputs.file_name }})\" +%s)" >> $GITHUB_OUTPUT
+          echo "image=$(date -d \"$(curl -s https://hub.docker.com/v2/repositories/$(echo ${{ inputs.image_name }} | sed 's/:/\/tags\//') | jq -r '.last_updated')\" +%s 2>/dev/null || echo 0)" >> $GITHUB_OUTPUT
+          echo "dockerfile=$(date -d \"$(git log  -1 --format=%cd --date=iso -- ${{ inputs.file_name }})\" +%s)" >> $GITHUB_OUTPUT
 
       - name: Check modified times of trigger files
         id: trigger_files
@@ -130,7 +130,7 @@ jobs:
         id: modify_date
         run: |
           set -xeu
-          echo "image=$(date -d \"$(curl -s https://hub.docker.com/v2/repositories/\"$(echo ${{ inputs.final_image_name }} | sed 's/:/\/tags\//')\" | jq -r '.last_updated')\" +%s 2>/dev/null || echo 0)" >> $GITHUB_OUTPUT
+          echo "image=$(date -d \"$(curl -s https://hub.docker.com/v2/repositories/$(echo ${{ inputs.final_image_name }} | sed 's/:/\/tags\//') | jq -r '.last_updated')\" +%s 2>/dev/null || echo 0)" >> $GITHUB_OUTPUT
           echo "dockerfile=$(date -d \"$(git log -1 --format=%cd --date=iso -- cpp_vim.dockerfile)\" +%s)" >> $GITHUB_OUTPUT
           echo "vimrc=$(date       -d \"$(git log -1 --format=%cd --date=iso -- ./configfiles/vimrc)\" +%s)" >> $GITHUB_OUTPUT
           echo "ycm=$(date         -d \"$(git log -1 --format=%cd --date=iso -- ./configfiles/${{ matrix.docker_image.ycm_file }})\" +%s)" >> $GITHUB_OUTPUT

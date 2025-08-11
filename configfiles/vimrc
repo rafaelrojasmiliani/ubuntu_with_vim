@@ -352,10 +352,36 @@ EOF
 
         command! -nargs=0 GutentagsClearCache call system('rm ' . g:gutentags_cache_dir . '/*')
 
-        let g:gutentags_ctags_extra_args = [
-          \ '--tag-relative=yes',
-          \ '--fields=+ailmnS',
-          \ ]
+        let g:gutentags_ctags_extra_args = ['--tag-relative=yes', '--fields=+afikKlmnsStz', '--extras=+q', '--c-kinds=+pdefglmnstuvx', '--c++-kinds=+pdefglmnstuvx' ]
+
+
+        " :VarsOfType struct my_struct
+        " This function searches for variables of a given type in the tags file
+        command! -nargs=1 VarsOfType call s:VarsOfType(<f-args>)
+        function! s:VarsOfType(type) abort
+          " adjust path to your tags if needed; gutentags sets &tags for you
+          let l:tagsfile = split(&tags, ',')[0]
+          let l:tagsdir = fnamemodify(l:tagsfile, ':h')
+          " readtags prints: name<TAB>file<TAB>excmd ... so capture file/line via -ne
+          let l:cmd = printf(
+                \ 'readtags -t %s  -ne -Q ''(and (or (eq? $kind "variable") (eq? $kind "member")) (eq? $typeref "typename:%s"))'' -l',
+                \ shellescape(fnamemodify(l:tagsfile, ':p')), a:type)
+          let l:lines = systemlist(l:cmd)
+          " Convert to quickfix entries
+          let l:qf = []
+          for l in l:lines
+            let l:parts = split(l, "\t")
+            if len(l:parts) >= 3
+                let l:idx  = match(l:parts, '^line:\d\+')
+                let l:lnum = idx >= 0 ? str2nr(matchstr(l:parts[l:idx], '\d\+')) : 1
+              let l:f = fnamemodify(l:tagsdir . '/' . parts[1], ':p')
+              call add(l:qf, {'filename': l:f, 'lnum': l:lnum, 'text': l:parts[0]})
+            endif
+          endfor
+          call setqflist(l:qf, 'r')
+          copen
+        endfunction
+
 
         let g:gutentags_plus_switch = 1
         let g:gutentags_generate_on_new = 1

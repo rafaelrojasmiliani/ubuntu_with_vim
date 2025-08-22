@@ -536,3 +536,9 @@ set wildignore+=*.rar,*.tar,*.tar.gz,*.tar.xz,*.tar.bz2
 set wildignore+=*.pdf,*.aux,*.log,*.nav,*.out,*.pytxcode
 set wildignore+=*.snm,*.toc,*.vrb
 set wildignore+=*.pptx
+let g:ycm_language_server += [
+  \   { 'name': 'fortran',
+  \     'filetypes': [ 'fortran' ],
+  \     'cmdline': [ 'fortls', '--notify_init', '--hover_signature', '--hover_language', 'fortran', '--use_signature_help' ],
+  \   },
+  \ ]

@@ -100,7 +100,13 @@ main() {
     cd /etc/vim
     git clone https://github.com/ycm-core/lsp-examples.git
     cd lsp-examples
-    python3 ./install.py --enable-bash --enable-cmake --enable-docker --enable-fortran
+    python3 ./install.py --enable-bash --enable-cmake --enable-docker
+
+    if [ $DISTRIB_RELEASE != "24.04" ]; then
+        pip3 install --no-cache-dir --break-system-packages fortls
+    else
+        pip3 install --no-cache-dir fortls
+    fi
 
     # ---- remove unused stuff
     rm -rf $(find /etc/vim/bundle -type f \( -name "*.a" -o -name "*.o" \))

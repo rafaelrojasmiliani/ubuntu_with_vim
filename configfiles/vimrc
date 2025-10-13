@@ -302,8 +302,8 @@ call vundle#begin('/etc/vim/bundle/')
                     \ verbose highlight! ColorColumn cterm=none term=none ctermbg=DarkGray ctermfg=none guibg=#2f2713 guifg=NONE
         let g:diminactive_buftype_blacklist = ['nofile', 'nowrite', 'acwrite', 'quickfix', 'help', 'diff']
 
-    Plugin 'spotdiff.vim'
-    Plugin 'diffchar.vim'
+    " Plugin 'spotdiff.vim'
+    " Plugin 'diffchar.vim'
 
     Plugin 'Vim-Goto-Header'
         let g:goto_header_search_flags = "-t f -s"

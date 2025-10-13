@@ -102,7 +102,7 @@ main() {
     cd lsp-examples
     python3 ./install.py --enable-bash --enable-cmake --enable-docker
 
-    if [ $DISTRIB_RELEASE != "24.04" ]; then
+    if [ $DISTRIB_RELEASE = "24.04" ]; then
         pip3 install --no-cache-dir --break-system-packages fortls
     else
         pip3 install --no-cache-dir fortls

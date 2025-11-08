@@ -12,6 +12,7 @@ RUN set -xeu \
     && bash /opt/miniconda/miniconda.sh -b -u -p /opt/miniconda \
     && rm /opt/miniconda/miniconda.sh \
     && bash /opt/miniconda/bin/activate \
+    && export PATH=$PATH:/opt/miniconda/bin/ \
     && conda init --all \
     && conda config --add channels conda-forge \
     && conda create -n freecad_1_0_312 freecad=1.0.0=py312h0c3bf70_4 python=3.12 \

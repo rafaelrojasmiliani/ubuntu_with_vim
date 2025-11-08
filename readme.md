@@ -1,10 +1,10 @@
 # Ubuntu Images for Scientific Programmers & Roboticists
 
 This repository provides a collection of Dockerfiles and shell helpers for building
-repeatable Ubuntu- and Alpine-based development containers that ship with a curated
-Vim configuration. The images bundle common compiler toolchains, debuggers, and a
-large plugin set so you can drop into a ready-to-code environment without spending
-hours on setup.
+repeatable Ubuntu Docker images with a curated Vim configuration and installed
+packages that streamline development of scientific and robotics applications across
+languages like C, C++, Rust, Python, Fortran, and more. These images provide a
+ready-to-code environment without spending hours on setup.
 
 ## What's inside?
 

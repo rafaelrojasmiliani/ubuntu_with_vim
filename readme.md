@@ -1,4 +1,4 @@
-# Ubuntu Images for Scientific Programmers & Roboticists
+# Ubuntu Images with Vim for Scientific Programmers & Roboticists
 
 This repository provides a collection of Dockerfiles and shell helpers for building repeatable Ubuntu Docker images with a curated Vim configuration.
 Also, these images come with a curated list of packages that facilitates the development of scientific and robotics applications across languages like C, C++, Rust, Python, Fortran, and more.

@@ -15,6 +15,8 @@ RUN set -xeu \
     && export PATH=$PATH:/opt/miniconda/bin/ \
     && conda init --all \
     && conda config --add channels conda-forge \
+    && conda tos accept --override-channels --channel https://repo.anaconda.com/pkgs/main \
+    && conda tos accept --override-channels --channel https://repo.anaconda.com/pkgs/r \
     && conda create -n freecad_1_0_312 freecad=1.0.0=py312h0c3bf70_4 python=3.12 \
     && conda activate freecad_1_0_312 \
     && conda install numpy pandas matplotlib requests qt6-wayland pycollada \

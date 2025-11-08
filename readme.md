@@ -173,6 +173,26 @@ Each repository publishes tags that mirror the version listed in the workflow
 need and mount your project into `/workspace` to reuse the bundled Vim
 configuration.
 
+## GitHub Actions automation
+
+The [`deploy`](.github/workflows/push.yml) workflow enumerates every Ubuntu,
+ROS, and MoveIt variant and calls the reusable
+[`build_image.yml`](.github/workflows/build_image.yml) job with the
+appropriate Dockerfile, base image, and trigger files. Before any build starts,
+the reusable workflow queries Docker Hub for the current `last_updated`
+timestamp of the target repository and compares it with the git history of the
+Dockerfile plus its trigger files. For base images the triggers include the
+shared install scripts (for example `configfiles/install_ubuntu_base.bash`),
+while final images also watch Vim configuration files, YCM profiles, tag
+settings, and other assets pulled into the container.
+
+If every tracked file is older than the published image, the login, Buildx, and
+build-and-push steps are skipped entirely so the run finishes quickly. When any
+tracked file has a newer commit date—or the upstream base image has been
+refreshed—the workflow rebuilds that image and pushes the result back to Docker
+Hub. This logic keeps the registry synchronized with repository changes while
+avoiding unnecessary rebuilds.
+
 ## Tooling highlights
 
 - Latest `clang-tools` suite from [apt.llvm.org](http://apt.llvm.org/) so Clang

@@ -1,3 +1,8 @@
+# Workflow sketch:
+# - Triggered via workflow_call with metadata that describes the target images.
+# - Compares Docker Hub timestamps with Dockerfiles and trigger files to decide if a rebuild is needed.
+# - Logs into Docker Hub, sets up Buildx, and builds/pushes the base image when changes are detected.
+# - Optionally builds and pushes a final ready-to-use image that layers on top of the freshly built base image.
 name: Build Docker Image
 on:
   workflow_call:

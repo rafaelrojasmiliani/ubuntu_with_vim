@@ -14,12 +14,10 @@ change.
 
 | Docker Hub repository | Notes |
 | --- | --- |
-| [`rafa606/ubuntu`](https://hub.docker.com/r/rafa606/ubuntu) | Base image refreshed for Ubuntu 20.04, 22.04, and 24.04 tags. |
-| [`rafa606/cpp-vim`](https://hub.docker.com/r/rafa606/cpp-vim) | Daily driver development image with the full Vim setup layered on each Ubuntu release. |
-| [`rafa606/ros`](https://hub.docker.com/r/rafa606/ros) | ROS base images tagged for Noetic, Humble, and Jazzy. |
-| [`rafa606/ros-vim`](https://hub.docker.com/r/rafa606/ros-vim) | ROS-ready Vim environment matching the ROS tags above. |
-| [`rafa606/moveit`](https://hub.docker.com/r/rafa606/moveit) | MoveIt-ready base built on top of the ROS images. |
-| [`rafa606/moveit-vim`](https://hub.docker.com/r/rafa606/moveit-vim) | MoveIt + Vim tooling for Noetic, Humble, and Jazzy. |
+| [`rafa606/cpp-vim:{20.04,22.04,24.04}`](https://hub.docker.com/r/rafa606/cpp-vim) | Daily driver development image with the full Vim setup layered on each Ubuntu release. |
+| [`rafa606/ros-vim:{noetic,humble,jazzy}`](https://hub.docker.com/r/rafa606/ros-vim) | ROS-ready Vim environment matching the ROS tags above. |
+| [`rafa606/moveit-vim:{noetic,humble,jazzy}`](https://hub.docker.com/r/rafa606/moveit-vim) | MoveIt + Vim tooling for Noetic, Humble, and Jazzy. |
+| [`rafa606/moveit-source-vim:{noetic,humble,jazzy}`](https://hub.docker.com/r/rafa606/moveit-source-vim) | ROS-ready Vim environment matching all requirements to build MoveItg in Noetic, Humble, and Jazzy. |
 
 Each repository publishes tags that mirror the version listed in the workflow
 (`20.04`, `22.04`, `24.04`, `noetic`, `humble`, `jazzy`). Pull the variant you

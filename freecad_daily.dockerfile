@@ -7,6 +7,18 @@ SHELL ["/usr/bin/bash", "-c"]
 ENV PIP_BREAK_SYSTEM_PACKAGES 1
 
 RUN set -xeu \
+    && echo -ne '\n' | add-apt-repository ppa:freecad-maintainers/freecad-daily \
+    && apt-get update \
+       && DEBIAN_FRONTEND=noninteractive apt-get install \
+       -y --no-install-recommends -o \
+       Dpkg::Options::="--force-confnew" freecad-daily \
+    && apt-get clean && \
+    rm -rf /var/lib/apt/lists/* \
+    && chmod 777 /usr/local/lib/python3.12/dist-packages \
+    && chmod 777 /var/cache/apt/archives/ \
+    && chmod 777 /var/lib/dpkg/
+
+RUN set -xeu \
     && mkdir -p /opt/miniconda \
     && wget --progress=dot:giga https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O /opt/miniconda/miniconda.sh \
     && bash /opt/miniconda/miniconda.sh -b -u -p /opt/miniconda \
@@ -22,15 +34,3 @@ RUN set -xeu \
     && conda install numpy pandas matplotlib requests qt6-wayland pycollada \
     && apt-get clean -y \
     && rm -rf /var/lib/apt/lists/*
-
-RUN set -xeu \
-    && echo -ne '\n' | add-apt-repository ppa:freecad-maintainers/freecad-daily \
-    && apt-get update \
-       && DEBIAN_FRONTEND=noninteractive apt-get install \
-       -y --no-install-recommends -o \
-       Dpkg::Options::="--force-confnew" freecad-daily \
-    && apt-get clean && \
-    rm -rf /var/lib/apt/lists/* \
-    && chmod 777 /usr/local/lib/python3.12/dist-packages \
-    && chmod 777 /var/cache/apt/archives/ \
-    && chmod 777 /var/lib/dpkg/

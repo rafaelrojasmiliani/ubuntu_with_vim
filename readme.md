@@ -1,4 +1,4 @@
-# Ubuntu Vim Dev Images for C & Robotics
+# Ubuntu Images for Scientific Programmers & Roboticists
 
 This repository provides a collection of Dockerfiles and shell helpers for building
 repeatable Ubuntu- and Alpine-based development containers that ship with a curated

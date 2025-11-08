@@ -1,3 +1,8 @@
+# Workflow sketch:
+# - Runs on pushes to the master branch to publish a matrix of Docker images.
+# - Delegates most builds to the reusable build_image workflow for base, ROS, MoveIt, and related images.
+# - Builds specialized images (e.g., llama.cpp, Lutris) inline with timestamp checks before pushing.
+# - Ensures images are only rebuilt when their Dockerfiles or trigger files change in the repository.
 name: deploy
 on:
   push:

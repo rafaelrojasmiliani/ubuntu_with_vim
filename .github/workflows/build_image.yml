@@ -1,3 +1,8 @@
+# Workflow sketch:
+# - Triggered via workflow_call with metadata that describes the target images.
+# - Compares Docker Hub timestamps with Dockerfiles and trigger files to decide if a rebuild is needed.
+# - Logs into Docker Hub, sets up Buildx, and builds/pushes the base image when changes are detected.
+# - Optionally builds and pushes a final ready-to-use image that layers on top of the freshly built base image.
 name: Build Docker Image
 on:
   workflow_call:
@@ -59,10 +64,12 @@ jobs:
 
       - name: Check modified times of trigger files
         id: trigger_files
+        env:
+          IMAGE_TIMESTAMP: ${{ steps.modify_date.outputs.image }}
         run: |
           set -xeu
           should_rebuild=false
-          image_time=$(date -d $(curl -s https://hub.docker.com/v2/repositories/$(echo ${{ inputs.image_name }} | sed 's/:/\/tags\//') | jq -r '.last_updated') +%s 2>/dev/null || echo 0)
+          image_time=${IMAGE_TIMESTAMP:-0}
           clean_triggers=$(echo '${{ inputs.file_triggers }}' | tr -d '[]",')
           for file in $clean_triggers ; do
             # GitHub Actions outputs strings with quotes. Strip them and brackets.
@@ -79,7 +86,7 @@ jobs:
       - name: Login to DockerHub
         if: |
           steps.modify_date.outputs.image < steps.modify_date.outputs.dockerfile ||
-          steps.trigger_files.outputs.should_rebuild == true
+          steps.trigger_files.outputs.should_rebuild == 'true'
         uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
@@ -88,13 +95,13 @@ jobs:
       - name: Set up Docker Buildx
         if: |
           steps.modify_date.outputs.image < steps.modify_date.outputs.dockerfile ||
-          steps.trigger_files.outputs.should_rebuild == true
+          steps.trigger_files.outputs.should_rebuild == 'true'
         uses: docker/setup-buildx-action@v2
 
       - name: Build and push image
         if: |
           steps.modify_date.outputs.image < steps.modify_date.outputs.dockerfile ||
-          steps.trigger_files.outputs.should_rebuild == true
+          steps.trigger_files.outputs.should_rebuild == 'true'
         uses: docker/build-push-action@v3
         with:
           tags: ${{ inputs.image_name }}
@@ -143,14 +150,14 @@ jobs:
 
       - name: login to dockerhub
         if: |
-          steps.modify_date.outputs.value < steps.modify_date.outputs.dockerfile ||
-          steps.modify_date.outputs.value < steps.modify_date.outputs.vimrc ||
-          steps.modify_date.outputs.value < steps.modify_date.outputs.ycm ||
-          steps.modify_date.outputs.value < steps.modify_date.outputs.ctags ||
-          steps.modify_date.outputs.value < steps.modify_date.outputs.gdbinit ||
-          steps.modify_date.outputs.value < steps.modify_date.outputs.cmake_kits ||
-          steps.modify_date.outputs.value < steps.modify_date.outputs.vim_plugins||
-          steps.modify_date.outputs.value < steps.modify_date.outputs.base_image
+          steps.modify_date.outputs.image < steps.modify_date.outputs.dockerfile ||
+          steps.modify_date.outputs.image < steps.modify_date.outputs.vimrc ||
+          steps.modify_date.outputs.image < steps.modify_date.outputs.ycm ||
+          steps.modify_date.outputs.image < steps.modify_date.outputs.ctags ||
+          steps.modify_date.outputs.image < steps.modify_date.outputs.gdbinit ||
+          steps.modify_date.outputs.image < steps.modify_date.outputs.cmake_kits ||
+          steps.modify_date.outputs.image < steps.modify_date.outputs.vim_plugins ||
+          steps.modify_date.outputs.image < steps.modify_date.outputs.base_image
         uses: docker/login-action@v3
         with:
           username: ${{ secrets.docker_username }}
@@ -158,26 +165,26 @@ jobs:
 
       - name: Set up Docker Buildx
         if: |
-          steps.modify_date.outputs.value < steps.modify_date.outputs.dockerfile ||
-          steps.modify_date.outputs.value < steps.modify_date.outputs.vimrc ||
-          steps.modify_date.outputs.value < steps.modify_date.outputs.ycm ||
-          steps.modify_date.outputs.value < steps.modify_date.outputs.ctags ||
-          steps.modify_date.outputs.value < steps.modify_date.outputs.gdbinit ||
-          steps.modify_date.outputs.value < steps.modify_date.outputs.cmake_kits ||
-          steps.modify_date.outputs.value < steps.modify_date.outputs.vim_plugins||
-          steps.modify_date.outputs.value < steps.modify_date.outputs.base_image
+          steps.modify_date.outputs.image < steps.modify_date.outputs.dockerfile ||
+          steps.modify_date.outputs.image < steps.modify_date.outputs.vimrc ||
+          steps.modify_date.outputs.image < steps.modify_date.outputs.ycm ||
+          steps.modify_date.outputs.image < steps.modify_date.outputs.ctags ||
+          steps.modify_date.outputs.image < steps.modify_date.outputs.gdbinit ||
+          steps.modify_date.outputs.image < steps.modify_date.outputs.cmake_kits ||
+          steps.modify_date.outputs.image < steps.modify_date.outputs.vim_plugins ||
+          steps.modify_date.outputs.image < steps.modify_date.outputs.base_image
         uses: docker/setup-buildx-action@v2
 
       - name: Build and push image
         if: |
-          steps.modify_date.outputs.value < steps.modify_date.outputs.dockerfile ||
-          steps.modify_date.outputs.value < steps.modify_date.outputs.vimrc ||
-          steps.modify_date.outputs.value < steps.modify_date.outputs.ycm ||
-          steps.modify_date.outputs.value < steps.modify_date.outputs.ctags ||
-          steps.modify_date.outputs.value < steps.modify_date.outputs.gdbinit ||
-          steps.modify_date.outputs.value < steps.modify_date.outputs.cmake_kits ||
-          steps.modify_date.outputs.value < steps.modify_date.outputs.vim_plugins||
-          steps.modify_date.outputs.value < steps.modify_date.outputs.base_image
+          steps.modify_date.outputs.image < steps.modify_date.outputs.dockerfile ||
+          steps.modify_date.outputs.image < steps.modify_date.outputs.vimrc ||
+          steps.modify_date.outputs.image < steps.modify_date.outputs.ycm ||
+          steps.modify_date.outputs.image < steps.modify_date.outputs.ctags ||
+          steps.modify_date.outputs.image < steps.modify_date.outputs.gdbinit ||
+          steps.modify_date.outputs.image < steps.modify_date.outputs.cmake_kits ||
+          steps.modify_date.outputs.image < steps.modify_date.outputs.vim_plugins ||
+          steps.modify_date.outputs.image < steps.modify_date.outputs.base_image
         uses: docker/build-push-action@v3
         with:
           tags: ${{ inputs.final_image_name }}

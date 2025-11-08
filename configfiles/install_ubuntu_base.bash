@@ -118,17 +118,17 @@ main() {
             python3-setuptools
     fi
 
-    # --------------------
+    # -----------------------------
     # Install rust
-    # -------------------
+    # -----------------------------
     curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs |
         sh -s -- --default-toolchain stable -y
 
     export PATH=/root/.cargo/bin:$PATH
 
-    # --------------------
+    # -----------------------------
     # Install arduino-cli
-    # -------------------
+    # -----------------------------
     cd / &&
         wget -qO arduino-cli.tar.gz \
             https://downloads.arduino.cc/arduino-cli/arduino-cli_ \
@@ -148,9 +148,15 @@ main() {
         make install # may require extra privileges depending on where to install
     rm -rf /ctags
 
-    # --------------------
+    mkdir /difftastic &&
+        wget -q https://github.com/Wilfred/difftastic/releases/download/0.65.0/difft-x86_64-unknown-linux-gnu.tar.gz -O /difftastic/difftastic.tar.gz &&
+        tar -xvf /difftastic/difftastic.tar.gz -C /difftastic/ &&
+        mv /difftastic/difft /usr/local/bin/ &&
+        rm -rf /difftastic
+
+    # -----------------------------
     # Install latest cmake
-    # -------------------
+    # -----------------------------
     if [ $DISTRIB_RELEASE != "24.04" ]; then
         cd /
         if ! dpkg --verify cmake 2>/dev/null; then

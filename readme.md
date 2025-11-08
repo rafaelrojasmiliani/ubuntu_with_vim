@@ -164,7 +164,6 @@ making it easy to index robot descriptions alongside source code.
 | Dockerfile | Base image | Purpose |
 | --- | --- | --- |
 | `base.dockerfile` | Any Ubuntu image (set with `BASEIMAGE`) | Installs compilers, debuggers, Rust, Arduino CLI, modern CMake, and the core Vim plugin stack used by the other images. |
-|
 | `cpp_vim.dockerfile` | `BASEIMAGE` from above | Adds the full Vim configuration, copies dotfiles, and wires in `YouCompleteMe` using the `YCM_FILE` argument to pick the completion config. |
 | `alpine_cpp_vim.dockerfile` | Alpine Linux | Minimal Alpine build with the same plugin lineup, toolchain packages, and optional C++ extras such as METIS, IPOPT, and ifopt. |
 | `ros.dockerfile` | `BASEIMAGE` + ROS distro | Installs binary ROS dependencies selected by `DISTRO` via `install_ros_packages.bash`. |

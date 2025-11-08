@@ -69,13 +69,22 @@ jobs:
         run: |
           set -xeu
           should_rebuild=false
-          image_time=${IMAGE_TIMESTAMP:-0}
+          image_time=${IMAGE_TIMESTAMP}
+          echo "Checking date of file modifications agains Image time: $image_time"
           clean_triggers=$(echo '${{ inputs.file_triggers }}' | tr -d '[]",')
           for file in $clean_triggers ; do
             # GitHub Actions outputs strings with quotes. Strip them and brackets.
             file_time=$(date -d "$(git log -1 --format=%cd --date=iso -- $file)" +%s)
             echo "File: $file => $file_time"
             if [ "$image_time" -lt "$file_time" ]; then
+              echo "File $file modified after image build at time $file_time. Triggering rebuild."
+              commit_hash=$(git log -1 --format=%H -- "$file")
+              echo "------------------------------"
+              echo "------------------------------"
+              echo "Last commit modifying $file: $commit_hash"
+              git show --format= -- "$commit_hash" -- "$file"
+              echo "------------------------------"
+              echo "------------------------------"
               should_rebuild=true
               break
             fi

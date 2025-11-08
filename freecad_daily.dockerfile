@@ -12,14 +12,14 @@ RUN set -xeu \
        && DEBIAN_FRONTEND=noninteractive apt-get install \
        -y --no-install-recommends -o \
        Dpkg::Options::="--force-confnew" freecad-daily \
-    && apt-get autoclean && \
-    apt-get autoremove && \
+    && apt-get clean && \
     rm -rf /var/lib/apt/lists/* \
     && chmod 777 /usr/local/lib/python3.12/dist-packages \
     && chmod 777 /var/cache/apt/archives/ \
     && chmod 777 /var/lib/dpkg/
 
-RUN mkdir -p /opt/miniconda && \
+RUN set -xeu \
+    mkdir -p /opt/miniconda && \
     wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O /opt/miniconda/miniconda.sh && \
     bash /opt/miniconda/miniconda.sh -b -u -p /opt/miniconda && \
     rm /opt/miniconda/miniconda.sh && \
@@ -29,6 +29,5 @@ RUN mkdir -p /opt/miniconda && \
     conda create -n freecad_1_0_312 freecad=1.0.0=py312h0c3bf70_4 python=3.12 && \
     conda activate freecad_1_0_312 && \
     conda install numpy pandas matplotlib requests qt6-wayland pycollada && \
-     apt-get autoclean -y && \
-     apt-get autoremove -y && \
+     apt-get clean -y && \
      rm -rf /var/lib/apt/lists/*

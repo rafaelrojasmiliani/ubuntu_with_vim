@@ -183,6 +183,7 @@ main() {
     # -----------------
     # Install actionlint: github action linter
     # -----------------
+    cd /
     bash <(curl https://raw.githubusercontent.com/rhysd/actionlint/main/scripts/download-actionlint.bash) latest /usr/bin
 
     # -----------------

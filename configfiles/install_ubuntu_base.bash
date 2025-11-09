@@ -181,6 +181,11 @@ main() {
     chmod +x /usr/bin/hadolint
 
     # -----------------
+    # Install actionlint: github action linter
+    # -----------------
+    bash <(curl https://raw.githubusercontent.com/rhysd/actionlint/main/scripts/download-actionlint.bash) latest /usr/bin
+
+    # -----------------
     # Install shfmt, bash formatter
     # -----------------
     curl -LJ https://github.com/patrickvane/shfmt/releases/download/master/shfmt_linux_amd64 --output /usr/bin/shfmt

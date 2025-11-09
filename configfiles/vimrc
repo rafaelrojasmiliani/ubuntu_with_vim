@@ -126,6 +126,7 @@ call vundle#begin('/etc/vim/bundle/')
                     \'dockerfile':['hadolint'],
                     \'sh':['bashate'],
                     \'html':['htmlhint'],
+                    \'yaml':['yamllint'],
                     \}
         let g:ale_c_clangformat_use_local_file = 1
         let g:ale_cpp_clangtidy_executable = 'clang-tidy'

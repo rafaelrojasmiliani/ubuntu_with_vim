@@ -536,12 +536,20 @@ main() {
         pip3 install --no-cache-dir rstcheck[sphinx] rstfmt
     fi
 
-    # --- Install rst formatter and linter
+    # --- Install pygments  generic syntax highlighter
 
     if [ $DISTRIB_RELEASE = "24.04" ]; then
         pip3 install --no-cache-dir --user --break-system-packages pygments
     else
         pip3 install --no-cache-dir pygments
+    fi
+
+    # --- Install yamllint to lint yaml files
+
+    if [ $DISTRIB_RELEASE = "24.04" ]; then
+        pip3 install --no-cache-dir --user --break-system-packages yamllint
+    else
+        pip3 install --no-cache-dir yamllint
     fi
 
     # --- Install glogal tag finder

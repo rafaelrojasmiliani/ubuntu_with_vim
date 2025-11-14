@@ -117,6 +117,8 @@ call vundle#begin('/etc/vim/bundle/')
                     \ 'sh':['shfmt']
                     \ }
         let g:ale_sh_shfmt_options='-i 4'
+        " ignore too long lines
+        let g:ale_sh_bashate_options='-i E006'
 
         " do not lint c++ with ale. Use ycm
         let g:ale_linters = {

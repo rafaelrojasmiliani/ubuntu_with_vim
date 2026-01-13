@@ -87,6 +87,7 @@ main() {
             ros-${ROS_DISTRO}-rqt-py-common \
             ros-${ROS_DISTRO}-rqt-publisher \
             ros-${ROS_DISTRO}-rqt-service-caller \
+            ros-${ROS_DISTRO}-behaviortree-cpp \
             robotpkg-ros-lint
     else
         DEBIAN_FRONTEND=noninteractive apt-get install \

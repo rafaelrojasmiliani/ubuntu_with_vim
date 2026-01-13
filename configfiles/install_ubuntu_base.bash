@@ -53,6 +53,7 @@ main() {
             libopenblas-dev \
             liborocos-kdl-dev \
             librsvg2-dev \
+            libsqlite3-dev \
             libsuitesparse-dev \
             libsvgpp-dev \
             libtrilinos-trilinosss-dev \

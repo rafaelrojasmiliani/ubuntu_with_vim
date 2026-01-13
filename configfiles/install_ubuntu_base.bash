@@ -39,6 +39,7 @@ main() {
             less \
             libatlas3-base \
             libboost-math-dev \
+            libczmq-dev \
             libeigen3-dev \
             libfmt-dev \
             libgmp3-dev \

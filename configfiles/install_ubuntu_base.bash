@@ -60,7 +60,7 @@ main() {
             libxml2-utils \
             mono-complete \
             net-tools \
-            openjdk-11-jdk \
+            openjdk-21-jdk \
             patchelf \
             pciutils \
             pkg-config \

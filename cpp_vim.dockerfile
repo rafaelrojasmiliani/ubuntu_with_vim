@@ -17,4 +17,5 @@ RUN --mount=type=bind,source=./,target=/workspace,rw \
     && { [[ -d /etc/gdb ]] && cp gdbinit /etc/gdb/ && cp printers.py /etc/gdb/; } || true  \
     && mkdir -p /etc/vim/after/plugin/ \
     && cp after.vim /etc/vim/after/plugin/ \
-    && cat bashrc >> /etc/bash.bashrc
+    && cat bashrc >> /etc/bash.bashrc \
+    && cp gitconfig >> /etc/gitconfig

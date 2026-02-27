@@ -18,4 +18,4 @@ RUN --mount=type=bind,source=./,target=/workspace,rw \
     && mkdir -p /etc/vim/after/plugin/ \
     && cp after.vim /etc/vim/after/plugin/ \
     && cat bashrc >> /etc/bash.bashrc \
-    && cp gitconfig >> /etc/gitconfig
+    && cat gitconfig > /etc/gitconfig

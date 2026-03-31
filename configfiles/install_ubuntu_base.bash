@@ -448,7 +448,7 @@ main() {
                 flake8 \
                 python3-pip-whl \
                 python3-pipdeptree python3-sympy python3-pandas python3-tk python3-scipy \
-                python3-matplotlib python3-bashate
+                python3-matplotlib python3-bashate libyaml-cpp-dev
 
     fi
 

@@ -533,7 +533,7 @@ main() {
 
     # --- Install rst formatter and linter
 
-    if [ $DISTRIB_RELEASE = "24.04" ]; then
+    if [[ ${DISTRIB_RELEASE%%.*} -ge 24 ]]; then
         pip3 install --no-cache-dir --user --break-system-packages rstcheck[sphinx] rstfmt
     else
         pip3 install --no-cache-dir rstcheck[sphinx] rstfmt
@@ -541,7 +541,7 @@ main() {
 
     # --- Install pygments  generic syntax highlighter
 
-    if [ $DISTRIB_RELEASE = "24.04" ]; then
+    if [[ ${DISTRIB_RELEASE%%.*} -ge 24 ]]; then
         pip3 install --no-cache-dir --user --break-system-packages pygments
     else
         pip3 install --no-cache-dir pygments
@@ -549,7 +549,7 @@ main() {
 
     # --- Install yamllint to lint yaml files
 
-    if [ $DISTRIB_RELEASE = "24.04" ]; then
+    if [[ ${DISTRIB_RELEASE%%.*} -ge 24 ]]; then
         pip3 install --no-cache-dir --user --break-system-packages yamllint
     else
         pip3 install --no-cache-dir yamllint

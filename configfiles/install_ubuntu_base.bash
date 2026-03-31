@@ -480,29 +480,29 @@ main() {
     rm -rf /ifopt
 
     # --- Install Mosek
-    cd /
-    wget https://download.mosek.com/stable/9.3.20/mosektoolslinux64x86.tar.bz2
-    tar xf /mosektoolslinux64x86.tar.bz2 -C /
-    cd /mosek/9.3/tools/platform/linux64x86/src/fusion_cxx
-    make -j$(nproc) && make install
-    install /mosek/9.3/tools/platform/linux64x86/bin/* /usr/lib/
-    install /mosek/9.3/tools/platform/linux64x86/h/* /usr/include/
-    cd /
-    rm -rf /mosek
+    # cd /
+    # wget https://download.mosek.com/stable/9.3.20/mosektoolslinux64x86.tar.bz2
+    # tar xf /mosektoolslinux64x86.tar.bz2 -C /
+    # cd /mosek/9.3/tools/platform/linux64x86/src/fusion_cxx
+    # make -j$(nproc) && make install
+    # install /mosek/9.3/tools/platform/linux64x86/bin/* /usr/lib/
+    # install /mosek/9.3/tools/platform/linux64x86/h/* /usr/include/
+    # cd /
+    # rm -rf /mosek
 
     if [ $DISTRIB_RELEASE != "24.04" ]; then
         pip3 install --no-cache-dir Mosek
     fi
 
     # --- Install osqp
-    cd /
-    git clone --recurse-submodules --branch v0.6.3 https://github.com/osqp/osqp.git
-    cd osqp &&
-        mkdir build &&
-        cd build &&
-        cmake -DCMAKE_INSTALL_PREFIX:PATH=/usr .. && make -j$(nproc) && make install
-    cd /
-    rm -rf /osqp
+    # cd /
+    # git clone --recurse-submodules --branch v0.6.3 https://github.com/osqp/osqp.git
+    # cd osqp &&
+    #     mkdir build &&
+    #     cd build &&
+    #     cmake -DCMAKE_INSTALL_PREFIX:PATH=/usr .. && make -j$(nproc) && make install
+    # cd /
+    # rm -rf /osqp
 
     # --- install just in time lua compiler
     cd /

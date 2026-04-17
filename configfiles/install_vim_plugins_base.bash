@@ -52,6 +52,9 @@ plugins=(
     https://github.com/Yohannfra/Vim-Goto-Header.git # Switch between header and sourcefile. Also Go to header under the cursor.
     https://github.com/hahdookin/miniterm.vim.git
     https://github.com/rbong/vim-flog.git
+    https://github.com/rhysd/git-messenger.vim.git
+    https://github.com/tommcdo/vim-fubitive.git
+    https://github.com/shumphrey/fugitive-gitlab.vim.git
 )
 
 main() {

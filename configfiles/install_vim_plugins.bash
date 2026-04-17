@@ -1,9 +1,6 @@
 #!/bin/bash
 plugins=(
-    https://github.com/rhysd/git-messenger.vim.git
-    https://github.com/tommcdo/vim-fubitive.git
     https://github.com/tpope/vim-rhubarb.git
-    https://github.com/shumphrey/fugitive-gitlab.vim.git
     https://github.com/udalov/kotlin-vim.git
     https://github.com/jpalardy/vim-slime.git
     https://github.com/ludovicchabant/vim-gutentags.git

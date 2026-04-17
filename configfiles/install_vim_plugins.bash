@@ -8,6 +8,7 @@ plugins=(
     https://github.com/github/copilot.vim.git
     https://github.com/bbrtj/vim-jsonviewer.git
     https://github.com/gyim/vim-boxdraw.git
+    https://github.com/rafaelrojasmiliani/vira.git
 )
 
 # Check Vim version

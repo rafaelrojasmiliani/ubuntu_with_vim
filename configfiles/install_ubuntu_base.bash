@@ -233,8 +233,6 @@ main() {
             cd / &&
             rm -rf /usr/src/gtest/build
 
-        pip3 install --no-cache-dir setuptools
-
         # --- Install pinocchio
         # echo "deb [arch=amd64] \
         #     http://robotpkg.openrobots.org/packages/debian/pub \
@@ -572,6 +570,7 @@ main() {
     apt-get clean
     rm -rf /var/lib/apt/lists/*
 
+    pip3 install --no-cache-dir setuptools jira
 }
 
 main

@@ -161,6 +161,40 @@ call vundle#begin('/etc/vim/bundle/')
     Plugin 'vim_snippets_ros'
         let g:UltiSnipsJumpForwardTrigger="<c-j>"
     Plugin 'vim-fugitive'
+        " Automatically prepend JIRA issue key from branch name to commit messages
+        augroup JiraCommitPrefix
+        autocmd!
+        autocmd User FugitiveEditor call s:prepend_jira_from_branch()
+        augroup END
+
+        function! s:prepend_jira_from_branch() abort
+          if expand('%:t') !=# 'COMMIT_EDITMSG'
+            return
+          endif
+
+          let l:branch = FugitiveHead()
+          if empty(l:branch)
+            return
+          endif
+
+          " Matches keys like ABC-123 or TEAM42-9
+          let l:jira = matchstr(l:branch, '\C[A-Z][A-Z0-9]*-\d\+')
+          if empty(l:jira)
+            return
+          endif
+
+          let l:first = getline(1)
+
+          if l:first =~# '^' . escape(l:jira, '[]\.^$*~')
+            return
+          endif
+
+          if l:first =~# '^\%(Merge \|fixup! \|squash! \)'
+            return
+          endif
+
+          call setline(1, '[' . l:jira . ']  ' . l:first)
+        endfunction
     Plugin 'xmledit'
     Plugin 'vimspector'
         let g:vimspector_enable_mappings = 'HUMAN'
@@ -488,6 +522,8 @@ EOF
         augroup END
 
     Plugin 'vim-boxdraw'
+
+    Plugin 'vira'
 call vundle#end()
 
 

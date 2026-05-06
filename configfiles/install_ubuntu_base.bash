@@ -79,20 +79,20 @@ main() {
             python3-pip \
             python3-venv \
             python3-virtualenv \
-            ripgrep
-    screen \
-        silversearcher-ag \
-        software-properties-common \
-        subversion \
-        sudo \
-        terminator \
-        tmux \
-        tzdata \
-        unzip \
-        usbutils \
-        valgrind \
-        wget \
-        zenity
+            ripgrep \
+            screen \
+            silversearcher-ag \
+            software-properties-common \
+            subversion \
+            sudo \
+            terminator \
+            tmux \
+            tzdata \
+            unzip \
+            usbutils \
+            valgrind \
+            wget \
+            zenity
 
     DISTRIB_RELEASE=$(lsb_release -sr 2>/dev/null)
 

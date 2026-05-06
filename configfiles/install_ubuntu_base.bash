@@ -9,6 +9,7 @@ main() {
             -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \
             apt-rdepends \
             apt-transport-https \
+            bat \
             build-essential \
             ca-certificates \
             ccache \
@@ -22,6 +23,7 @@ main() {
             dialog \
             dirmngr \
             exuberant-ctags \
+            fd-find \
             flawfinder \
             g++ \
             gdb \
@@ -37,6 +39,7 @@ main() {
             jq \
             jsonlint \
             less \
+            libasan5 \
             libatlas3-base \
             libboost-math-dev \
             libczmq-dev \
@@ -46,18 +49,23 @@ main() {
             libgsl-dev \
             libgtest-dev \
             libjpeg-dev \
+            libkdl-parser-dev \
             liblapack-dev \
             liblapack3 \
             libmpc-dev \
             libncurses-dev \
             libopenblas-dev \
             liborocos-kdl-dev \
+            librange-v3-dev \
             librsvg2-dev \
             libsqlite3-dev \
             libsuitesparse-dev \
             libsvgpp-dev \
             libtrilinos-trilinosss-dev \
             libxml2-utils \
+            locales \
+            lsb-base \
+            lsb-core \
             mono-complete \
             net-tools \
             openjdk-21-jdk \
@@ -71,53 +79,53 @@ main() {
             python3-pip \
             python3-venv \
             python3-virtualenv \
-            screen \
-            silversearcher-ag \
-            software-properties-common \
-            subversion \
-            sudo \
-            terminator \
-            tmux \
-            tzdata \
-            unzip \
-            usbutils \
-            valgrind \
-            vim \
-            vim-nox \
-            wget \
-            zenity
+            ripgrep
+    screen \
+        silversearcher-ag \
+        software-properties-common \
+        subversion \
+        sudo \
+        terminator \
+        tmux \
+        tzdata \
+        unzip \
+        usbutils \
+        valgrind \
+        wget \
+        zenity
 
     DISTRIB_RELEASE=$(lsb_release -sr 2>/dev/null)
 
+    # --------------------
+    # Install netcat
+    # -------------------
     if [ $DISTRIB_RELEASE = "24.04" ]; then
         DEBIAN_FRONTEND=noninteractive apt-get install \
             -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \
             netcat-openbsd \
-            ncat \
-            vim-gtk3 \
-            locales \
-            lsb-base
+            ncat
     else
         DEBIAN_FRONTEND=noninteractive apt-get install \
             -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \
-            netcat \
-            libkdl-parser-dev \
-            vim-gtk \
-            lsb-core
-        # --------------------
-        # Install latest vim
-        # -------------------
+            netcat
+    fi
+
+    # --------------------
+    # Install latest vim
+    # -------------------
+    if [ $DISTRIB_RELEASE = "24.04" ]; then
+        DEBIAN_FRONTEND=noninteractive apt-get install \
+            -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \
+            vim-gtk3
+    else
+        DEBIAN_FRONTEND=noninteractive apt-get install \
+            -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \
+            vim-gtk
         echo -ne '\n' | apt-add-repository ppa:jonathonf/vim
         apt-get update &&
             DEBIAN_FRONTEND=noninteractive apt-get install \
                 -y --no-install-recommends -o \
                 Dpkg::Options::="--force-confnew" vim
-    fi
-
-    if [ $DISTRIB_RELEASE = "18.04" ]; then
-        DEBIAN_FRONTEND=noninteractive apt-get install \
-            -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \
-            python3-setuptools
     fi
 
     # -----------------------------
@@ -176,6 +184,7 @@ main() {
                 Dpkg::Options::="--force-confnew" cmake \
                 cmake-curses-gui cmake-qt-gui
     fi
+
     # -----------------
     # Install hadolint: dockerfile lineter
     # -----------------
@@ -200,229 +209,88 @@ main() {
             -y --no-install-recommends -o \
             Dpkg::Options::="--force-confnew" python3.8-venv
     fi
-    if [ $DISTRIB_RELEASE = "18.04" ]; then
-        # 1. Install ripgrep and bat from github releases
-        # 3. update gcc to one compatible with c++17
-        # 4. install gtest
-        # --------------------
-        # 1. Install ripgrep
-        # -------------------
-        cd / &&
-            wget https://github.com/BurntSushi/ripgrep/releases/download/13.0.0/ripgrep_13.0.0_amd64.deb &&
-            wget https://github.com/sharkdp/bat/releases/download/v0.22.1/bat-musl_0.22.1_amd64.deb &&
-            dpkg -i *.deb &&
-            rm *deb
-        # --------------------
-        # 3. Install gcc compatible with c++17
-        # -------------------
+
+    # ----------------------
+    # Install latest clang
+    # ----------------------
+    if [ $DISTRIB_RELEASE != "24.04" ]; then
+        bash -c "$(wget -O - https://apt.llvm.org/llvm.sh)" -- all
+        clang_version=$(dpkg -l | grep '\<clang\>-[0-9]\+' | awk '{print $2}' | sed -e 's/clang-//')
         DEBIAN_FRONTEND=noninteractive apt-get install \
             -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \
-            gcc-8 g++-8
+            liblldb-$clang_version-dev \
+            python3-clang-$clang_version
 
-        update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-7 700 \
-            --slave /usr/bin/g++ g++ /usr/bin/g++-7
-        update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-8 800 \
-            --slave /usr/bin/g++ g++ /usr/bin/g++-8
+        # ---------------------------------------------
+        # --- Install Open MP compatible with clang
+        # ---------------------------------------------
+        DEBIAN_FRONTEND=noninteractive apt-get install \
+            -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \
+            "libomp-$clang_version-dev"
 
-        # --------------------
-        # 4. Install Gtest
-        # -------------------
-        mkdir -p /usr/src/gtest/build && cd /usr/src/gtest/build &&
-            cmake .. -DCMAKE_INSTALL_PREFIX=/usr && make -j$(nproc) &&
-            make install &&
-            cd / &&
-            rm -rf /usr/src/gtest/build
-
-        # --- Install pinocchio
-        # echo "deb [arch=amd64] \
-        #     http://robotpkg.openrobots.org/packages/debian/pub \
-        # $(lsb_release 2>/dev/null -cs) robotpkg" |
-        #     tee /etc/apt/sources.list.d/robotpkg.list
-        # curl http://robotpkg.openrobots.org/packages/debian/robotpkg.key |
-        #     apt-key add -
-        # apt-get update
-        # DEBIAN_FRONTEND=noninteractive apt-get install \
-        #     -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \
-        #     robotpkg-py36-pinocchio
-
-        # --------------------
-        # Install latest clang
-        # -------------------
-        dcn=$(lsb_release 2>/dev/null -sc)
-        echo \
-            "deb http://apt.llvm.org/$dcn/ llvm-toolchain-$dcn main" \
-            >>/etc/apt/sources.list &&
-            wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key |
-            apt-key add - &&
-            echo -ne '\n' | add-apt-repository ppa:ubuntu-toolchain-r/test &&
-            apt-get update &&
-            DEBIAN_FRONTEND=noninteractive apt-get install \
-                -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \
-                clang-format \
-                clang-tidy \
-                clang \
-                clangd \
-                libc++-dev \
-                libc++1 \
-                libc++abi-dev \
-                libc++abi1 \
-                libclang-dev \
-                libclang1 \
-                libllvm-ocaml-dev \
-                lld \
-                llvm-dev \
-                llvm-runtime \
-                llvm
-
-        wget https://github.com/sharkdp/fd/releases/download/v8.7.0/fd-musl_8.7.0_amd64.deb
-        dpkg -i fd-musl_8.7.0_amd64.deb && rm fd-musl_8.7.0_amd64.deb
-        pip3 install --no-cache-dir wheel
-        pip3 install --no-cache-dir numpy
-
-        # ----------------------
-        # Install nodejs
-        # ----------------------
-        mkdir /opt/nvm
-        export NVM_DIR=/opt/nvm
-        cd /opt/nvm
-        wget https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh
-        bash install.sh
-        source nvm.sh
-        nvm install 22
-        echo 'source /opt/nvm/nvm.sh' >>/etc/bash.bashrc
     else
-        # ubuntu 20.04 and 22.04 and 24.04
 
-        if [ $DISTRIB_RELEASE != "24.04" ]; then
-            # ----------------------
-            # Install latest clang
-            # ----------------------
-
-            bash -c "$(wget -O - https://apt.llvm.org/llvm.sh)" -- all
-            clang_version=$(dpkg -l | grep '\<clang\>-[0-9]\+' | awk '{print $2}' | sed -e 's/clang-//')
-            DEBIAN_FRONTEND=noninteractive apt-get install \
-                -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \
-                liblldb-$clang_version-dev \
-                python3-clang-$clang_version
-
-            # ---------------------------------------------
-            # --- Install Open MP compatible with clang
-            # ---------------------------------------------
-            DEBIAN_FRONTEND=noninteractive apt-get install \
-                -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \
-                "libomp-$clang_version-dev"
-
-        else
-
-            clang_version=19
-            DEBIAN_FRONTEND=noninteractive apt-get install \
-                -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \
-                clang-$clang_version \
-                clang-format-$clang_version \
-                clang-tidy-$clang_version \
-                clang-tools-$clang_version \
-                clangd-$clang_version \
-                libclang-$clang_version-dev \
-                libclang-common-$clang_version-dev:amd64 \
-                libclang-cpp$clang_version \
-                libclang-cpp$clang_version-dev \
-                libclang-rt-$clang_version-dev:amd64 \
-                libclang1-$clang_version \
-                libomp-$clang_version-dev \
-                lld-$clang_version \
-                llvm-$clang_version \
-                python3-clang-$clang_version
-
-        fi
-        echo "export PATH=/usr/lib/llvm-$clang_version/bin:$PATH" >>/etc/bash.bashrc
-
-        # ---------------------------------------------
-        # ----    Install nice stuff  ----------------
-        # ---------------------------------------------
-
+        clang_version=19
         DEBIAN_FRONTEND=noninteractive apt-get install \
             -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \
-            bat \
-            ripgrep \
-            librange-v3-dev \
-            fd-find \
-            libasan5
+            clang-$clang_version \
+            clang-format-$clang_version \
+            clang-tidy-$clang_version \
+            clang-tools-$clang_version \
+            clangd-$clang_version \
+            libclang-$clang_version-dev \
+            libclang-common-$clang_version-dev:amd64 \
+            libclang-cpp$clang_version \
+            libclang-cpp$clang_version-dev \
+            libclang-rt-$clang_version-dev:amd64 \
+            libclang1-$clang_version \
+            libomp-$clang_version-dev \
+            lld-$clang_version \
+            llvm-$clang_version \
+            python3-clang-$clang_version
 
-        # ---------------------------------------------
-        # --- Install pinocchio -----------------------
-        # ---------------------------------------------
-        if [ $DISTRIB_RELEASE = "20.04" ]; then
+    fi
+    echo "export PATH=/usr/lib/llvm-$clang_version/bin:$PATH" >>/etc/bash.bashrc
 
-            echo "deb [arch=amd64] \
-            http://robotpkg.openrobots.org/packages/debian/pub \
-        $(lsb_release 2>/dev/null -cs) robotpkg" |
-                tee /etc/apt/sources.list.d/robotpkg.list
-            curl http://robotpkg.openrobots.org/packages/debian/robotpkg.key |
-                apt-key add -
-            apt-get update
-            add-apt-repository -y ppa:ubuntu-toolchain-r/test
-            apt-get update
-            DEBIAN_FRONTEND=noninteractive apt-get install \
-                -y --no-install-recommends \
-                -o Dpkg::Options::="--force-confnew" \
-                robotpkg-py38-pinocchio \
-                gcc-11 g++-11
-
-            update-alternatives \
-                --install /usr/bin/gcc gcc /usr/bin/gcc-9 90 \
-                --slave /usr/bin/g++ g++ /usr/bin/g++-9 \
-                --slave /usr/bin/gcov gcov /usr/bin/gcov-9 \
-                --slave /usr/bin/gcc-ar gcc-ar /usr/bin/gcc-ar-9 \
-                --slave /usr/bin/gcc-ranlib gcc-ranlib /usr/bin/gcc-ranlib-9 &&
-                update-alternatives \
-                    --install /usr/bin/gcc gcc /usr/bin/gcc-11 110 \
-                    --slave /usr/bin/g++ g++ /usr/bin/g++-11 \
-                    --slave /usr/bin/gcov gcov /usr/bin/gcov-11 \
-                    --slave /usr/bin/gcc-ar gcc-ar /usr/bin/gcc-ar-11 \
-                    --slave /usr/bin/gcc-ranlib gcc-ranlib /usr/bin/gcc-ranlib-11
-
-            pip3 install --no-cache-dir numpy==1.20 pyrender
-            echo 'export PYTHONPATH=/opt/openrobots/lib/python3.8/site-packages:$PYTHONPATH # Adapt your desired python version here' >>/etc/bash.bashrc
-        else
-
-            echo "deb [arch=amd64] \
+    # ---------------------------------------------
+    # --- Install pinocchio -----------------------
+    # ---------------------------------------------
+    if [ $DISTRIB_RELEASE = "24.04" ]; then
+        echo "deb [arch=amd64] \
             http://robotpkg.openrobots.org/packages/debian/pub \
         jammy robotpkg" |
-                tee /etc/apt/sources.list.d/robotpkg.list
-            curl http://robotpkg.openrobots.org/packages/debian/robotpkg.key |
-                apt-key add -
-            apt-get update
-            DEBIAN_FRONTEND=noninteractive apt-get install \
-                -y --no-install-recommends \
-                -o Dpkg::Options::="--force-confnew" \
-                robotpkg-py310-pinocchio \
-                kotlin
-            if [ $DISTRIB_RELEASE != "24.04" ]; then
-                pip3 install --no-cache-dir numpy pyrender
-            fi
-
-            echo 'export PYTHONPATH=/opt/openrobots/lib/python3.10/site-packages:$PYTHONPATH # Adapt your desired python version here' >>/etc/bash.bashrc
+            tee /etc/apt/sources.list.d/robotpkg.list
+        curl http://robotpkg.openrobots.org/packages/debian/robotpkg.key |
+            apt-key add -
+        apt-get update
+        DEBIAN_FRONTEND=noninteractive apt-get install \
+            -y --no-install-recommends \
+            -o Dpkg::Options::="--force-confnew" \
+            robotpkg-py310-pinocchio \
+            kotlin
+        if [ $DISTRIB_RELEASE != "24.04" ]; then
+            pip3 install --no-cache-dir numpy pyrender
         fi
 
+        echo 'export PYTHONPATH=/opt/openrobots/lib/python3.10/site-packages:$PYTHONPATH # Adapt your desired python version here' >>/etc/bash.bashrc
         echo 'export PATH=/opt/openrobots/bin:$PATH' >>/etc/bash.bashrc
         echo 'export PKG_CONFIG_PATH=/opt/openrobots/lib/pkgconfig:$PKG_CONFIG_PATH' >>/etc/bash.bashrc
         echo 'export LD_LIBRARY_PATH=/opt/openrobots/lib:$LD_LIBRARY_PATH' >>/etc/bash.bashrc
         echo 'export CMAKE_PREFIX_PATH=/opt/openrobots:$CMAKE_PREFIX_PATH' >>/etc/bash.bashrc
-
-        # ----------------------
-        # Install nodejs
-        # ----------------------
-        mkdir /opt/nvm
-        export NVM_DIR=/opt/nvm
-        cd /opt/nvm
-        wget https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh
-        bash install.sh
-        source nvm.sh
-        nvm install 22
-        echo 'source /opt/nvm/nvm.sh' >>/etc/bash.bashrc
-        npm install -g --save-dev --save-exact htmlhint prettier fixjson
-
     fi
+
+    # ----------------------
+    # Install nodejs
+    # ----------------------
+    mkdir /opt/nvm
+    export NVM_DIR=/opt/nvm
+    cd /opt/nvm
+    wget https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh
+    bash install.sh
+    source nvm.sh
+    nvm install 22
+    echo 'source /opt/nvm/nvm.sh' >>/etc/bash.bashrc
+    npm install -g --save-dev --save-exact htmlhint prettier fixjson
 
     if [ $DISTRIB_RELEASE != "24.04" ]; then
         pip3 install --no-cache-dir \
@@ -450,11 +318,16 @@ main() {
 
     fi
 
+    # ----------------------
+    # Configure git
+    # ----------------------
     cd /
     git config --global merge.tool vimdiff
     git config --global merge.conflictstyle diff3
 
+    # ----------------------
     # --- Allow to install firefox
+    # ----------------------
 
     echo -ne '\n' | add-apt-repository ppa:mozillateam/ppa
     echo '
@@ -466,7 +339,9 @@ main() {
     echo 'Unattended-Upgrade::Allowed-Origins:: "LP-PPA-mozillateam:${distro_codename}";' |
         tee /etc/apt/apt.conf.d/51unattended-upgrades-firefox
 
+    # ----------------------
     # --- Install ifopt
+    # ----------------------
     git clone https://github.com/ethz-adrl/ifopt.git /ifopt
     cd /ifopt
     mkdir build
@@ -487,10 +362,9 @@ main() {
     # install /mosek/9.3/tools/platform/linux64x86/h/* /usr/include/
     # cd /
     # rm -rf /mosek
-
-    if [ $DISTRIB_RELEASE != "24.04" ]; then
-        pip3 install --no-cache-dir Mosek
-    fi
+    # if [ $DISTRIB_RELEASE != "24.04" ]; then
+    #     pip3 install --no-cache-dir Mosek
+    # fi
 
     # --- Install osqp
     # cd /
@@ -502,7 +376,9 @@ main() {
     # cd /
     # rm -rf /osqp
 
+    # --------------------------
     # --- install just in time lua compiler
+    # --------------------------
     cd /
     git clone https://luajit.org/git/luajit.git
     cd luajit
@@ -510,7 +386,9 @@ main() {
     cd /
     rm -rf /luajit
 
+    # --------------------------
     # --- install ruckig
+    # --------------------------
     cd /
     git clone https://github.com/pantor/ruckig.git
     cd ruckig
@@ -521,7 +399,9 @@ main() {
     cd /
     rm -rf ruckig
 
+    # --------------------------
     # --- Install tidy to format xml files
+    # --------------------------
     apt-get update &&
         DEBIAN_FRONTEND=noninteractive apt-get install \
             -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \
@@ -529,7 +409,9 @@ main() {
             cscope \
             universal-ctags
 
+    # --------------------------
     # --- Install rst formatter and linter
+    # --------------------------
 
     if [[ ${DISTRIB_RELEASE%%.*} -ge 24 ]]; then
         pip3 install --no-cache-dir --user --break-system-packages rstcheck[sphinx] rstfmt
@@ -537,7 +419,9 @@ main() {
         pip3 install --no-cache-dir rstcheck[sphinx] rstfmt
     fi
 
+    # --------------------------
     # --- Install pygments  generic syntax highlighter
+    # --------------------------
 
     if [[ ${DISTRIB_RELEASE%%.*} -ge 24 ]]; then
         pip3 install --no-cache-dir --user --break-system-packages pygments
@@ -545,7 +429,9 @@ main() {
         pip3 install --no-cache-dir pygments
     fi
 
+    # --------------------------
     # --- Install yamllint to lint yaml files
+    # --------------------------
 
     if [[ ${DISTRIB_RELEASE%%.*} -ge 24 ]]; then
         pip3 install --no-cache-dir --user --break-system-packages yamllint
@@ -553,6 +439,7 @@ main() {
         pip3 install --no-cache-dir yamllint
     fi
 
+    # --------------------------
     # --- Install glogal tag finder
     cd /
     wget https://ftp.gnu.org/pub/gnu/global/global-6.6.13.tar.gz
@@ -570,7 +457,7 @@ main() {
     apt-get clean
     rm -rf /var/lib/apt/lists/*
 
-    pip3 install --no-cache-dir setuptools jira
+    pip3 install --break-system-packages --no-cache-dir setuptools jira
 }
 
 main

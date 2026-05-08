@@ -96,10 +96,15 @@ main() {
 
     DISTRIB_RELEASE=$(lsb_release -sr 2>/dev/null)
 
+    if [[ ${DISTRIB_RELEASE%%.*} -ge 24 ]]; then
+        DEBIAN_FRONTEND=noninteractive apt-get install \
+            -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \
+            libkdl-parser-dev lsb-core
+    fi
     # --------------------
     # Install netcat
     # -------------------
-    if [ $DISTRIB_RELEASE = "24.04" ]; then
+    if [[ ${DISTRIB_RELEASE%%.*} -ge 24 ]]; then
         DEBIAN_FRONTEND=noninteractive apt-get install \
             -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \
             netcat-openbsd \
@@ -113,7 +118,7 @@ main() {
     # --------------------
     # Install latest vim
     # -------------------
-    if [ $DISTRIB_RELEASE = "24.04" ]; then
+    if [[ ${DISTRIB_RELEASE%%.*} -ge 24 ]]; then
         DEBIAN_FRONTEND=noninteractive apt-get install \
             -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \
             vim-gtk3
@@ -167,7 +172,7 @@ main() {
     # -----------------------------
     # Install latest cmake
     # -----------------------------
-    if [ $DISTRIB_RELEASE != "24.04" ]; then
+    if [[ ${DISTRIB_RELEASE%%.*} -ge 24 ]]; then
         cd /
         if ! dpkg --verify cmake 2>/dev/null; then
             apt remove --purge --auto-remove -y cmake
@@ -204,7 +209,7 @@ main() {
 
     chmod +x /usr/bin/shfmt
 
-    if [ $DISTRIB_RELEASE = "20.04" ]; then
+    if [[ ${DISTRIB_RELEASE%%.*} -ge 24 ]]; then
         DEBIAN_FRONTEND=noninteractive apt-get install \
             -y --no-install-recommends -o \
             Dpkg::Options::="--force-confnew" python3.8-venv
@@ -213,23 +218,7 @@ main() {
     # ----------------------
     # Install latest clang
     # ----------------------
-    if [ $DISTRIB_RELEASE != "24.04" ]; then
-        bash -c "$(wget -O - https://apt.llvm.org/llvm.sh)" -- all
-        clang_version=$(dpkg -l | grep '\<clang\>-[0-9]\+' | awk '{print $2}' | sed -e 's/clang-//')
-        DEBIAN_FRONTEND=noninteractive apt-get install \
-            -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \
-            liblldb-$clang_version-dev \
-            python3-clang-$clang_version
-
-        # ---------------------------------------------
-        # --- Install Open MP compatible with clang
-        # ---------------------------------------------
-        DEBIAN_FRONTEND=noninteractive apt-get install \
-            -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \
-            "libomp-$clang_version-dev"
-
-    else
-
+    if [[ ${DISTRIB_RELEASE%%.*} -ge 24 ]]; then
         clang_version=19
         DEBIAN_FRONTEND=noninteractive apt-get install \
             -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \
@@ -248,6 +237,22 @@ main() {
             lld-$clang_version \
             llvm-$clang_version \
             python3-clang-$clang_version
+
+    else
+
+        bash -c "$(wget -O - https://apt.llvm.org/llvm.sh)" -- all
+        clang_version=$(dpkg -l | grep '\<clang\>-[0-9]\+' | awk '{print $2}' | sed -e 's/clang-//')
+        DEBIAN_FRONTEND=noninteractive apt-get install \
+            -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \
+            liblldb-$clang_version-dev \
+            python3-clang-$clang_version
+
+        # ---------------------------------------------
+        # --- Install Open MP compatible with clang
+        # ---------------------------------------------
+        DEBIAN_FRONTEND=noninteractive apt-get install \
+            -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \
+            "libomp-$clang_version-dev"
 
     fi
     echo "export PATH=/usr/lib/llvm-$clang_version/bin:$PATH" >>/etc/bash.bashrc

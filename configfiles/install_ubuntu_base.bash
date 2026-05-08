@@ -179,23 +179,21 @@ main() {
     # -----------------------------
     # Install latest cmake
     # -----------------------------
-    if [[ ${DISTRIB_RELEASE%%.*} -ge 24 ]]; then
-        cd /
-        if ! dpkg --verify cmake 2>/dev/null; then
-            apt remove --purge --auto-remove -y cmake
-        fi
-        wget -O - \
-            https://apt.kitware.com/keys/kitware-archive-latest.asc 2>/dev/null |
-            gpg --dearmor - |
-            tee /etc/apt/trusted.gpg.d/kitware.gpg >/dev/null &&
-            echo -ne '\n' | apt-add-repository \
-                "deb https://apt.kitware.com/ubuntu/ $(lsb_release 2>/dev/null -cs) main" &&
-            apt-get update &&
-            DEBIAN_FRONTEND=noninteractive apt-get install \
-                -y --no-install-recommends -o \
-                Dpkg::Options::="--force-confnew" cmake \
-                cmake-curses-gui cmake-qt-gui
+    cd /
+    if ! dpkg --verify cmake 2>/dev/null; then
+        apt remove --purge --auto-remove -y cmake
     fi
+    wget -O - \
+        https://apt.kitware.com/keys/kitware-archive-latest.asc 2>/dev/null |
+        gpg --dearmor - |
+        tee /etc/apt/trusted.gpg.d/kitware.gpg >/dev/null &&
+        echo -ne '\n' | apt-add-repository \
+            "deb https://apt.kitware.com/ubuntu/ $(lsb_release 2>/dev/null -cs) main" &&
+        apt-get update &&
+        DEBIAN_FRONTEND=noninteractive apt-get install \
+            -y --no-install-recommends -o \
+            Dpkg::Options::="--force-confnew" cmake \
+            cmake-curses-gui cmake-qt-gui
 
     # -----------------
     # Install hadolint: dockerfile lineter

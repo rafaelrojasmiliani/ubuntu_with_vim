@@ -457,7 +457,11 @@ main() {
     apt-get clean
     rm -rf /var/lib/apt/lists/*
 
-    pip3 install --break-system-packages --no-cache-dir setuptools jira
+    if [[ ${DISTRIB_RELEASE%%.*} -ge 24 ]]; then
+        pip3 install --no-cache-dir --user --break-system-packages setuptools jira
+    else
+        pip3 install --no-cache-dir setuptools jira
+    fi
 }
 
 main

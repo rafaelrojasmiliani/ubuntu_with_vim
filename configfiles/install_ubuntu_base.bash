@@ -216,7 +216,7 @@ main() {
 
     chmod +x /usr/bin/shfmt
 
-    if [[ ${DISTRIB_RELEASE%%.*} -ge 24 ]]; then
+    if [[ ${DISTRIB_RELEASE%%.*} -lt 24 ]]; then
         DEBIAN_FRONTEND=noninteractive apt-get install \
             -y --no-install-recommends -o \
             Dpkg::Options::="--force-confnew" python3.8-venv

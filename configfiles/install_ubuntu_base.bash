@@ -226,12 +226,33 @@ main() {
     # Install latest clang
     # ----------------------
 
-    bash -c "$(wget -O - https://apt.llvm.org/llvm.sh)" -- all
-    clang_version=$(dpkg -l | grep '\<clang\>-[0-9]\+' | awk '{print $2}' | sed -e 's/clang-//')
-    DEBIAN_FRONTEND=noninteractive apt-get install \
-        -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \
-        liblldb-$clang_version-dev \
-        python3-clang-$clang_version
+    if [[ ${DISTRIB_RELEASE%%.*} -ge 26 ]]; then
+        clang_version=22
+        DEBIAN_FRONTEND=noninteractive apt-get install \
+            -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \
+            clang-$clang_version \
+            clang-format-$clang_version \
+            clang-tidy-$clang_version \
+            clang-tools-$clang_version \
+            clangd-$clang_version \
+            libclang-$clang_version-dev \
+            libclang-common-$clang_version-dev:amd64 \
+            libclang-cpp$clang_version \
+            libclang-cpp$clang_version-dev \
+            libclang-rt-$clang_version-dev:amd64 \
+            libclang1-$clang_version \
+            libomp-$clang_version-dev \
+            lld-$clang_version \
+            llvm-$clang_version \
+            python3-clang-$clang_version
+    else
+        bash -c "$(wget -O - https://apt.llvm.org/llvm.sh)" -- all
+        clang_version=$(dpkg -l | grep '\<clang\>-[0-9]\+' | awk '{print $2}' | sed -e 's/clang-//')
+        DEBIAN_FRONTEND=noninteractive apt-get install \
+            -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \
+            liblldb-$clang_version-dev \
+            python3-clang-$clang_version
+    fi
 
     # ---------------------------------------------
     # --- Install Open MP compatible with clang

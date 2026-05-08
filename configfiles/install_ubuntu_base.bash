@@ -49,7 +49,6 @@ main() {
             libgsl-dev \
             libgtest-dev \
             libjpeg-dev \
-            libkdl-parser-dev \
             liblapack-dev \
             liblapack3 \
             libmpc-dev \
@@ -65,7 +64,6 @@ main() {
             libxml2-utils \
             locales \
             lsb-base \
-            lsb-core \
             mono-complete \
             net-tools \
             openjdk-21-jdk \

@@ -279,7 +279,7 @@ main() {
             -o Dpkg::Options::="--force-confnew" \
             robotpkg-py310-pinocchio \
             kotlin
-        if [ $DISTRIB_RELEASE != "24.04" ]; then
+        if [[ ${DISTRIB_RELEASE%%.*} -lt 24 ]]; then
             pip3 install --no-cache-dir numpy pyrender
         fi
 
@@ -303,7 +303,7 @@ main() {
     echo 'source /opt/nvm/nvm.sh' >>/etc/bash.bashrc
     npm install -g --save-dev --save-exact htmlhint prettier fixjson
 
-    if [ $DISTRIB_RELEASE != "24.04" ]; then
+    if [[ ${DISTRIB_RELEASE%%.*} -lt 24 ]]; then
         pip3 install --no-cache-dir \
             autopep8 \
             cmake-format \

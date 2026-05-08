@@ -69,6 +69,25 @@ jobs:
       DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
       DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
 
+  # ------------------ #
+  # ------------------ #
+  # Build ubuntu 26.04 #
+  # ------------------ #
+  # ------------------ #
+  base_ubuntu_2604:
+    uses: ./.github/workflows/build_image.yml
+    with:
+      # based image data
+      image_name: "rafa606/ubuntu:26.04"
+      file_name: "base.dockerfile"
+      base_image: "ubuntu:26.04"
+      file_triggers: '["configfiles/install_ubuntu_base.bash", "configfiles/install_vim_plugins_base.bash"]'
+      # Final image data
+      final_image_name: "rafa606/cpp-vim:26.04"
+      ycm_file: "configfiles/ycm_extra_conf.py"
+    secrets:
+      DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+      DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
   # ------------------------------------------------------------- #
   # ------------------------------------------------------------- #
   # --------              Build ROS Images              --------- #

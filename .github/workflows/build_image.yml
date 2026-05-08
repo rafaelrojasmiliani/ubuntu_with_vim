@@ -51,7 +51,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@master
         with:
           fetch-depth: "0"
 
@@ -105,13 +105,13 @@ jobs:
         if: |
           steps.modify_date.outputs.image < steps.modify_date.outputs.dockerfile ||
           steps.trigger_files.outputs.should_rebuild == 'true'
-        uses: docker/setup-buildx-action@v2
+        uses: docker/setup-buildx-action@master
 
       - name: Build and push image
         if: |
           steps.modify_date.outputs.image < steps.modify_date.outputs.dockerfile ||
           steps.trigger_files.outputs.should_rebuild == 'true'
-        uses: docker/build-push-action@v3
+        uses: docker/build-push-action@master
         with:
           tags: ${{ inputs.image_name }}
           file: ${{ inputs.file_name }}
@@ -138,7 +138,7 @@ jobs:
     continue-on-error: true
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@master
         with:
           fetch-depth: "0"
 
@@ -182,7 +182,7 @@ jobs:
           steps.modify_date.outputs.image < steps.modify_date.outputs.cmake_kits ||
           steps.modify_date.outputs.image < steps.modify_date.outputs.vim_plugins ||
           steps.modify_date.outputs.image < steps.modify_date.outputs.base_image
-        uses: docker/setup-buildx-action@v2
+        uses: docker/setup-buildx-action@master
 
       - name: Build and push image
         if: |
@@ -194,7 +194,7 @@ jobs:
           steps.modify_date.outputs.image < steps.modify_date.outputs.cmake_kits ||
           steps.modify_date.outputs.image < steps.modify_date.outputs.vim_plugins ||
           steps.modify_date.outputs.image < steps.modify_date.outputs.base_image
-        uses: docker/build-push-action@v3
+        uses: docker/build-push-action@master
         with:
           tags: ${{ inputs.final_image_name }}
           file: cpp_vim.dockerfile

@@ -453,14 +453,14 @@ main() {
     # --------------------------
     # --- Install glogal tag finder
     cd /
-    wget https://ftp.gnu.org/pub/gnu/global/global-6.6.13.tar.gz
-    tar xzf global-6.6.13.tar.gz
-    cd global-6.6.13
+    wget https://ftp.gnu.org/pub/gnu/global/global-6.6.14.tar.gz
+    tar xzf global-6.6.14.tar.gz
+    cd global-6.6.14
     ./configure --prefix=/usr
     make -j$(nproc)
     make install
     cd /
-    rm -rf global-6.6.13
+    rm -rf global-6.6.14
 
     rm -rf /usr/share/man/*
     rm -rf /usr/share/doc/*

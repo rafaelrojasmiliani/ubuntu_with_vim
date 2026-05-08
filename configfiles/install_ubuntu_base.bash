@@ -94,7 +94,7 @@ main() {
 
     DISTRIB_RELEASE=$(lsb_release -sr 2>/dev/null)
 
-    if [[ ${DISTRIB_RELEASE%%.*} -le 24 ]]; then
+    if [[ ${DISTRIB_RELEASE%%.*} -lt 24 ]]; then
         DEBIAN_FRONTEND=noninteractive apt-get install \
             -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \
             libkdl-parser-dev lsb-core

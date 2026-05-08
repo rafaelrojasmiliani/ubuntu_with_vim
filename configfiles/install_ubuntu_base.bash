@@ -39,7 +39,6 @@ main() {
             jq \
             jsonlint \
             less \
-            libasan5 \
             libatlas3-base \
             libboost-math-dev \
             libczmq-dev \
@@ -93,6 +92,16 @@ main() {
             zenity
 
     DISTRIB_RELEASE=$(lsb_release -sr 2>/dev/null)
+
+    if [[ ${DISTRIB_RELEASE%%.*} -le 24 ]]; then
+        DEBIAN_FRONTEND=noninteractive apt-get install \
+            -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \
+            libasan5
+    else
+        DEBIAN_FRONTEND=noninteractive apt-get install \
+            -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \
+            libasan6
+    fi
 
     if [[ ${DISTRIB_RELEASE%%.*} -lt 24 ]]; then
         DEBIAN_FRONTEND=noninteractive apt-get install \

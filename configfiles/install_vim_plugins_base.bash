@@ -73,7 +73,7 @@ main() {
 
     # --------------  youcompleteme
     cd /etc/vim/bundle/YouCompleteMe
-    if [[ ${DISTRIB_RELEASE%%.*} -gt 24 ]]; then
+    if [[ ${DISTRIB_RELEASE%%.*} -lt 24 ]]; then
         git checkout legacy-vim-8.2
     fi
     git submodule update --init --recursive &&

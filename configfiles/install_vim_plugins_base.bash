@@ -73,7 +73,7 @@ main() {
 
     # --------------  youcompleteme
     cd /etc/vim/bundle/YouCompleteMe
-    if [ $DISTRIB_RELEASE -lt "24.04" ]; then
+    if [[ ${DISTRIB_RELEASE%%.*} -gt 24 ]]; then
         git checkout legacy-vim-8.2
     fi
     git submodule update --init --recursive &&
@@ -98,7 +98,7 @@ main() {
     cd lsp-examples
     python3 ./install.py --enable-bash --enable-cmake --enable-docker
 
-    if [ $DISTRIB_RELEASE -ge "24.04" ]; then
+    if [[ ${DISTRIB_RELEASE%%.*} -ge 24 ]]; then
         pip3 install --no-cache-dir --break-system-packages fortls
     else
         pip3 install --no-cache-dir fortls

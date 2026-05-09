@@ -67,20 +67,13 @@ main() {
 
     # --------------  vimspector
     source /etc/lsb-release
-    if [ $DISTRIB_RELEASE = "18.04" ]; then
-        cd /etc/vim/bundle/vimspector &&
-            python3 install_gadget.py \
-                --enable-c --enable-cpp --sudo
-        #rm -rf /etc/vim/bundle/YouCompleteMe && git clone https://github.com/ycm-core/YouCompleteMe.git /etc/vim/bundle/YouCompleteMe
-    else
-        cd /etc/vim/bundle/vimspector &&
-            python3 install_gadget.py \
-                --enable-c --enable-cpp --enable-python --sudo
-    fi
+    cd /etc/vim/bundle/vimspector &&
+        python3 install_gadget.py \
+            --enable-c --enable-cpp --enable-python --sudo
 
     # --------------  youcompleteme
     cd /etc/vim/bundle/YouCompleteMe
-    if [ $DISTRIB_RELEASE != "24.04" ]; then
+    if [ $DISTRIB_RELEASE -lt "24.04" ]; then
         git checkout legacy-vim-8.2
     fi
     git submodule update --init --recursive &&
@@ -105,7 +98,7 @@ main() {
     cd lsp-examples
     python3 ./install.py --enable-bash --enable-cmake --enable-docker
 
-    if [ $DISTRIB_RELEASE = "24.04" ]; then
+    if [ $DISTRIB_RELEASE -ge "24.04" ]; then
         pip3 install --no-cache-dir --break-system-packages fortls
     else
         pip3 install --no-cache-dir fortls

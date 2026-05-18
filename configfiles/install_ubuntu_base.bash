@@ -93,6 +93,36 @@ main() {
 
     DISTRIB_RELEASE=$(lsb_release -sr 2>/dev/null)
 
+    # --------------------
+    # install latest cmake
+    # -------------------
+
+    test -f /usr/share/doc/kitware-archive-keyring/copyright ||
+        wget -O - https://apt.kitware.com/keys/kitware-archive-latest.asc 2>/dev/null | gpg --dearmor - | sudo tee /usr/share/keyrings/kitware-archive-keyring.gpg >/dev/null
+
+    if [[ ${DISTRIB_RELEASE%%.*} -eq 24 ]]; then
+        echo 'deb [signed-by=/usr/share/keyrings/kitware-archive-keyring.gpg] https://apt.kitware.com/ubuntu/ noble main' | sudo tee /etc/apt/sources.list.d/kitware.list >/dev/null
+    fi
+    if [[ ${DISTRIB_RELEASE%%.*} -eq 22 ]]; then
+        echo 'deb [signed-by=/usr/share/keyrings/kitware-archive-keyring.gpg] https://apt.kitware.com/ubuntu/ jammy main' | sudo tee /etc/apt/sources.list.d/kitware.list >/dev/null
+    fi
+    if [[ ${DISTRIB_RELEASE%%.*} -eq 20 ]]; then
+        echo 'deb [signed-by=/usr/share/keyrings/kitware-archive-keyring.gpg] https://apt.kitware.com/ubuntu/ focal main' | sudo tee /etc/apt/sources.list.d/kitware.list >/dev/null
+    fi
+
+    apt-get update
+
+    DEBIAN_FRONTEND=noninteractive apt-get install
+    -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \
+        ccache \
+        cmake \
+        cmake-curses-gui \
+        cmake-qt-gui
+
+    test -f /usr/share/doc/kitware-archive-keyring/copyright ||
+        sudo rm /usr/share/keyrings/kitware-archive-keyring.gpg
+
+    apt-get update
     if [[ ${DISTRIB_RELEASE%%.*} -le 24 ]]; then
         DEBIAN_FRONTEND=noninteractive apt-get install \
             -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \

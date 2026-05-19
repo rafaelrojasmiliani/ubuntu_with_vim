@@ -112,8 +112,8 @@ main() {
 
     apt-get update
 
-    DEBIAN_FRONTEND=noninteractive apt-get install
-    -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \
+    DEBIAN_FRONTEND=noninteractive apt-get install \
+        -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \
         ccache \
         cmake \
         cmake-curses-gui \

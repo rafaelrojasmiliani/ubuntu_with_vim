@@ -38,6 +38,7 @@ main() {
             iputils-ping \
             jq \
             jsonlint \
+            kotlin \
             less \
             libatlas3-base \
             libboost-math-dev \
@@ -305,8 +306,7 @@ main() {
         DEBIAN_FRONTEND=noninteractive apt-get install \
             -y --no-install-recommends \
             -o Dpkg::Options::="--force-confnew" \
-            robotpkg-py310-pinocchio \
-            kotlin
+            robotpkg-py310-pinocchio
         if [[ ${DISTRIB_RELEASE%%.*} -lt 24 ]]; then
             pip3 install --no-cache-dir numpy pyrender
         fi

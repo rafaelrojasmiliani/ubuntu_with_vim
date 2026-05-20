@@ -323,9 +323,6 @@ main() {
             -y --no-install-recommends \
             -o Dpkg::Options::="--force-confnew" \
             robotpkg-py310-pinocchio
-        if [[ ${DISTRIB_RELEASE%%.*} -lt 24 ]]; then
-            pip3 install --no-cache-dir numpy pyrender
-        fi
 
         echo 'export PYTHONPATH=/opt/openrobots/lib/python3.10/site-packages:$PYTHONPATH # Adapt your desired python version here' >>/etc/bash.bashrc
         echo 'export PATH=/opt/openrobots/bin:$PATH' >>/etc/bash.bashrc

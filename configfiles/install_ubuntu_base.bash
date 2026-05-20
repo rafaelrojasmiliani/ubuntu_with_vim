@@ -38,7 +38,6 @@ main() {
             iputils-ping \
             jq \
             jsonlint \
-            kotlin \
             less \
             libatlas3-base \
             libboost-math-dev \
@@ -140,6 +139,14 @@ main() {
             libasan6
     fi
 
+    # --------------------
+    # Install kotlin
+    # -------------------
+    if [[ ${DISTRIB_RELEASE%%.*} -ge 22 ]]; then
+        DEBIAN_FRONTEND=noninteractive apt-get install \
+            -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \
+            kotlin
+    fi
     # --------------------
     # Install oudated dependencies for older ubuntu versions
     # -------------------

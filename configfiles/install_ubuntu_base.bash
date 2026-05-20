@@ -125,6 +125,9 @@ main() {
     test -f /usr/share/doc/kitware-archive-keyring/copyright ||
         sudo rm /usr/share/keyrings/kitware-archive-keyring.gpg
 
+    if [[ ${DISTRIB_RELEASE%%.*} -le 24 ]]; then
+        rm /etc/apt/sources.list.d/kitware.list
+    fi
     apt-get update
     # --------------------
     # Install libasan

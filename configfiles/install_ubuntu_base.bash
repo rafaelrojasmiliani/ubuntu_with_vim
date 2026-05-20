@@ -43,8 +43,11 @@ main() {
             libatlas3-base \
             libboost-math-dev \
             libczmq-dev \
+            libegl1-mesa-dev \
             libeigen3-dev \
             libfmt-dev \
+            libgl1-mesa-dev \
+            libglvnd-dev \
             libgmp3-dev \
             libgsl-dev \
             libgtest-dev \

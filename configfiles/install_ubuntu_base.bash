@@ -127,6 +127,9 @@ main() {
         sudo rm /usr/share/keyrings/kitware-archive-keyring.gpg
 
     apt-get update
+    # --------------------
+    # Install libasan
+    # -------------------
     if [[ ${DISTRIB_RELEASE%%.*} -le 24 ]]; then
         DEBIAN_FRONTEND=noninteractive apt-get install \
             -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \
@@ -137,6 +140,9 @@ main() {
             libasan6
     fi
 
+    # --------------------
+    # Install oudated dependencies for older ubuntu versions
+    # -------------------
     if [[ ${DISTRIB_RELEASE%%.*} -lt 24 ]]; then
         DEBIAN_FRONTEND=noninteractive apt-get install \
             -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \
@@ -298,14 +304,14 @@ main() {
     # ---------------------------------------------
     # --- Install pinocchio -----------------------
     # ---------------------------------------------
-    if [ $DISTRIB_RELEASE = "24.04" ]; then
-        echo "deb [arch=amd64] \
+    echo "deb [arch=amd64] \
             http://robotpkg.openrobots.org/packages/debian/pub \
         jammy robotpkg" |
-            tee /etc/apt/sources.list.d/robotpkg.list
-        curl http://robotpkg.openrobots.org/packages/debian/robotpkg.key |
-            apt-key add -
-        apt-get update
+        tee /etc/apt/sources.list.d/robotpkg.list
+    curl http://robotpkg.openrobots.org/packages/debian/robotpkg.key |
+        apt-key add -
+    apt-get update
+    if [ $DISTRIB_RELEASE = "24.04" ]; then
         DEBIAN_FRONTEND=noninteractive apt-get install \
             -y --no-install-recommends \
             -o Dpkg::Options::="--force-confnew" \

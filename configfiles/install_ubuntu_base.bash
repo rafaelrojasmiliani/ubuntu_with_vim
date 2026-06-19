@@ -123,7 +123,7 @@ main() {
         cmake-qt-gui
 
     test -f /usr/share/doc/kitware-archive-keyring/copyright ||
-        sudo rm /usr/share/keyrings/kitware-archive-keyring.gpg
+        rm /usr/share/keyrings/kitware-archive-keyring.gpg
 
     if [[ ${DISTRIB_RELEASE%%.*} -le 24 ]]; then
         rm /etc/apt/sources.list.d/kitware.list
@@ -299,7 +299,8 @@ main() {
         DEBIAN_FRONTEND=noninteractive apt-get install \
             -y --no-install-recommends -o Dpkg::Options::="--force-confnew" \
             liblldb-$clang_version-dev \
-            python3-clang-$clang_version
+            python3-clang-$clang_version \
+            libomp-$clang_version-dev
     fi
 
     # ---------------------------------------------

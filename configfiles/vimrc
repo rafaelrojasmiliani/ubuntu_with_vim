@@ -551,6 +551,7 @@ let g:ycm_language_server += [
   \   },
   \ ]
 
+
 " ============================================================================
 " Cursor Agent Management
 " ===========================================================================
@@ -754,6 +755,7 @@ let l:context = [
       \ l:c . ' - Focus on the functionality, API behavior, contract, workflow, or user-visible effect introduced by the change.',
       \ l:c . ' - Do not summarize the mechanical file edits, changed lines, renamed symbols, or internal state unless that is the actual behavior being changed.',
       \ l:c . ' - Prefer a functional-oriented message when the diff changes what the system does, what an API exposes, what a command supports, what data is accepted, or what output is produced.',
+      \ l:c . ' - Use the semantic diff first to infer functionality, API behavior, contracts, workflows, and intent.',
       \ l:c . ' - Use a procedural message when the diff mainly changes how the system performs a task: strategy, orchestration, sequencing, state transitions, retries, caching, synchronization, validation flow, or fallback behavior.',
       \ l:c . ' - For procedural changes, describe the strategy explicitly with phrases like "using", "by", "through", or "via" when that improves precision.',
       \ l:c . ' - For declarative changes, describe the resulting capability or contract, not the implementation steps.',
@@ -784,6 +786,11 @@ let l:context = [
   endif
 
   " This is the important part: add the actual staged diff.
+
+  call extend(l:context, s:difftastic_staged_diff_context(l:c))
+
+  call extend(l:context, s:ctags_diff_context(l:c))
+
   call extend(l:context, s:staged_diff_context(l:c))
 
   call extend(l:context, [
@@ -954,4 +961,1151 @@ function! s:place_cursor_for_commit_message() abort
   " Copilot should then suggest the rest of the subject after the prefix.
   let l:first = getline(1)
   call cursor(1, strlen(l:first) + 1)
+endfunction
+
+" ============================================================================
+" Difftastic integration
+" ============================================================================
+
+let g:fugitive_commit_include_difftastic =
+      \ get(g:, 'fugitive_commit_include_difftastic', 1)
+
+let g:fugitive_commit_difftastic_display =
+      \ get(g:, 'fugitive_commit_difftastic_display', 'json')
+      " Try 'inline' if JSON output is confusing.
+
+let g:fugitive_commit_difftastic_context =
+      \ get(g:, 'fugitive_commit_difftastic_context', 2)
+
+let g:fugitive_commit_difftastic_max_lines =
+      \ get(g:, 'fugitive_commit_difftastic_max_lines', 250)
+
+let g:fugitive_commit_difftastic_debug =
+      \ get(g:, 'fugitive_commit_difftastic_debug', 0)
+
+
+function! s:difftastic_debug(msg) abort
+  if get(g:, 'fugitive_commit_difftastic_debug', 0)
+    echom '[fugitive-difftastic] ' . a:msg
+  endif
+endfunction
+
+
+function! s:difftastic_comment_lines(lines, comment_char) abort
+  let l:out = []
+
+  for l:line in a:lines
+    if l:line ==# ''
+      call add(l:out, a:comment_char)
+    else
+      call add(l:out, a:comment_char . ' ' . l:line)
+    endif
+  endfor
+
+  return l:out
+endfunction
+
+
+function! s:difftastic_restore_env(old_env) abort
+  let $DFT_DISPLAY = get(a:old_env, 'display', '')
+  let $DFT_COLOR = get(a:old_env, 'color', '')
+  let $DFT_SYNTAX_HIGHLIGHT = get(a:old_env, 'syntax', '')
+  let $DFT_CONTEXT = get(a:old_env, 'context', '')
+  let $DFT_WIDTH = get(a:old_env, 'width', '')
+  let $DFT_UNSTABLE = get(a:old_env, 'unstable', '')
+endfunction
+
+function! s:difftastic_run_staged_diff() abort
+  call s:difftastic_debug('starting difftastic staged diff')
+
+  if !get(g:, 'fugitive_commit_include_difftastic', 1)
+    call s:difftastic_debug('disabled by g:fugitive_commit_include_difftastic')
+    return {'exit_status': -1, 'stdout': [], 'stderr': ['difftastic integration disabled']}
+  endif
+
+  call s:difftastic_debug('executable("difft") = ' . string(executable('difft')))
+
+  if !executable('difft')
+    return {'exit_status': -1, 'stdout': [], 'stderr': ['difft executable not found in PATH']}
+  endif
+
+  call s:difftastic_debug('exists("*FugitiveExecute") = ' . string(exists('*FugitiveExecute')))
+  call s:difftastic_debug('exists("*FugitiveGitDir") = ' . string(exists('*FugitiveGitDir')))
+
+  if !exists('*FugitiveExecute') || !exists('*FugitiveGitDir')
+    return {'exit_status': -1, 'stdout': [], 'stderr': ['FugitiveExecute or FugitiveGitDir unavailable']}
+  endif
+
+  let l:git_dir = FugitiveGitDir()
+  call s:difftastic_debug('FugitiveGitDir() = ' . string(l:git_dir))
+
+  if empty(l:git_dir)
+    return {'exit_status': -1, 'stdout': [], 'stderr': ['empty FugitiveGitDir()']}
+  endif
+
+  let l:old_env = {
+        \ 'display': $DFT_DISPLAY,
+        \ 'color': $DFT_COLOR,
+        \ 'syntax': $DFT_SYNTAX_HIGHLIGHT,
+        \ 'context': $DFT_CONTEXT,
+        \ 'width': $DFT_WIDTH,
+        \ 'unstable': $DFT_UNSTABLE,
+        \ }
+
+  let l:display = get(g:, 'fugitive_commit_difftastic_display', 'json')
+
+  let l:argv = [
+        \ '-c',
+        \ 'diff.external=difft',
+        \ 'diff',
+        \ '--cached',
+        \ ]
+
+  call s:difftastic_debug('DFT_DISPLAY = ' . string(l:display))
+  call s:difftastic_debug('argv = ' . string(l:argv))
+
+  try
+    let $DFT_DISPLAY = l:display
+    let $DFT_COLOR = 'never'
+    let $DFT_SYNTAX_HIGHLIGHT = 'off'
+    let $DFT_CONTEXT = string(get(g:, 'fugitive_commit_difftastic_context', 2))
+    let $DFT_WIDTH = '120'
+
+    " Required by difftastic for --display=json / DFT_DISPLAY=json.
+    if l:display ==# 'json'
+      let $DFT_UNSTABLE = 'yes'
+    endif
+
+    call s:difftastic_debug('DFT_UNSTABLE = ' . string($DFT_UNSTABLE))
+
+    let l:result = FugitiveExecute(l:argv, l:git_dir)
+  finally
+    call s:difftastic_restore_env(l:old_env)
+  endtry
+
+  call s:difftastic_debug('result type = ' . string(type(l:result)))
+
+  if type(l:result) != type({})
+    return {'exit_status': -1, 'stdout': [], 'stderr': ['FugitiveExecute returned non-dictionary result']}
+  endif
+
+  call s:difftastic_debug('exit_status = ' . string(get(l:result, 'exit_status', 'missing')))
+  call s:difftastic_debug('stdout lines = ' . string(len(get(l:result, 'stdout', []))))
+  call s:difftastic_debug('stderr lines = ' . string(len(get(l:result, 'stderr', []))))
+
+  if !empty(get(l:result, 'stderr', []))
+    call s:difftastic_debug('stderr[0] = ' . string(get(l:result.stderr, 0, '')))
+  endif
+
+  if !empty(get(l:result, 'stdout', []))
+    call s:difftastic_debug('stdout[0] = ' . string(get(l:result.stdout, 0, '')))
+  endif
+
+  return l:result
+endfunction
+
+
+function! s:difftastic_decode_json_debug(lines) abort
+  let l:files = []
+
+  call s:difftastic_debug('attempting JSON decode of ' . string(len(a:lines)) . ' stdout lines')
+
+  for l:line in a:lines
+    if empty(trim(l:line))
+      continue
+    endif
+
+    try
+      let l:decoded = json_decode(l:line)
+
+      if type(l:decoded) == type([])
+        call s:difftastic_debug('decoded JSON array with ' . string(len(l:decoded)) . ' files')
+        call extend(l:files, l:decoded)
+      elseif type(l:decoded) == type({})
+        call s:difftastic_debug('decoded JSON object for path = ' . string(get(l:decoded, 'path', '[no path]')))
+        call add(l:files, l:decoded)
+      else
+        call s:difftastic_debug('decoded JSON, unexpected type = ' . string(type(l:decoded)))
+      endif
+    catch
+      call s:difftastic_debug('JSON decode failed for line prefix = ' . string(strpart(l:line, 0, 120)))
+    endtry
+  endfor
+
+  call s:difftastic_debug('decoded file count = ' . string(len(l:files)))
+
+  return l:files
+endfunction
+
+function! s:difftastic_json_summary_lines(files) abort
+  let l:lines = []
+
+  let l:max_entries = get(g:, 'fugitive_commit_difftastic_max_entries_per_file', 80)
+
+  for l:file in a:files
+    let l:path = get(l:file, 'path', '[unknown path]')
+    let l:language = get(l:file, 'language', 'unknown')
+    let l:status = get(l:file, 'status', 'unknown')
+    let l:chunks = get(l:file, 'chunks', [])
+
+    call add(l:lines, 'File: ' . l:path . ' (' . l:language . ', ' . l:status . ')')
+    call add(l:lines, '- chunks: ' . string(len(l:chunks)))
+
+    let l:entry_count = 0
+    let l:chunk_index = 0
+
+    for l:chunk in l:chunks
+      let l:chunk_index += 1
+      call add(l:lines, '- chunk ' . string(l:chunk_index) . ':')
+
+      for l:entry in l:chunk
+        if l:entry_count >= l:max_entries
+          call add(l:lines, '  - [semantic entries truncated at ' . string(l:max_entries) . ']')
+          break
+        endif
+
+        let l:lhs = get(l:entry, 'lhs', {})
+        let l:rhs = get(l:entry, 'rhs', {})
+
+        let l:old_line = s:difftastic_side_line_number(l:lhs)
+        let l:new_line = s:difftastic_side_line_number(l:rhs)
+
+        let l:old_text = s:difftastic_side_changed_text(l:lhs)
+        let l:new_text = s:difftastic_side_changed_text(l:rhs)
+
+        if empty(l:old_text) && empty(l:new_text)
+          continue
+        endif
+
+        if !empty(l:old_text)
+          call add(l:lines, '  - removed @ old line ' . l:old_line . ': ' . l:old_text)
+        endif
+
+        if !empty(l:new_text)
+          call add(l:lines, '  - added   @ new line ' . l:new_line . ': ' . l:new_text)
+        endif
+
+        let l:entry_count += 1
+      endfor
+    endfor
+
+    call add(l:lines, '')
+  endfor
+
+  return l:lines
+endfunction
+function! s:difftastic_side_line_number(side) abort
+  if type(a:side) != type({})
+    return '?'
+  endif
+
+  if !has_key(a:side, 'line_number')
+    return '?'
+  endif
+
+  return string(get(a:side, 'line_number'))
+endfunction
+
+function! s:difftastic_side_changed_text(side) abort
+  if type(a:side) != type({})
+    return ''
+  endif
+
+  let l:changes = get(a:side, 'changes', [])
+
+  if empty(l:changes)
+    return ''
+  endif
+
+  let l:parts = []
+
+  for l:change in l:changes
+    let l:content = get(l:change, 'content', '')
+
+    " Normalize whitespace, but keep symbolic/code content readable.
+    let l:content = substitute(l:content, '\s\+', ' ', 'g')
+    let l:content = trim(l:content)
+
+    if !empty(l:content)
+      call add(l:parts, l:content)
+    endif
+  endfor
+
+  let l:text = join(l:parts, ' ')
+
+  return s:difftastic_shorten(l:text, 160)
+endfunction
+
+function! s:difftastic_shorten(text, max_len) abort
+  if strlen(a:text) <= a:max_len
+    return a:text
+  endif
+
+  return strpart(a:text, 0, a:max_len - 3) . '...'
+endfunction
+
+function! s:difftastic_staged_diff_context(comment_char) abort
+  call s:difftastic_debug('s:difftastic_staged_diff_context() called')
+
+  let l:result = s:difftastic_run_staged_diff()
+
+  let l:exit = get(l:result, 'exit_status', -1)
+  let l:stdout = get(l:result, 'stdout', [])
+  let l:stderr = get(l:result, 'stderr', [])
+
+  let l:context = [
+        \ a:comment_char . ' Semantic diff debug',
+        \ a:comment_char . ' - display: ' . get(g:, 'fugitive_commit_difftastic_display', 'json'),
+        \ a:comment_char . ' - exit_status: ' . string(l:exit),
+        \ a:comment_char . ' - stdout lines: ' . string(len(l:stdout)),
+        \ a:comment_char . ' - stderr lines: ' . string(len(l:stderr)),
+        \ a:comment_char,
+        \ ]
+
+    let l:stderr_nonempty = filter(copy(l:stderr), '!empty(trim(v:val))')
+
+    if !empty(l:stderr_nonempty)
+      call extend(l:context, s:difftastic_comment_lines(['stderr:'], a:comment_char))
+      call extend(l:context, s:difftastic_comment_lines(l:stderr_nonempty[: min([len(l:stderr_nonempty), 20]) - 1], a:comment_char))
+      call add(l:context, a:comment_char)
+    endif
+
+  if empty(l:stdout)
+    call add(l:context, a:comment_char . ' - no difftastic stdout')
+    call add(l:context, a:comment_char)
+    return l:context
+  endif
+
+  if get(g:, 'fugitive_commit_difftastic_display', 'json') ==# 'json'
+    let l:files = s:difftastic_decode_json_debug(l:stdout)
+    call extend(l:context, s:difftastic_comment_lines(s:difftastic_json_summary_lines(l:files), a:comment_char))
+  else
+    let l:max = get(g:, 'fugitive_commit_difftastic_max_lines', 250)
+    let l:shown = l:stdout
+
+    if l:max > 0 && len(l:shown) > l:max
+      let l:shown = l:shown[:l:max - 1]
+      call add(l:shown, '[difftastic output truncated at ' . string(l:max) . ' lines]')
+    endif
+
+    call extend(l:context, s:difftastic_comment_lines(l:shown, a:comment_char))
+  endif
+
+  call add(l:context, a:comment_char)
+  return l:context
+endfunction
+
+" ============================================================================
+" Ctags semantic scope context for Fugitive commit prompt
+" ============================================================================
+"
+" Requires Universal Ctags with JSON support.
+" If your binary is called uctags, set:
+"   let g:fugitive_commit_ctags_command = 'uctags'
+"
+" This block classifies staged changed lines by the nearest enclosing symbol:
+" namespace, class, struct, function, method, constructor, destructor, etc.
+
+
+
+let g:fugitive_commit_include_ctags =
+      \ get(g:, 'fugitive_commit_include_ctags', 1)
+
+let g:fugitive_commit_ctags_command =
+      \ get(g:, 'fugitive_commit_ctags_command', 'ctags')
+
+let g:fugitive_commit_ctags_max_files =
+      \ get(g:, 'fugitive_commit_ctags_max_files', 20)
+
+let g:fugitive_commit_ctags_debug =
+      \ get(g:, 'fugitive_commit_ctags_debug', 1)
+
+" ============================================================================
+" Ctags debug log buffer
+" ============================================================================
+
+let g:fugitive_commit_ctags_debug = get(g:, 'fugitive_commit_ctags_debug', 1)
+let g:fugitive_commit_ctags_debug_log = get(g:, 'fugitive_commit_ctags_debug_log', [])
+
+function! s:ctags_debug(msg) abort
+  if !get(g:, 'fugitive_commit_ctags_debug', 0)
+    return
+  endif
+
+  let l:line = '[fugitive-ctags] ' . a:msg
+
+  " Store in a copyable buffer-friendly log.
+  call add(g:fugitive_commit_ctags_debug_log, l:line)
+
+  " Optional: keep :messages output too. Comment this out if it is annoying.
+  " echom l:line
+endfunction
+
+function! s:ctags_debug_clear() abort
+  let g:fugitive_commit_ctags_debug_log = []
+  echo 'fugitive ctags debug log cleared'
+endfunction
+
+function! s:ctags_debug_open() abort
+  botright new
+  file FugitiveCtagsDebugLog
+
+  setlocal buftype=nofile
+  setlocal bufhidden=wipe
+  setlocal noswapfile
+  setlocal nobuflisted
+  setlocal nowrap
+  setlocal filetype=log
+  setlocal modifiable
+
+  silent %delete _
+
+  if empty(get(g:, 'fugitive_commit_ctags_debug_log', []))
+    call setline(1, ['[fugitive-ctags] debug log is empty'])
+  else
+    call setline(1, g:fugitive_commit_ctags_debug_log)
+  endif
+
+  setlocal nomodifiable
+  normal! gg
+endfunction
+
+command! FugitiveCtagsDebugLog call <SID>ctags_debug_open()
+command! FugitiveCtagsDebugClear call <SID>ctags_debug_clear()
+
+
+function! s:ctags_diff_context(comment_char) abort
+  call s:ctags_debug('ctags_diff_context() called')
+
+  if !get(g:, 'fugitive_commit_include_ctags', 1)
+    call s:ctags_debug('disabled by g:fugitive_commit_include_ctags')
+    return []
+  endif
+
+  let l:ctags = get(g:, 'fugitive_commit_ctags_command', 'ctags')
+  call s:ctags_debug('ctags command = ' . string(l:ctags))
+  call s:ctags_debug('executable(ctags) = ' . string(executable(l:ctags)))
+
+  if !executable(l:ctags)
+    return [
+          \ a:comment_char . ' Changed semantic scopes',
+          \ a:comment_char . ' - ctags executable "' . l:ctags . '" was not found in PATH.',
+          \ a:comment_char,
+          \ ]
+  endif
+
+  let l:files = s:git_lines([
+        \ 'diff',
+        \ '--cached',
+        \ '--name-only',
+        \ '--diff-filter=ACMR',
+        \ '--',
+        \ ])
+
+  " Important: remove blank paths.
+  call filter(l:files, '!empty(trim(v:val))')
+
+  call s:ctags_debug('staged files count = ' . string(len(l:files)))
+  call s:ctags_debug('staged files = ' . string(l:files))
+
+  if empty(l:files)
+    call s:ctags_debug('No staged files found for ctags context')
+    return []
+  endif
+
+
+    let l:context = [
+          \ a:comment_char . ' Changed semantic scopes',
+          \ a:comment_char . ' - These are staged changes grouped by enclosing symbol.',
+          \ a:comment_char . ' - Use this section to identify affected APIs, classes, functions, methods, and file-level changes.',
+          \ a:comment_char . ' - Prefer function/method scopes over file names when writing the commit message.',
+          \ a:comment_char,
+          \ ]
+
+  let l:file_count = 0
+  let l:max_files = get(g:, 'fugitive_commit_ctags_max_files', 20)
+
+  for l:path in l:files
+    call s:ctags_debug('processing staged file = ' . string(l:path))
+
+    if l:file_count >= l:max_files
+      call add(l:context, a:comment_char . ' - [ctags scope context truncated at ' . string(l:max_files) . ' files]')
+      call add(l:context, a:comment_char)
+      break
+    endif
+
+    let l:file_context = s:ctags_file_scope_context(l:path, a:comment_char)
+
+    call s:ctags_debug('file context lines for ' . l:path . ' = ' . string(len(l:file_context)))
+
+    if !empty(l:file_context)
+      call extend(l:context, l:file_context)
+      let l:file_count += 1
+    endif
+  endfor
+
+  call s:ctags_debug('ctags context file_count = ' . string(l:file_count))
+
+  if l:file_count == 0
+    call s:ctags_debug('No ctags context generated for any staged files')
+    return []
+  endif
+
+  return l:context
+endfunction
+
+function! s:ctags_file_scope_context(path, comment_char) abort
+  call s:ctags_debug('ctags_file_scope_context() path = ' . string(a:path))
+
+  if empty(a:path)
+    call s:ctags_debug('empty path; returning []')
+    return []
+  endif
+
+  let l:changed_lines = s:git_changed_new_lines_for_file(a:path)
+
+  call s:ctags_debug('changed new lines for ' . a:path . ' = ' . string(l:changed_lines))
+
+  if empty(l:changed_lines)
+    call s:ctags_debug('no changed new lines for ' . a:path . '; returning []')
+    return []
+  endif
+
+  let l:tags = s:ctags_for_staged_file(a:path)
+  let l:tags = s:ctags_for_staged_file(a:path)
+
+  call s:ctags_debug('ctags tags count for ' . a:path . ' = ' . string(len(l:tags)))
+  call s:ctags_debug_relevant_tags(a:path, l:tags, l:changed_lines)
+
+  call s:ctags_debug('ctags tags count for ' . a:path . ' = ' . string(len(l:tags)))
+
+  let l:context = [
+        \ a:comment_char . ' File: ' . a:path,
+        \ ]
+
+  if empty(l:tags)
+    call s:ctags_debug('no ctags symbol ranges found for ' . a:path)
+    call add(l:context, a:comment_char . ' - changed staged lines: ' . s:join_numbers(l:changed_lines))
+    call add(l:context, a:comment_char . ' - no ctags symbol ranges found')
+    call add(l:context, a:comment_char)
+    return l:context
+  endif
+
+  let l:scopes = {}
+
+  for l:line in l:changed_lines
+    let l:symbol = s:ctags_best_symbol_for_line(l:tags, l:line)
+
+    if empty(l:symbol)
+      let l:key = '[file scope]'
+      call s:ctags_debug('line ' . string(l:line) . ' -> file scope')
+    else
+      let l:key = s:ctags_symbol_label(l:symbol, l:tags, l:line)
+      call s:ctags_debug('line ' . string(l:line) . ' -> ' . l:key)
+    endif
+
+    if !has_key(l:scopes, l:key)
+      let l:scopes[l:key] = []
+    endif
+
+    call add(l:scopes[l:key], l:line)
+  endfor
+
+  call s:ctags_debug('scope keys for ' . a:path . ' = ' . string(keys(l:scopes)))
+
+  for l:scope in sort(keys(l:scopes))
+    let l:lines = uniq(sort(l:scopes[l:scope], 'n'))
+
+    call add(l:context, a:comment_char . ' - ' . l:scope)
+    call add(l:context, a:comment_char . '   changed new lines: ' . s:join_numbers(l:lines))
+  endfor
+
+  call add(l:context, a:comment_char)
+
+  return l:context
+endfunction
+function! s:git_changed_new_lines_for_file(path) abort
+  call s:ctags_debug('git_changed_new_lines_for_file() path = ' . string(a:path))
+
+  if empty(a:path)
+    call s:ctags_debug('empty path; returning []')
+    return []
+  endif
+
+  let l:patch = s:git_lines_ctags_debug([
+        \ 'diff',
+        \ '--cached',
+        \ '-U0',
+        \ '--no-ext-diff',
+        \ '--no-color',
+        \ '--',
+        \ a:path,
+        \ ])
+
+  call s:ctags_debug('patch line count for ' . a:path . ' = ' . string(len(l:patch)))
+
+  if empty(l:patch)
+    call s:ctags_debug('empty patch for ' . a:path)
+    return []
+  endif
+
+  call s:ctags_debug('patch first line = ' . string(get(l:patch, 0, '')))
+  call s:ctags_debug('patch first hunk = ' . string(s:first_matching_line(l:patch, '^@@ ')))
+
+  let l:changed = []
+  let l:in_hunk = 0
+  let l:new_lnum = 0
+
+  for l:line in l:patch
+    if l:line =~# '^@@ '
+      let l:new_spec = matchstr(l:line, '+\d\+\%\(,\d\+\)\?')
+      let l:new_start = str2nr(matchstr(l:new_spec, '+\zs\d\+'))
+
+      call s:ctags_debug('hunk header = ' . string(l:line))
+      call s:ctags_debug('new spec = ' . string(l:new_spec))
+      call s:ctags_debug('new start = ' . string(l:new_start))
+
+      let l:new_lnum = l:new_start
+      let l:in_hunk = 1
+      continue
+    endif
+
+    if !l:in_hunk
+      continue
+    endif
+
+    if l:line =~# '^+++ ' || l:line =~# '^\\'
+      continue
+    endif
+
+    let l:first = strpart(l:line, 0, 1)
+
+    if l:first ==# '+'
+      call add(l:changed, l:new_lnum)
+      call s:ctags_debug('added line -> new line ' . string(l:new_lnum))
+      let l:new_lnum += 1
+    elseif l:first ==# '-'
+      call add(l:changed, max([1, l:new_lnum]))
+      call s:ctags_debug('removed line -> anchored to new line ' . string(max([1, l:new_lnum])))
+    else
+      let l:new_lnum += 1
+    endif
+  endfor
+
+  let l:changed = uniq(sort(l:changed, 'n'))
+
+  call s:ctags_debug('final changed new lines for ' . a:path . ' = ' . string(l:changed))
+
+  return l:changed
+endfunction
+function! s:ctags_for_staged_file(path) abort
+  let l:content = s:git_lines_ctags_debug(['show', ':' . a:path])
+
+  if empty(l:content)
+    call s:ctags_debug('empty staged content for ' . a:path)
+    return []
+  endif
+
+  let l:ext = fnamemodify(a:path, ':e')
+  let l:tmp = tempname()
+
+  if !empty(l:ext)
+    let l:tmp .= '.' . l:ext
+  endif
+
+  try
+    call writefile(l:content, l:tmp)
+
+    let l:ctags = get(g:, 'fugitive_commit_ctags_command', 'ctags')
+
+    " Do NOT use --output-format=json here.
+    " This uses normal tags output and asks for line/end/kind fields.
+    let l:cmd =
+          \ shellescape(l:ctags) .
+          \ ' --fields=+neK' .
+          \ ' --extras=+q' .
+          \ ' -f - ' .
+          \ shellescape(l:tmp)
+
+    call s:ctags_debug('ctags cmd = ' . l:cmd)
+
+    let l:out = systemlist(l:cmd)
+
+    call s:ctags_debug('ctags shell_error = ' . string(v:shell_error))
+    call s:ctags_debug('ctags output lines = ' . string(len(l:out)))
+
+    if !empty(l:out)
+      call s:ctags_debug('ctags output[0] = ' . string(get(l:out, 0, '')))
+      call s:ctags_debug('ctags output[1] = ' . string(get(l:out, 1, '')))
+      call s:ctags_debug('ctags output[2] = ' . string(get(l:out, 2, '')))
+    endif
+
+    if v:shell_error
+      call s:ctags_debug('ctags failed for ' . a:path . ': ' . string(l:out))
+      return []
+    endif
+
+    let l:tags = s:parse_ctags_tagfile_lines(l:out)
+
+    call s:ctags_debug(a:path . ': decoded ' . string(len(l:tags)) . ' tags')
+
+    return l:tags
+  finally
+    call delete(l:tmp)
+  endtry
+endfunction
+
+
+function! s:ctags_best_symbol_for_line(tags, line) abort
+  let l:candidates = []
+
+  for l:tag in a:tags
+    let l:start = get(l:tag, 'line', 0)
+    let l:end = get(l:tag, 'end', l:start)
+
+    if l:start <= a:line && a:line <= l:end
+      call add(l:candidates, l:tag)
+    endif
+  endfor
+
+  if empty(l:candidates)
+    return {}
+  endif
+
+  call sort(l:candidates, function('s:ctags_compare_symbol_priority'))
+
+  return l:candidates[0]
+endfunction
+function! s:ctags_symbol_priority(tag) abort
+  let l:kind = s:ctags_effective_kind(a:tag)
+
+  if l:kind =~# 'function\|method\|member\|constructor\|destructor\|procedure\|subroutine'
+    return 0
+  endif
+
+  if l:kind =~# 'class\|struct\|union\|interface\|enum'
+    return 1
+  endif
+
+  if l:kind =~# 'namespace\|module\|package'
+    return 2
+  endif
+
+  return 3
+endfunction
+function! s:ctags_compare_symbol_priority(left, right) abort
+  let l:left_priority = s:ctags_symbol_priority(a:left)
+  let l:right_priority = s:ctags_symbol_priority(a:right)
+
+  if l:left_priority != l:right_priority
+    return l:left_priority - l:right_priority
+  endif
+
+  let l:left_size = s:ctags_range_size(a:left)
+  let l:right_size = s:ctags_range_size(a:right)
+
+  if l:left_size != l:right_size
+    return l:left_size - l:right_size
+  endif
+
+  " Prefer qualified names generated by --extras=+q.
+  let l:left_qualified = get(a:left, 'name', '') =~# '::' ? 0 : 1
+  let l:right_qualified = get(a:right, 'name', '') =~# '::' ? 0 : 1
+
+  if l:left_qualified != l:right_qualified
+    return l:left_qualified - l:right_qualified
+  endif
+
+  return 0
+endfunction
+
+function! s:ctags_kind_priority(kind) abort
+  let l:kind = tolower(a:kind)
+
+  if l:kind =~# 'function\|method\|member\|constructor\|destructor\|procedure\|subroutine'
+    return 0
+  endif
+
+  if l:kind =~# 'class\|struct\|union\|interface\|enum'
+    return 1
+  endif
+
+  if l:kind =~# 'namespace\|module\|package'
+    return 2
+  endif
+
+  return 3
+endfunction
+
+
+function! s:ctags_range_size(tag) abort
+  let l:start = get(a:tag, 'line', 0)
+  let l:end = get(a:tag, 'end', l:start)
+
+  return l:end - l:start
+endfunction
+function! s:ctags_symbol_label(tag, tags, line) abort
+  let l:kind = s:ctags_effective_kind(a:tag)
+
+  if empty(l:kind)
+    let l:kind = get(a:tag, 'kind', 'symbol')
+  endif
+
+  let l:name = get(a:tag, 'name', '[anonymous]')
+  let l:scope = get(a:tag, 'scope', '')
+
+  " If ctags already emitted a qualified name, trust it.
+  if l:name =~# '::'
+    return l:kind . ' ' . l:name
+  endif
+
+  if !empty(l:scope)
+    return l:kind . ' ' . l:scope . '::' . l:name
+  endif
+
+  let l:parents = s:ctags_parent_symbols(a:tags, a:tag, a:line)
+
+  if empty(l:parents)
+    return l:kind . ' ' . l:name
+  endif
+
+  let l:names = []
+
+  for l:parent in l:parents
+    let l:parent_name = get(l:parent, 'name', '')
+
+    if !empty(l:parent_name) && index(l:names, l:parent_name) < 0
+      call add(l:names, l:parent_name)
+    endif
+  endfor
+
+  call add(l:names, l:name)
+
+  return l:kind . ' ' . join(l:names, '::')
+endfunction
+
+
+function! s:ctags_parent_symbols(tags, child, line) abort
+  let l:parents = []
+
+  let l:child_start = get(a:child, 'line', 0)
+  let l:child_end = get(a:child, 'end', l:child_start)
+
+  for l:tag in a:tags
+    if l:tag is a:child
+      continue
+    endif
+
+    let l:kind = tolower(get(l:tag, 'kind', ''))
+
+    if l:kind !~# 'namespace\|class\|struct\|union\|interface\|module\|package'
+      continue
+    endif
+
+    let l:start = get(l:tag, 'line', 0)
+    let l:end = get(l:tag, 'end', l:start)
+
+    if l:start <= a:line && a:line <= l:end
+          \ && l:start <= l:child_start && l:child_end <= l:end
+      call add(l:parents, l:tag)
+    endif
+  endfor
+
+  call sort(l:parents, function('s:ctags_compare_parent_order'))
+
+  return l:parents
+endfunction
+
+
+function! s:ctags_compare_parent_order(left, right) abort
+  let l:left_start = get(a:left, 'line', 0)
+  let l:right_start = get(a:right, 'line', 0)
+
+  if l:left_start != l:right_start
+    return l:left_start - l:right_start
+  endif
+
+  " For same start line, wider range is usually the outer container.
+  return s:ctags_range_size(a:right) - s:ctags_range_size(a:left)
+endfunction
+
+
+function! s:join_numbers(numbers) abort
+  return join(map(copy(a:numbers), 'string(v:val)'), ', ')
+endfunction
+function! s:first_matching_line(lines, pattern) abort
+  for l:line in a:lines
+    if l:line =~# a:pattern
+      return l:line
+    endif
+  endfor
+
+  return ''
+endfunction
+
+function! s:git_lines_ctags_debug(argv) abort
+  call s:ctags_debug('git argv = ' . string(a:argv))
+
+  let l:worktree = s:ctags_git_worktree()
+
+  if empty(l:worktree)
+    return []
+  endif
+
+  let l:cmd = ['git', '-C', l:worktree] + a:argv
+
+  call s:ctags_debug('systemlist cmd = ' . string(l:cmd))
+
+  let l:out = systemlist(l:cmd)
+
+  call s:ctags_debug('systemlist shell_error = ' . string(v:shell_error))
+  call s:ctags_debug('systemlist output lines = ' . string(len(l:out)))
+
+  if !empty(l:out)
+    call s:ctags_debug('systemlist output[0] = ' . string(get(l:out, 0, '')))
+  endif
+
+  if v:shell_error
+    return []
+  endif
+
+  return l:out
+endfunction
+function! s:git_lines_ctags_debug(argv) abort
+  call s:ctags_debug('git argv = ' . string(a:argv))
+
+  let l:worktree = s:ctags_git_worktree()
+
+  if empty(l:worktree)
+    call s:ctags_debug('empty worktree; returning []')
+    return []
+  endif
+
+  let l:escaped_args = map(copy(a:argv), 'shellescape(v:val)')
+  let l:cmd = 'git -C ' . shellescape(l:worktree) . ' ' . join(l:escaped_args, ' ')
+
+  call s:ctags_debug('systemlist cmd = ' . string(l:cmd))
+
+  let l:out = systemlist(l:cmd)
+
+  call s:ctags_debug('systemlist shell_error = ' . string(v:shell_error))
+  call s:ctags_debug('systemlist output lines = ' . string(len(l:out)))
+
+  if !empty(l:out)
+    call s:ctags_debug('systemlist output[0] = ' . string(get(l:out, 0, '')))
+  endif
+
+  if v:shell_error
+    call s:ctags_debug('git command failed; returning []')
+    return []
+  endif
+
+  return l:out
+endfunction
+function! s:ctags_git_worktree() abort
+  if exists('*FugitiveWorkTree')
+    let l:worktree = FugitiveWorkTree()
+
+    if !empty(l:worktree)
+      call s:ctags_debug('FugitiveWorkTree() = ' . string(l:worktree))
+      return l:worktree
+    endif
+  endif
+
+  let l:cmd = 'git rev-parse --show-toplevel'
+  let l:root = systemlist(l:cmd)
+
+  call s:ctags_debug('fallback worktree cmd = ' . string(l:cmd))
+  call s:ctags_debug('fallback worktree shell_error = ' . string(v:shell_error))
+  call s:ctags_debug('fallback worktree output = ' . string(l:root))
+
+  if v:shell_error || empty(l:root)
+    call s:ctags_debug('could not determine git worktree')
+    return ''
+  endif
+
+  return l:root[0]
+endfunction
+
+
+function! s:parse_ctags_tagfile_lines(lines) abort
+  let l:tags = []
+
+  for l:line in a:lines
+    if empty(trim(l:line))
+      continue
+    endif
+
+    " Skip pseudo-tags like !_TAG_FILE_FORMAT.
+    if l:line =~# '^!'
+      continue
+    endif
+
+    let l:tag = s:parse_ctags_tagfile_line(l:line)
+
+    if !empty(l:tag)
+      call add(l:tags, l:tag)
+    endif
+  endfor
+
+  return l:tags
+endfunction
+
+
+function! s:parse_ctags_tagfile_line(line) abort
+  let l:parts = split(a:line, "\t")
+
+  " Normal tag format:
+  " name<TAB>file<TAB>excmd;"<TAB>kind<TAB>field:value...
+  if len(l:parts) < 4
+    return {}
+  endif
+
+  let l:tag = {
+        \ 'name': l:parts[0],
+        \ 'line': 0,
+        \ 'end': 0,
+        \ 'kind': '',
+        \ 'scope': '',
+        \ }
+
+  " Field 4 is often the kind, e.g. function, class, member.
+  let l:maybe_kind = l:parts[3]
+
+  if l:maybe_kind !~# ':'
+    let l:tag.kind = l:maybe_kind
+    let l:start_index = 4
+  else
+    let l:start_index = 3
+  endif
+
+  for l:i in range(l:start_index, len(l:parts) - 1)
+    let l:field = l:parts[l:i]
+
+    if l:field !~# ':'
+      continue
+    endif
+
+    let l:key = matchstr(l:field, '^[^:]\+')
+    let l:value = matchstr(l:field, '^[^:]\+:\zs.*')
+
+    if l:key ==# 'line'
+      let l:tag.line = str2nr(l:value)
+    elseif l:key ==# 'end'
+      let l:tag.end = str2nr(l:value)
+    elseif l:key ==# 'kind'
+      let l:tag.kind = l:value
+    elseif l:key =~# '^\%(class\|struct\|namespace\|interface\|enum\|union\|module\|package\)$'
+      let l:tag.scope = l:value
+    elseif l:key ==# 'scope'
+      let l:tag.scope = l:value
+    endif
+  endfor
+
+  " Some tags may not have an end field. Keep them usable, but they will only
+  " match changes on their declaration line.
+  if get(l:tag, 'end', 0) <= 0
+    let l:tag.end = get(l:tag, 'line', 0)
+  endif
+
+  if get(l:tag, 'line', 0) <= 0
+    return {}
+  endif
+
+  return l:tag
+endfunction
+
+function! s:ctags_debug_relevant_tags(path, tags, changed_lines) abort
+  call s:ctags_debug('--- relevant ctags for ' . a:path . ' ---')
+
+  for l:tag in a:tags
+    let l:name = get(l:tag, 'name', '')
+    let l:kind = get(l:tag, 'kind', '')
+    let l:line = get(l:tag, 'line', 0)
+    let l:end = get(l:tag, 'end', l:line)
+    let l:scope = get(l:tag, 'scope', '')
+
+    let l:relevant = 0
+
+    if l:name =~? 'JointQuantities\|isApprox'
+      let l:relevant = 1
+    endif
+
+    for l:changed in a:changed_lines
+      if l:line <= l:changed && l:changed <= l:end
+        let l:relevant = 1
+      endif
+    endfor
+
+    if l:relevant
+      call s:ctags_debug(
+            \ 'tag name=' . string(l:name) .
+            \ ' kind=' . string(l:kind) .
+            \ ' line=' . string(l:line) .
+            \ ' end=' . string(l:end) .
+            \ ' scope=' . string(l:scope)
+            \ )
+    endif
+  endfor
+endfunction
+
+function! s:ctags_effective_kind(tag) abort
+  let l:kind = tolower(get(a:tag, 'kind', ''))
+
+  if !empty(l:kind)
+    return l:kind
+  endif
+
+  let l:name = get(a:tag, 'name', '')
+  let l:scope = get(a:tag, 'scope', '')
+  let l:line = get(a:tag, 'line', 0)
+  let l:end = get(a:tag, 'end', l:line)
+
+  " Universal ctags sometimes emits C++ out-of-class method definitions with
+  " an empty kind in normal tag output, but with class scope and a range.
+  if !empty(l:scope) && l:end > l:line
+    return 'function'
+  endif
+
+  if l:name =~# '::' && !empty(l:scope)
+    return 'function'
+  endif
+
+  return ''
+endfunction
+
+function! s:ctags_debug_relevant_tags(path, tags, changed_lines) abort
+  call s:ctags_debug('--- relevant ctags for ' . a:path . ' ---')
+
+  for l:tag in a:tags
+    let l:name = get(l:tag, 'name', '')
+    let l:kind = get(l:tag, 'kind', '')
+    let l:effective_kind = s:ctags_effective_kind(l:tag)
+    let l:line = get(l:tag, 'line', 0)
+    let l:end = get(l:tag, 'end', l:line)
+    let l:scope = get(l:tag, 'scope', '')
+
+    let l:relevant = 0
+
+    if l:name =~? 'JointQuantities\|isApprox'
+      let l:relevant = 1
+    endif
+
+    for l:changed in a:changed_lines
+      if l:line <= l:changed && l:changed <= l:end
+        let l:relevant = 1
+      endif
+    endfor
+
+    if l:relevant
+      call s:ctags_debug(
+            \ 'tag name=' . string(l:name) .
+            \ ' kind=' . string(l:kind) .
+            \ ' effective_kind=' . string(l:effective_kind) .
+            \ ' line=' . string(l:line) .
+            \ ' end=' . string(l:end) .
+            \ ' scope=' . string(l:scope)
+            \ )
+    endif
+  endfor
 endfunction

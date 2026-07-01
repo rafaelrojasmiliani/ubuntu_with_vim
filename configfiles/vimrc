@@ -161,40 +161,6 @@ call vundle#begin('/etc/vim/bundle/')
     Plugin 'vim_snippets_ros'
         let g:UltiSnipsJumpForwardTrigger="<c-j>"
     Plugin 'vim-fugitive'
-        " Automatically prepend JIRA issue key from branch name to commit messages
-        augroup JiraCommitPrefix
-        autocmd!
-        autocmd User FugitiveEditor call s:prepend_jira_from_branch()
-        augroup END
-
-        function! s:prepend_jira_from_branch() abort
-          if expand('%:t') !=# 'COMMIT_EDITMSG'
-            return
-          endif
-
-          let l:branch = FugitiveHead()
-          if empty(l:branch)
-            return
-          endif
-
-          " Matches keys like ABC-123 or TEAM42-9
-          let l:jira = matchstr(l:branch, '\C[A-Z][A-Z0-9]*-\d\+')
-          if empty(l:jira)
-            return
-          endif
-
-          let l:first = getline(1)
-
-          if l:first =~# '^' . escape(l:jira, '[]\.^$*~')
-            return
-          endif
-
-          if l:first =~# '^\%(Merge \|fixup! \|squash! \)'
-            return
-          endif
-
-          call setline(1, '[' . l:jira . ']  ' . l:first)
-        endfunction
     Plugin 'xmledit'
     Plugin 'vimspector'
         let g:vimspector_enable_mappings = 'HUMAN'
@@ -584,3 +550,408 @@ let g:ycm_language_server += [
   \     'cmdline': [ 'fortls', '--notify_init', '--hover_signature', '--hover_language', 'fortran', '--use_signature_help' ],
   \   },
   \ ]
+
+" ============================================================================
+" Cursor Agent Management
+" ===========================================================================
+
+function! s:CursorAgentCleanList() abort
+  let g:cursor_agent_buffers = filter(
+        \ copy(g:cursor_agent_buffers),
+        \ 'bufexists(v:val)'
+        \ )
+endfunction
+
+function! CursorAgentNew() abort
+  botright split
+  terminal cursor-agent
+
+  let b:is_cursor_agent = 1
+  let b:cursor_agent_index = len(g:cursor_agent_buffers)
+
+  call add(g:cursor_agent_buffers, bufnr('%'))
+
+  execute 'file cursor-agent://' . b:cursor_agent_index
+  echo 'Created cursor-agent #' . b:cursor_agent_index
+endfunction
+
+function! CursorAgentList() abort
+  call s:CursorAgentCleanList()
+
+  if empty(g:cursor_agent_buffers)
+    echo 'No cursor-agent buffers'
+    return
+  endif
+
+  echo 'Cursor agents:'
+
+  for i in range(0, min([9, len(g:cursor_agent_buffers) - 1]))
+    let l:bufnr = g:cursor_agent_buffers[i]
+    let l:name = bufname(l:bufnr)
+
+    if bufwinnr(l:bufnr) != -1
+      let l:state = '[open]'
+    else
+      let l:state = '[hidden]'
+    endif
+
+    echo printf('%d: buffer %d %s %s', i, l:bufnr, l:state, l:name)
+  endfor
+endfunction
+
+function! CursorAgentOpen(index) abort
+  call s:CursorAgentCleanList()
+
+  if a:index < 0 || a:index >= len(g:cursor_agent_buffers) || a:index > 9
+    echoerr 'No cursor-agent at index ' . a:index
+    return
+  endif
+
+  let l:bufnr = g:cursor_agent_buffers[a:index]
+
+  if !bufexists(l:bufnr)
+    echoerr 'Cursor-agent buffer no longer exists: ' . a:index
+    return
+  endif
+
+  botright split
+  execute 'buffer' l:bufnr
+endfunction
+
+command! CursorAgentNew call CursorAgentNew()
+command! CursorAgentList call CursorAgentList()
+command! -nargs=1 CursorAgentOpen call CursorAgentOpen(<args>)
+
+nnoremap <leader>cc :CursorAgentNew<CR>
+nnoremap <leader>cl :CursorAgentList<CR>
+
+nnoremap <leader>c0 :CursorAgentOpen 0<CR>
+nnoremap <leader>c1 :CursorAgentOpen 1<CR>
+nnoremap <leader>c2 :CursorAgentOpen 2<CR>
+nnoremap <leader>c3 :CursorAgentOpen 3<CR>
+nnoremap <leader>c4 :CursorAgentOpen 4<CR>
+nnoremap <leader>c5 :CursorAgentOpen 5<CR>
+nnoremap <leader>c6 :CursorAgentOpen 6<CR>
+nnoremap <leader>c7 :CursorAgentOpen 7<CR>
+nnoremap <leader>c8 :CursorAgentOpen 8<CR>
+nnoremap <leader>c9 :CursorAgentOpen 9<CR>
+
+
+" ============================================================================
+" Fugitive + Copilot commit-message helper
+" ============================================================================
+
+if !exists('g:copilot_filetypes')
+  let g:copilot_filetypes = {}
+endif
+
+let g:copilot_filetypes.gitcommit = v:true
+
+" Maximum number of staged diff lines to inject as commented context.
+let g:fugitive_commit_diff_max_lines = get(g:, 'fugitive_commit_diff_max_lines', 300)
+
+" Number of context lines per hunk in the injected diff.
+let g:fugitive_commit_diff_unified_context = get(g:, 'fugitive_commit_diff_unified_context', 3)
+
+" Optional extra context.
+" Example:
+"   let g:fugitive_commit_extra_context = [
+"         \ 'This is a Next.js + TypeScript project',
+"         \ 'Use JIRA key in subject when available',
+"         \ ]
+let g:fugitive_commit_extra_context = get(g:, 'fugitive_commit_extra_context', [])
+
+
+" ============================================================================
+" Main Fugitive hook
+" ============================================================================
+
+augroup FugitiveCommitHook
+  autocmd!
+  autocmd User FugitiveEditor call s:fugitive_commit_hook()
+augroup END
+
+function! s:fugitive_commit_hook() abort
+  " Only operate on Git commit message buffers.
+  if expand('%:t') !=# 'COMMIT_EDITMSG'
+    return
+  endif
+  setlocal filetype=gitcommit
+  let b:copilot_enabled = v:true
+
+  " Add more procedures here.
+  call s:prepend_jira_from_branch()
+  call s:seed_copilot_commit_context()
+
+  " Final cursor placement after all buffer mutations.
+  call s:place_cursor_for_commit_message()
+
+  startinsert
+endfunction
+
+
+" ============================================================================
+" Procedure 1: prepend JIRA issue key from branch name
+" ============================================================================
+
+function! s:prepend_jira_from_branch() abort
+  let l:branch = FugitiveHead()
+
+  if empty(l:branch)
+    return
+  endif
+
+  " Matches keys like ABC-123 or TEAM42-9.
+  let l:jira = matchstr(l:branch, '\C[A-Z][A-Z0-9]*-\d\+')
+
+  if empty(l:jira)
+    return
+  endif
+
+  let l:first = getline(1)
+  let l:prefix = '[' . l:jira . ']'
+
+  " Do not duplicate the prefix.
+  if stridx(l:first, l:prefix) == 0
+    return
+  endif
+
+  " Also avoid duplicating if the user already wrote the bare key manually.
+  if stridx(l:first, l:jira) == 0
+    return
+  endif
+
+  " Do not rewrite special Git commit subjects.
+  if l:first =~# '^\%(Merge \|fixup! \|squash! \)'
+    return
+  endif
+
+  " Keep two spaces after the JIRA key, matching your current style.
+  call setline(1, l:prefix . '  ' . l:first)
+endfunction
+
+
+" ============================================================================
+" Procedure 2: seed Copilot context into the commit message buffer
+" ============================================================================
+function! s:seed_copilot_commit_context() abort
+  " Avoid inserting the context twice.
+  if exists('b:fugitive_commit_context_seeded')
+    return
+  endif
+
+  if getline(2) =~# 'Copilot commit prompt'
+    let b:fugitive_commit_context_seeded = 1
+    return
+  endif
+
+  let l:c = s:commit_comment_char()
+
+let l:context = [
+      \ l:c . ' --- Copilot commit prompt ---',
+      \ l:c . ' Task',
+      \ l:c . ' - Generate a semantic Git commit message for the staged diff below.',
+      \ l:c . ' - Focus on the functionality, API behavior, contract, workflow, or user-visible effect introduced by the change.',
+      \ l:c . ' - Do not summarize the mechanical file edits, changed lines, renamed symbols, or internal state unless that is the actual behavior being changed.',
+      \ l:c . ' - Prefer a functional-oriented message when the diff changes what the system does, what an API exposes, what a command supports, what data is accepted, or what output is produced.',
+      \ l:c . ' - Use a procedural message when the diff mainly changes how the system performs a task: strategy, orchestration, sequencing, state transitions, retries, caching, synchronization, validation flow, or fallback behavior.',
+      \ l:c . ' - For procedural changes, describe the strategy explicitly with phrases like "using", "by", "through", or "via" when that improves precision.',
+      \ l:c . ' - For declarative changes, describe the resulting capability or contract, not the implementation steps.',
+      \ l:c . ' - If both apply, lead with the functional outcome and mention the procedural strategy only if it clarifies the change.',
+      \ l:c,
+      \ l:c . ' Message style',
+      \ l:c . ' - Preserve any existing JIRA prefix on line 1, e.g. [ABC-123].',
+      \ l:c . ' - The summary should say what capability, behavior, API, or workflow changed.',
+      \ l:c . ' - Use imperative mood.',
+      \ l:c . ' - Keep the subject under 72 characters when possible.',
+      \ l:c . ' - Start the description after the type with a lowercase letter.',
+      \ l:c . ' - Add a short body only when the strategy, behavior change, or migration risk needs clarification.',
+      \ l:c,
+      \ l:c . ' Avoid',
+      \ l:c . ' - Avoid messages like "update files", "change logic", "fix code", "refactor stuff", or "modify state".',
+      \ l:c . ' - Avoid naming files unless the file itself is the API, configuration, schema, or user-facing artifact.',
+      \ l:c . ' - Avoid restating the diff. Infer the semantic intent from it.',
+      \ l:c,
+      \ ]
+
+  " Optional project-specific context.
+  for l:line in get(g:, 'fugitive_commit_extra_context', [])
+    call add(l:context, l:c . ' - ' . l:line)
+  endfor
+
+  if !empty(get(g:, 'fugitive_commit_extra_context', []))
+    call add(l:context, l:c)
+  endif
+
+  " This is the important part: add the actual staged diff.
+  call extend(l:context, s:staged_diff_context(l:c))
+
+  call extend(l:context, [
+        \ l:c,
+        \ l:c . ' --- End Copilot commit prompt ---',
+        \ l:c,
+        \ ])
+
+  " Insert after line 1 so Copilot generates the real commit subject at the top.
+  call append(1, l:context)
+
+  let b:fugitive_commit_context_seeded = 1
+endfunction
+
+
+" ============================================================================
+" Context helpers
+" ============================================================================
+
+function! s:add_extra_commit_context(context, comment_char) abort
+  let l:extra = get(g:, 'fugitive_commit_extra_context', [])
+
+  if empty(l:extra)
+    return
+  endif
+
+  call add(a:context, a:comment_char . ' Additional project context')
+
+  for l:line in l:extra
+    call add(a:context, a:comment_char . ' - ' . l:line)
+  endfor
+
+  call add(a:context, a:comment_char)
+endfunction
+
+function! s:staged_diff_context(comment_char) abort
+  let l:context = []
+
+  let l:names = s:git_lines(['diff', ' --cached', '--name-status',' --'])
+  let l:stat = s:git_lines(['diff', '--cached', '--stat', '--'])
+
+
+  let l:diff = s:git_lines([
+        \ 'diff',
+        \ '--cached',
+        \ '--no-ext-diff',
+        \ '--no-color',
+        \ '--unified=' . string(g:fugitive_commit_diff_unified_context),
+        \ '--',
+        \ ])
+
+  if empty(l:names) && empty(l:stat) && empty(l:diff)
+    return [
+          \ a:comment_char . ' Staged diff',
+          \ a:comment_char . ' - No staged changes detected.',
+          \ ]
+  endif
+
+  call extend(l:context, [
+        \ a:comment_char . ' Staged files',
+        \ ])
+
+  call extend(l:context, s:comment_lines(l:names, a:comment_char))
+
+  call extend(l:context, [
+        \ a:comment_char,
+        \ a:comment_char . ' Diff stat',
+        \ ])
+
+  call extend(l:context, s:comment_lines(l:stat, a:comment_char))
+
+  call extend(l:context, [
+        \ a:comment_char,
+        \ a:comment_char . ' Staged diff',
+        \ ])
+
+  let l:max = get(g:, 'fugitive_commit_diff_max_lines', 300)
+
+  if l:max <= 0
+    let l:diff = ['[diff omitted because g:fugitive_commit_diff_max_lines <= 0]']
+  elseif len(l:diff) > l:max
+    let l:diff = l:diff[:l:max - 1]
+    call add(l:diff, '')
+    call add(l:diff, '[diff truncated at ' . string(l:max) . ' lines]')
+  endif
+
+  call extend(l:context, s:comment_lines(l:diff, a:comment_char))
+
+  return l:context
+endfunction
+
+function! s:comment_lines(lines, comment_char) abort
+  let l:commented = []
+
+  for l:line in a:lines
+    if l:line ==# ''
+      call add(l:commented, a:comment_char)
+    else
+      call add(l:commented, a:comment_char . ' ' . l:line)
+    endif
+  endfor
+
+  return l:commented
+endfunction
+
+
+" ============================================================================
+" Git helpers
+" ============================================================================
+function! s:git_lines(argv) abort
+  if exists('*FugitiveExecute') && exists('*FugitiveGitDir')
+    let l:git_dir = FugitiveGitDir()
+
+    if !empty(l:git_dir)
+      let l:result = FugitiveExecute(a:argv, l:git_dir)
+
+      if type(l:result) == type({}) && get(l:result, 'exit_status', 1) == 0
+        return get(l:result, 'stdout', [])
+      endif
+
+      " Optional debugging:
+      " echom 'git argv: ' . string(a:argv)
+      " echom 'git exit: ' . string(get(l:result, 'exit_status', 'missing'))
+      " echom 'git stderr: ' . string(get(l:result, 'stderr', []))
+
+      return []
+    endif
+  endif
+
+  let l:root = systemlist('git rev-parse --show-toplevel')
+
+  if v:shell_error || empty(l:root)
+    return []
+  endif
+
+  let l:cmd = ['git', '-C', l:root[0]] + a:argv
+  let l:out = systemlist(l:cmd)
+
+  if v:shell_error
+    return []
+  endif
+
+  return l:out
+endfunction
+
+
+function! s:commit_comment_char() abort
+  let l:out = systemlist('git config --get core.commentChar')
+
+  if v:shell_error || empty(l:out) || l:out[0] ==# '' || l:out[0] ==# 'auto'
+    return '#'
+  endif
+
+  return l:out[0]
+endfunction
+
+
+" ============================================================================
+" Final cursor behavior
+" ============================================================================
+
+function! s:place_cursor_for_commit_message() abort
+  " Put cursor at the end of line 1.
+  "
+  " This works nicely with the JIRA prefix:
+  "   [ABC-123]  |
+  "
+  " Copilot should then suggest the rest of the subject after the prefix.
+  let l:first = getline(1)
+  call cursor(1, strlen(l:first) + 1)
+endfunction

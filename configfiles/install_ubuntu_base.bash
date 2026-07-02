@@ -315,14 +315,17 @@ main() {
     # ---------------------------------------------
     # --- Install pinocchio -----------------------
     # ---------------------------------------------
-    echo "deb [arch=amd64] \
-            http://robotpkg.openrobots.org/packages/debian/pub \
-        jammy robotpkg" |
-        tee /etc/apt/sources.list.d/robotpkg.list
-    curl http://robotpkg.openrobots.org/packages/debian/robotpkg.key |
-        apt-key add -
-    apt-get update
-    if [ $DISTRIB_RELEASE = "24.04" ]; then
+    if [ $DISTRIB_RELEASE -ge 24 ]; then
+
+        install -d -m 0755 /etc/apt/keyrings
+
+        curl -fsSL http://robotpkg.openrobots.org/packages/debian/robotpkg.asc |
+            tee /etc/apt/keyrings/robotpkg.asc >/dev/null
+
+        echo "deb [arch=amd64 signed-by=/etc/apt/keyrings/robotpkg.asc] http://robotpkg.openrobots.org/packages/debian/pub $(lsb_release -cs) robotpkg" |
+            tee /etc/apt/sources.list.d/robotpkg.list >/dev/null
+
+        apt-get update
         DEBIAN_FRONTEND=noninteractive apt-get install \
             -y --no-install-recommends \
             -o Dpkg::Options::="--force-confnew" \

@@ -2109,3 +2109,189 @@ function! s:ctags_debug_relevant_tags(path, tags, changed_lines) abort
     endif
   endfor
 endfunction
+
+" ============================================================================
+" Flog history for current ctags symbol
+" ============================================================================
+
+function! s:flog_current_symbol(open_cmd, kind_filter) abort
+  let l:path = s:current_git_relative_path()
+
+  if empty(l:path)
+    echoerr 'Could not determine repo-relative path for current buffer'
+    return
+  endif
+
+  let l:tags = s:ctags_for_current_buffer()
+
+  if empty(l:tags)
+    echoerr 'No ctags symbols found in current buffer'
+    return
+  endif
+
+  let l:tag = s:ctags_best_symbol_for_line_filtered(l:tags, line('.'), a:kind_filter)
+
+  if empty(l:tag)
+    echoerr 'No matching symbol found under cursor'
+    return
+  endif
+
+  let l:start = get(l:tag, 'line', 0)
+  let l:end = get(l:tag, 'end', l:start)
+
+  if l:start <= 0 || l:end <= 0
+    echoerr 'Selected symbol has no usable line range'
+    return
+  endif
+
+  let l:label = s:ctags_symbol_label(l:tag, l:tags, line('.'))
+  let l:limit = l:start . ',' . l:end . ':' . l:path
+
+  echo 'Flog history for ' . l:label . ' [' . l:limit . ']'
+
+  execute a:open_cmd . ' -limit=' . fnameescape(l:limit)
+endfunction
+
+function! s:current_git_relative_path() abort
+  let l:worktree = s:ctags_git_worktree()
+
+  if empty(l:worktree)
+    return ''
+  endif
+
+  let l:file = fnamemodify(expand('%:p'), ':p')
+  let l:root = substitute(fnamemodify(l:worktree, ':p'), '[\/]\+$', '', '') . '/'
+
+  if stridx(l:file, l:root) != 0
+    return ''
+  endif
+
+  return strpart(l:file, strlen(l:root))
+endfunction
+
+function! s:ctags_for_current_buffer() abort
+  let l:ctags = get(g:, 'fugitive_commit_ctags_command', 'ctags')
+
+  if !executable(l:ctags)
+    echoerr 'ctags executable "' . l:ctags . '" was not found'
+    return []
+  endif
+
+  let l:ext = fnamemodify(expand('%:p'), ':e')
+  let l:tmp = tempname()
+
+  if !empty(l:ext)
+    let l:tmp .= '.' . l:ext
+  endif
+
+  try
+    call writefile(getline(1, '$'), l:tmp)
+
+    let l:cmd =
+          \ shellescape(l:ctags) .
+          \ ' --fields=+neK' .
+          \ ' --extras=+q' .
+          \ ' -f - ' .
+          \ shellescape(l:tmp)
+
+    let l:out = systemlist(l:cmd)
+
+    if v:shell_error
+      return []
+    endif
+
+    return s:parse_ctags_tagfile_lines(l:out)
+  finally
+    call delete(l:tmp)
+  endtry
+endfunction
+
+function! s:ctags_best_symbol_for_line_filtered(tags, line, kind_filter) abort
+  let l:candidates = []
+
+  for l:tag in a:tags
+    let l:start = get(l:tag, 'line', 0)
+    let l:end = get(l:tag, 'end', l:start)
+
+    if !(l:start <= a:line && a:line <= l:end)
+      continue
+    endif
+
+    if !s:ctags_kind_matches_filter(l:tag, a:kind_filter)
+      continue
+    endif
+
+    call add(l:candidates, l:tag)
+  endfor
+
+  if empty(l:candidates)
+    return {}
+  endif
+
+  call sort(l:candidates, function('s:ctags_compare_symbol_priority'))
+
+  return l:candidates[0]
+endfunction
+
+function! s:ctags_kind_matches_filter(tag, kind_filter) abort
+  let l:filter = tolower(a:kind_filter)
+
+  if empty(l:filter) || l:filter ==# 'symbol'
+    return 1
+  endif
+
+  let l:kind = s:ctags_effective_kind(a:tag)
+
+  if l:filter ==# 'function'
+    return l:kind =~# 'function\|method\|member\|constructor\|destructor\|procedure\|subroutine'
+  endif
+
+  if l:filter ==# 'class'
+    return l:kind =~# 'class\|struct\|interface'
+  endif
+
+  if l:filter ==# 'namespace'
+    return l:kind =~# 'namespace\|module\|package'
+  endif
+
+  return l:kind =~# l:filter
+endfunction
+
+
+command! -bar FlogSymbol        call s:flog_current_symbol('Flog', '')
+command! -bar FlogsplitSymbol   call s:flog_current_symbol('Flogsplit', '')
+command! -bar FlogFunction      call s:flog_current_symbol('Flog', 'function')
+command! -bar FlogsplitFunction call s:flog_current_symbol('Flogsplit', 'function')
+command! -bar FlogClass         call s:flog_current_symbol('Flog', 'class')
+command! -bar FlogsplitClass    call s:flog_current_symbol('Flogsplit', 'class')
+command! -bar FlogNamespace     call s:flog_current_symbol('Flog', 'namespace')
+command! -bar FlogsplitNamespace call s:flog_current_symbol('Flogsplit', 'namespace')
+
+" ============================================================================
+" Flog diff colors
+" ============================================================================
+
+function! s:flog_diff_colors() abort
+  " Built-in Vim diff groups used by syntax/diff.vim.
+  highlight diffAdded   ctermfg=Green guifg=#00d75f
+  highlight diffRemoved ctermfg=Red   guifg=#ff5f5f
+
+  " Flog-specific groups.
+  highlight flogDiffAdded   ctermfg=Green guifg=#00d75f
+  highlight flogDiffRemoved ctermfg=Red   guifg=#ff5f5f
+
+  " Optional: make diff headers visible but less loud.
+  highlight flogDiffLine      ctermfg=Cyan   guifg=#5fd7ff
+  highlight flogDiffFile      ctermfg=Yellow guifg=#ffd75f
+  highlight flogDiffOldFile   ctermfg=Red    guifg=#ff8787
+  highlight flogDiffNewFile   ctermfg=Green  guifg=#87ff87
+  highlight flogDiffIndexLine ctermfg=DarkGray guifg=#808080
+endfunction
+
+augroup FlogDiffColors
+  autocmd!
+  autocmd ColorScheme * call s:flog_diff_colors()
+  autocmd Syntax floggraph call s:flog_diff_colors()
+augroup END
+
+call s:flog_diff_colors()

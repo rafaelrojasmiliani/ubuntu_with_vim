@@ -9,6 +9,7 @@ plugins=(
     https://github.com/bbrtj/vim-jsonviewer.git
     https://github.com/gyim/vim-boxdraw.git
     https://github.com/rafaelrojasmiliani/vira.git
+    https://github.com/rafaelrojasmiliani/ctags-difftastic-semantic-diff-vim
 )
 
 # Check Vim version
@@ -34,6 +35,12 @@ main() {
     chmod 777 /etc/vim/bundle/
     rm -rf $(find /etc/vim/bundle -type f \( -name "*.a" -o -name "*.o" \))
     rm -rf $(find /etc/vim/bundle -type d -name ".git")
+
+    if [[ ${DISTRIB_RELEASE%%.*} -ge 24 ]]; then
+        pip3 install --no-cache-dir --break-system-packages python-ctags3
+    else
+        pip3 install --no-cache-dir python-ctags3
+    fi
 
 }
 

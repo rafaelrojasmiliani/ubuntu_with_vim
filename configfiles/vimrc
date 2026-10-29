@@ -139,13 +139,49 @@ call vundle#begin('/etc/vim/bundle/')
         let g:ale_lint_on_enter = 1
         let g:ale_lint_on_insert_leave = 1
         let g:ale_fix_on_save = 1
-        function! SetAlePylint()
-			let g:ale_python_pylint_options = "--init-hook='import sys; sys.path.append(\".\")' --extension-pkg-allow-list=.so"
-			if filereadable(".pylintrc")
-				let g:ale_python_pylint_options = "--rcfile .pylintrc " . g:ale_python_pylint_options
+        " Configures pylint for the current Python buffer:
+        "  - uses the nearest .pylintrc above the file (e.g. RoboticsPlugin/.pylintrc)
+        "    python_venv of the active cmake4vim build directory, so it follows :CMakeSelectBuildType
+        " Prefers a pylint installed in that venv (`python_venv/bin/python -m pip install pylint`); otherwise the
+        " system pylint gets the venv's site-packages, which only works if both use the same Python minor version.
+        function! SetAlePylint() abort
+			let l:init_hook = "import sys; sys.path.append('.')"
+			" Load every C extension so pylint can see members of compiled modules.
+			let l:options = '--unsafe-load-any-extension=y'
+
+			let l:rcfile = findfile('.pylintrc', expand('%:p:h') . ';')
+			if !empty(l:rcfile)
+				let l:options = '--rcfile ' . shellescape(fnamemodify(l:rcfile, ':p')) . ' ' . l:options
 			endif
+
+			" utils#cmake#getBuildDir() creates the build directory if it is missing, so only query it in CMake projects
+			let l:venv = ''
+			if filereadable(getcwd() . '/CMakeLists.txt')
+				try
+					let l:venv = utils#cmake#getBuildDir() . '/python_venv'
+				catch /^Vim\%((\a\+)\)\=:E117/
+				endtry
+			endif
+
+			if !empty(l:venv) && executable(l:venv . '/bin/pylint')
+				let b:ale_python_pylint_executable = l:venv . '/bin/pylint'
+				let b:ale_python_pylint_use_global = 1
+			else
+				unlet! b:ale_python_pylint_executable b:ale_python_pylint_use_global
+				let l:site = empty(l:venv) ? [] : glob(l:venv . '/lib/python3*/site-packages', 0, 1)
+				if !empty(l:site)
+					let l:init_hook .= '; import site; site.addsitedir(' . string(l:site[0]) . ')'
+				endif
+			endif
+
+			let b:ale_python_pylint_options = l:options . ' --init-hook=' . shellescape(l:init_hook)
+			unlet! b:ale_command_wrapper
         endfunction
-        autocmd BufRead,BufNewFile *.py call SetAlePylint()
+        augroup AlePylintCMakeVenv
+            autocmd!
+            " BufEnter instead of BufRead: cmake4vim has no event for build type changes
+            autocmd BufEnter *.py call SetAlePylint()
+        augroup END
 
         nmap <silent> <leader>aj :ALENext<cr>
         nmap <silent> <leader>ak :ALEPrevious<cr>
@@ -293,7 +329,7 @@ call vundle#begin('/etc/vim/bundle/')
     Plugin 'gtest-vim'
     Plugin 'spelunker.vim'
         let g:spelunker_white_list_for_user = ['ros', 'vimrc', 'yaml', 'rcl', 'of', 'os', 'alloc', 'cpp', 'filesystem', 'rclcpp']
-        let g:spelunker_white_list_for_user += ['ofstream', 'iostream', 'osstringstream', 'imfusion', 'rosparam', 'trunc', 'ifdef']
+        let g:spelunker_white_list_for_user += ['ofstream', 'iostream', 'osstringstream', 'rosparam', 'trunc', 'ifdef']
         let g:spelunker_white_list_for_user += ['chrono']
         autocmd ColorScheme,VimEnter *
                     \ highlight SpelunkerSpellBad cterm=underline ctermfg=247 gui=underline guifg=#4d4d4d

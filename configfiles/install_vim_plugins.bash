@@ -10,6 +10,7 @@ plugins=(
     https://github.com/gyim/vim-boxdraw.git
     https://github.com/rafaelrojasmiliani/vira.git
     https://github.com/rafaelrojasmiliani/ctags-difftastic-semantic-diff-vim
+    https://github.com/cpiger/NeoDebug.git
 )
 
 # Check Vim version

@@ -528,6 +528,8 @@ EOF
     Plugin 'vira'
 
     Plugin 'ctags-difftastic-semantic-diff-vim'
+
+    Plugin 'NeoDebug'
 call vundle#end()
 
 
